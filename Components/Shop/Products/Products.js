@@ -8,7 +8,7 @@
 
 import React, {Component} from 'react';
 import {Text, View,ListView,Image,RefreshControl} from 'react-native';
-import getAllProduct from '../../Api/ProductApi/getAllProduct';
+import getAllProduct from '../../../Api/ProductApi/getAllProduct';
 import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 

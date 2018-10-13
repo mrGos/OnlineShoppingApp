@@ -10,7 +10,7 @@ import React, {Component} from 'react';
 import {Text, View} from 'react-native';
 import getUrl from '../Common/UrlConfig'; 
 import Products from './Shop/Products/Products'
-
+import ShopMain from './Shop/ShopMain'
 
 export default class App extends Component {
 constructor(props){
@@ -20,11 +20,8 @@ constructor(props){
   
 
   render() {
-    return (     
-          
-          <View>
-              <Products/>
-          </View>            
+    return (   
+            <ShopMain/>                    
     );
   }
 }
