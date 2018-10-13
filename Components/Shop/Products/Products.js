@@ -8,7 +8,8 @@
 
 import React, {Component} from 'react';
 import {Text, View,ListView,Image,RefreshControl} from 'react-native';
-
+import getAllProduct from '../../Api/ProductApi/getAllProduct';
+import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 
 
@@ -21,9 +22,30 @@ export default class Products extends Component {
       page:0,
       totalPages:0,
       refreshing: false,
-      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      
     };
   }
+
+ CrawlProductData(keyword,page,pageSize){
+  getAllProduct(keyword,page,pageSize)
+    .then((responseJson) => {
+      //console.log(responseJson.Items);
+        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+        this.setState({      
+          dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),        
+          page: this.state.page +1,
+          totalPages: responseJson.TotalPages,
+          refreshing:false
+        });
+      
+      console.log( "currentafter "+this.state.page+"- totalRes:"+responseJson.TotalPages+"- totalProp:"+this.state.totalPages);
+      //console.log(responseJson);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
   loadNewData(){
 
@@ -32,34 +54,20 @@ export default class Products extends Component {
     });
 
     console.log("reload: Curpage="+this.state.page +" - CurTotal="+ this.state.totalPages);
+
     if(this.state.page < this.state.totalPages){
       console.log("true");
-        //"http://10.20.85.101/shopdemo/api/product/getall?keyword&page=0&pageSize=5")
-    fetch("http://172.30.173.73/shopdemo/api/product/getall?keyword&page="+(this.state.page)+"&pageSize=5")
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),        
-          page: this.state.page +1,
-          totalPages: this.state.totalPages = responseJson.TotalPages,
-          refreshing:false
-        });
-       console.log( "currentafter "+this.state.page+"- total:"+responseJson.TotalPages);
-      //console.log(responseJson);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-    }else{      
+      this.CrawlProductData("",this.state.page,pageSizeDefault());
+    }
+    else{      
       console.log('false');
       this.setState({  
-        page: 0,
-        refreshing:false
+        page: 0
       });
+      console.log('PageCauseError: '+ this.state.page);
+     this.CrawlProductData("",0,pageSizeDefault());
       console.log('false result: '+this.state.refreshing + "-"+this.state.page);
-    }
-    
+    }    
   }
 
   render() {
@@ -88,27 +96,7 @@ export default class Products extends Component {
   }
 
   componentDidMount(){
-    //"http://10.20.85.101/shopdemo/api/product/getall?keyword&page=0&pageSize=5")
-    fetch("http://172.30.173.73/shopdemo/api/product/getall?keyword&page="+(this.state.page)+"&pageSize=5")
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson.Items);
-        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),        
-          page: this.state.page +1,
-          totalPages: responseJson.TotalPages,
-          refreshing:false
-        });
-      
-      console.log( "currentafter "+this.state.page+"- totalRes:"+responseJson.TotalPages+"- totalProp:"+this.state.totalPages);
-      //console.log(responseJson);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-    
-    
+    this.CrawlProductData("",0,pageSizeDefault());
   }
 }
 
