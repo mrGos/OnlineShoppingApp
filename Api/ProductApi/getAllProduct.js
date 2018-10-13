@@ -1,4 +1,4 @@
-import getUrl from '../../../Common/UrlConfig';
+import getUrl from '../../Common/UrlConfig';
 
 const getAllProduct = (keyword,page,pageSize) => {
     let url= getUrl()+'product/getall?';
