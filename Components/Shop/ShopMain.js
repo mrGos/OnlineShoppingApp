@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
+import { createBottomTabNavigator } from 'react-navigation';
 
 import ContactInfo from './ContactInfo/ContactInfo';
 import Products from './Products/Products';
@@ -13,6 +14,10 @@ export default class ShopMain extends Component {
         this.state = { 
             selectedTab: 'home',
         };
+        createBottomTabNavigator({
+            Home: ContactInfo,
+            Settings: Products,
+          });
        
     }
 
