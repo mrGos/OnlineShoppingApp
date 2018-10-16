@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, Text,Platform } from 'react-native';
 import TabNavigator from 'react-native-tab-navigator';
-import { createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator,createStackNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ContactInfo from './ContactInfo/ContactInfo';
@@ -9,6 +9,13 @@ import Products from './Products/Products';
 import Category from './Categories/CategoryView';
 import Home from './Home/HomeView';
 import Cart from './Cart/CartView';
+import Details from './Products/DetailsView';
+
+
+const ProductStack = createStackNavigator({
+    Products: { screen: Products },
+    Details: { screen: Details },
+  });
 
 export default createBottomTabNavigator({
     Home: { screen: Home, 
@@ -27,7 +34,7 @@ export default createBottomTabNavigator({
                                 size={24}/>)
         }    
     },
-    Product: { screen: Products, 
+    Product: { screen: ProductStack, 
         navigationOptions:{
             tabBarIcon:({tintColor})=>(<Ionicons  
                                 name={Platform.OS === "ios" ? "ios-wallet" : "md-wallet"} 

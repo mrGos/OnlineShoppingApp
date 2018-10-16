@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Text, View,FlatList,Image,RefreshControl,ActivityIndicator,StyleSheet,Dimensions } from 'react-native';
+import {Text, View,FlatList,Image,RefreshControl,ActivityIndicator,StyleSheet,TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
 import getAllProduct from '../../../Api/ProductApi/getAllProduct';
@@ -82,6 +82,12 @@ export default class Products extends Component {
     this.CrawlProductData("",this.state.page,pageSizeDefault())
   } 
   
+onClickItem(item){
+  this.props.navigation.navigate('Details', {
+    item: item
+  });
+}
+
   render() {
 
     if(this.state.refreshing){
@@ -96,9 +102,9 @@ export default class Products extends Component {
           
         <View>
           <SearchBar
-              lightTheme
+              //lightTheme
               round
-              //icon={{ type: 'icon', name: 'search' }}
+              showLoading
               searchIcon={true} // You could have passed `null` too
               //onChangeText={someMethod}
               //onClear={someMethod}
@@ -125,7 +131,7 @@ export default class Products extends Component {
             keyExtractor={this._keyExtractor}
             numColumns = {numColumns}        
             renderItem={ ({item}) =>              
-                this.ViewItem(item)           
+                this.ViewItem(item)                  
             }
             
           />
@@ -140,11 +146,13 @@ export default class Products extends Component {
 
   ViewItem(item){
     return(
+      <TouchableOpacity onPress={()=> this.onClickItem(item)}>
         <View style={styles.itemContainer}>
                 { <Image source={{uri:item.Image}} style={styles.imgItem}/> }
                 <Text style={{flex:1}}>{item.Name}</Text> 
                 <Text style={{flex:1}}>Giá: {item.Price}</Text>                
-        </View> 
+        </View>
+      </TouchableOpacity> 
     );
   }
 
@@ -172,6 +180,7 @@ const styles = StyleSheet.create({
     width: window.width/2-20,
     height:window.height/2,
     flex:9, 
+    resizeMode: "stretch"
   },
   header:{
     height:35,
