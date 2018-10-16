@@ -23,7 +23,7 @@ export default class Products extends Component {
   constructor(props){
     super(props);    
     this.state = {
-
+      searchbarTxt:'',
       containerStyle: styles.flatContainer,
       itemStyle: styles.itemContainer,
       page:0,
@@ -82,12 +82,20 @@ export default class Products extends Component {
     this.CrawlProductData("",this.state.page,pageSizeDefault())
   } 
   
-onClickItem(item){
-  this.props.navigation.navigate('Details', {
-    item: item
-  });
-}
+  onClickItem(item){
+    this.props.navigation.navigate('Details', {
+      item: item
+    });
+  }
 
+  onSearchSubmmit(){
+    if(this.state.searchbarTxt!=''){
+      this.props.navigation.navigate('Search', {
+        txt: this.state.searchbarTxt
+      });
+    }
+    console.log('onSubmit: '+this.state.searchbarTxt);
+  }
   render() {
 
     if(this.state.refreshing){
@@ -102,24 +110,22 @@ onClickItem(item){
           
         <View>
           <SearchBar
-              //lightTheme
-              round
-              showLoading
+              lightTheme
+              round              
+              clearIcon={true}
               searchIcon={true} // You could have passed `null` too
-              //onChangeText={someMethod}
               //onClear={someMethod}
+              onChangeText={(searchbarTxt) => this.setState({searchbarTxt})}
+              onSubmitEditing={this.onSearchSubmmit.bind(this)}
+              value ={this.state.searchbarTxt}
           />
-          <View style={styles.header}>
-
-          </View>          
+                    
           <FlatList                                  
             refreshControl = {
               <RefreshControl
                 refreshing={this.state.refreshing}              //bool IsRefresh indicator
                 onRefresh={this.loadNewData.bind(this)}         // If yes, do function
-                
-
-              />
+               />
             }
             
             onEndReached={this.onEndReached.bind(this)}
@@ -182,10 +188,7 @@ const styles = StyleSheet.create({
     flex:9, 
     resizeMode: "stretch"
   },
-  header:{
-    height:35,
 
-  }
 });
 
 

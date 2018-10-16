@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import {Text, View,Image,StyleSheet,ScrollView} from 'react-native';
 import { Card,Button } from 'react-native-elements'
 
+
+
 const screen = require('Dimensions');
 const window = screen.get('window');
 
@@ -19,7 +21,7 @@ export default class Products extends Component {
             title={item.Name}>
               <Image source={{uri:item.Image}} style={styles.imgItem}/>
               <View style={{flex:1,justifyContent:'center', alignSelf:'center'}}>
-                <Text>Giá: {item.Price}</Text>
+                <Text>Giá: {item.Price} VND</Text>
                 <Text>Bảo hành: {item.Warranty} tháng</Text>
                 <Text>Mô tả: {item.Description}</Text>
               </View>
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
   },
 
   imgItem:{
-    height:400,
+    height:350,
     flex:9,
     resizeMode: "stretch" 
   },
