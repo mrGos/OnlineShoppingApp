@@ -7,40 +7,56 @@
  */
 
 import React, {Component} from 'react';
-import {Text, View,ListView,Image,RefreshControl} from 'react-native';
+import {Text, View,FlatList,Image,RefreshControl,ActivityIndicator,StyleSheet,Dimensions } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+
 import getAllProduct from '../../../Api/ProductApi/getAllProduct';
 import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 
+const screen = require('Dimensions');
+const window = screen.get('window');
+const numColumns = 2;
 
 export default class Products extends Component {
 
   constructor(props){
-    super(props);
-    
+    super(props);    
     this.state = {
+
+      containerStyle: styles.flatContainer,
+      itemStyle: styles.itemContainer,
       page:0,
-      totalPages:0,
+      totalPages:1,
       refreshing: false,
-      dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-      
+      //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      dataSource:[]
     };
   }
 
+
+
  CrawlProductData(keyword,page,pageSize){
+
   getAllProduct(keyword,page,pageSize)
     .then((responseJson) => {
-      //console.log(responseJson.Items);
-        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),        
-          page: this.state.page +1,
-          totalPages: responseJson.TotalPages,
-          refreshing:false
-        });
+      console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
+      if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
+          console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+          this.setState({      
+            //dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),  
+            dataSource: this.state.dataSource.concat(responseJson.Items),
+            totalPages: responseJson.TotalPages,
+            refreshing:false,
+    
+            page:this.state.page+1,
+          });
+          console.log(this.state.dataSource.length)
+       
+      }else{
+        console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
+      }
       
-      console.log( "currentafter "+this.state.page+"- totalRes:"+responseJson.TotalPages+"- totalProp:"+this.state.totalPages);
-      //console.log(responseJson);
     })
     .catch((error) => {
       console.error(error);
@@ -48,49 +64,72 @@ export default class Products extends Component {
 }
 
   loadNewData(){
-
     this.setState({
-      refreshing:true
+      page:0,
+      totalPages:1,
+      refreshing: false,
+      //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+      dataSource: []
     });
-
-    console.log("reload: Curpage="+this.state.page +" - CurTotal="+ this.state.totalPages);
-
-    if(this.state.page < this.state.totalPages){
-      console.log("true");
-      this.CrawlProductData("",this.state.page,pageSizeDefault());
-    }
-    else{      
-      console.log('false');
-      this.setState({  
-        page: 0
-      });
-      console.log('PageCauseError: '+ this.state.page);
-     this.CrawlProductData("",0,pageSizeDefault());
-      console.log('false result: '+this.state.refreshing + "-"+this.state.page);
-    }    
+    console.log('refresh: data='+this.state.dataSource.length+' - refreshing:'+this.state.refreshing+'- page='+this.state.page)
+    this.CrawlProductData("",0,pageSizeDefault());  
+      
   }
 
+  _keyExtractor = (item, index) => item.Name;
+ 
+  onEndReached = () => {    
+    this.CrawlProductData("",this.state.page,pageSizeDefault())
+  } 
+  
   render() {
-    return (      
-          //refresh list view
-          <ListView
+
+    if(this.state.refreshing){
+      return(
+        <View style={{flex: 1, padding: 20}}>
+          <ActivityIndicator/>
+        </View>
+      )
+    }
+
+    return (           
+          
+        <View>
+          <SearchBar
+              lightTheme
+              round
+              //icon={{ type: 'icon', name: 'search' }}
+              searchIcon={true} // You could have passed `null` too
+              //onChangeText={someMethod}
+              //onClear={someMethod}
+          />
+          <View style={styles.header}>
+
+          </View>          
+          <FlatList                                  
             refreshControl = {
               <RefreshControl
                 refreshing={this.state.refreshing}              //bool IsRefresh indicator
                 onRefresh={this.loadNewData.bind(this)}         // If yes, do function
+                
+
               />
             }
             
+            onEndReached={this.onEndReached.bind(this)}
+            onEndReachedThreshold={0.7}
+            
             //read each data row by render Row with rowItem
-            dataSource={this.state.dataSource}
-            renderRow={(rowItem) => 
-              <View style={{padding:20, borderWidth:1}}>
-                { <Image source={{uri:rowItem.Image}} style={{width:70,height:100}}/> }
-                <Text>{rowItem.Name}</Text>                
-              </View>
-              
+            contentContainerStyle={this.state.containerStyle}
+            data={this.state.dataSource}  
+            keyExtractor={this._keyExtractor}
+            numColumns = {numColumns}        
+            renderItem={ ({item}) =>              
+                this.ViewItem(item)           
             }
+            
           />
+        </View>
             
     );
   }
@@ -98,7 +137,47 @@ export default class Products extends Component {
   componentDidMount(){
     this.CrawlProductData("",0,pageSizeDefault());
   }
+
+  ViewItem(item){
+    return(
+        <View style={styles.itemContainer}>
+                { <Image source={{uri:item.Image}} style={styles.imgItem}/> }
+                <Text style={{flex:1}}>{item.Name}</Text> 
+                <Text style={{flex:1}}>Giá: {item.Price}</Text>                
+        </View> 
+    );
+  }
+
 }
+
+const styles = StyleSheet.create({
+  
+  itemContainer:{
+    flex: 1,
+    margin: 5,
+    width: window.width/2,
+    height:window.height/2,
+    backgroundColor: '#FFF',
+    alignItems:'center',
+    justifyContent: 'center',
+    borderWidth:1,
+    borderRadius:10
+  },
+  
+  flatContainer:{    
+    flexDirection:'column',
+    backgroundColor:'#CCC'
+  },
+  imgItem:{
+    width: window.width/2-20,
+    height:window.height/2,
+    flex:9, 
+  },
+  header:{
+    height:35,
+
+  }
+});
 
 
 
