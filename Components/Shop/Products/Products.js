@@ -129,7 +129,7 @@ export default class Products extends Component {
             }
             
             onEndReached={this.onEndReached.bind(this)}
-            onEndReachedThreshold={0.7}
+            onEndReachedThreshold={1}
             
             //read each data row by render Row with rowItem
             contentContainerStyle={this.state.containerStyle}

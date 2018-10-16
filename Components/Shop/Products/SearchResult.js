@@ -15,6 +15,7 @@ constructor(props){
     this.state={
         dataSource:[]
     }
+    
 }
 
 CrawlProductData(keyword,page,pageSize){
@@ -48,22 +49,31 @@ CrawlProductData(keyword,page,pageSize){
         const { navigation } = this.props;
         txtSearching = navigation.getParam('txt', 'NO-TXT');
         console.log(this.state.dataSource.length)
-        return(
-            <View style={{ flex: 1 }}>
-                <Text style={styles.resultStyle}> Kết quả tìm kiếm {txtSearching}: </Text>
-                <FlatList                                
-                    
-                    //read each data row by render Row with rowItem
-                    contentContainerStyle={this.state.containerStyle}
-                    data={this.state.dataSource}  
-                    keyExtractor={this._keyExtractor}
-                    numColumns = {numColumns}        
-                    renderItem={ ({item}) =>              
-                        this.ViewItem(item)                  
-                    }                    
-                />
-            </View>
-        );
+        if(this.state.dataSource.length!=0){
+            return(
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.resultStyle}> Kết quả tìm kiếm {txtSearching}: </Text>
+                    <FlatList                                
+                        
+                        //read each data row by render Row with rowItem
+                        contentContainerStyle={this.state.containerStyle}
+                        data={this.state.dataSource}  
+                        keyExtractor={this._keyExtractor}
+                        numColumns = {numColumns}        
+                        renderItem={ ({item}) =>              
+                            this.ViewItem(item)                  
+                        }                    
+                    />
+                </View>
+            );
+        }else{
+            return(
+                <View>
+                    <Text style={styles.resultStyle}> Không tìm thấy kết quả </Text>
+                </View>
+            );
+        }
+
     }
 
     ViewItem(item){
@@ -108,7 +118,8 @@ const styles = StyleSheet.create({
       resizeMode: "stretch"
     },
     resultStyle:{
-        fontSize:24
+        fontSize:24,
+        marginBottom:5,
     },
   
   });
