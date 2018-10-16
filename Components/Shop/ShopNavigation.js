@@ -10,11 +10,12 @@ import Category from './Categories/CategoryView';
 import Home from './Home/HomeView';
 import Cart from './Cart/CartView';
 import Details from './Products/DetailsView';
-
+import Search from './Products/SearchResult'
 
 const ProductStack = createStackNavigator({
-    Products: { screen: Products },
+    Products: { screen: Products,navigationOptions:{ header:null} },
     Details: { screen: Details },
+    Search:{screen:Search}
   });
 
 export default createBottomTabNavigator({
@@ -62,6 +63,9 @@ export default createBottomTabNavigator({
 },
   {
    initialRouteName:'Product',
+   navigationOptions: {
+    header: null 
+    },
    tabBarOptions:{
        activeTintColor:'tomato',
        inactiveTintColor:'gray'
