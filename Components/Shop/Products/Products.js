@@ -110,7 +110,7 @@ export default class Products extends Component {
           
         <View>
           <SearchBar
-              lightTheme
+              //lightTheme
               round              
               clearIcon={true}
               searchIcon={true} // You could have passed `null` too

@@ -12,6 +12,8 @@ import Cart from './Cart/CartView';
 import Details from './Products/DetailsView';
 import Search from './Products/SearchResult'
 
+
+
 const ProductStack = createStackNavigator({
     Products: { screen: Products,navigationOptions:{ header:null} },
     Details: { screen: Details },
