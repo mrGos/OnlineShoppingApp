@@ -17,12 +17,13 @@ export default class Products extends Component {
     }
     this.CrawlCartData= this.CrawlCartData.bind(this)
     this.addProductToCart = this.addProductToCart.bind(this)
-    
+    this._onClick = this._onClick.bind(this)
     
   }
 
   
   addProductToCart(product) {
+    this.CrawlCartData();
     console.log('cartDataInit= '+this.state.cartData)
     try{
       const isExist = this.state.cartData.some(e => e.ID === product.ID);
@@ -43,7 +44,7 @@ export default class Products extends Component {
 
     }
    
-}
+  }
 
 CrawlCartData(){
   getCart()
@@ -55,13 +56,15 @@ CrawlCartData(){
   _onClick(product){
     console.log('product data'+product)
     this.addProductToCart(product);
+      //  this.props.navigation.navigate('Cart',{
+      //    productParam: product
+      //  });
       this.props.navigation.navigate('Cart');
-      console.log('click detail success')
   }
     render(){
       const { navigation } = this.props;      
       const item = navigation.getParam('item', 'NO-ID');
-      console.log(item.Name);
+      //console.log(item.Name);
       
       return(
           <ScrollView style={styles.container} >

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text,StyleSheet,Image,FlatList } from 'react-native';
 import { Button } from 'react-native-elements'
 
+
 import getCart from '../../../Api/CartApi/getCart'
 import saveCart from '../../../Api/CartApi/saveCart'
 
@@ -13,21 +14,107 @@ export default class Cart extends Component {
     constructor(props){
         super(props)
         this.state={
-            cartData:[],
-            count:0
+            cartData:[], 
+                      
         }
+        //this.Flag = false 
+        
         //saveCart([])
         this.CrawlCartData = this.CrawlCartData.bind(this)
-
-
-    }
-
-
-    componentWillUpdate(){
-        this.CrawlCartData()
+        this._onClickIncreaseQuantity = this._onClickIncreaseQuantity.bind(this)
+        //this.getParam = this.getParam.bind(this)
+        //this.addProductToCart = this.addProductToCart.bind(this)
+        //this._onClickRemove = this._onClickRemove.bind(this)
         
-        console.log('cart update data= ' +this.state.cartData)
+        const { navigation } = this.props;         
+        
+         navigation.addListener('didFocus', () => {
+             this.CrawlCartData();       
+           });
     }
+
+/*
+    getParam(){             
+        const productParam = this.props.navigation.getParam('productParam', 'NO-Param');
+        if(productParam != 'NO-Param'){
+            this.addProductToCart(productParam)            
+            console.log(productParam.Name)
+        }else{
+            console.log('NO PARAM')
+        }
+    }*/
+/*
+    addProductToCart(product) { 
+        try{       
+            if(this.Flag){
+                console.log('cartDataInit= '+this.state.cartData)
+            
+              const isExist = this.state.cartData.some(e => e.ID === product.ID);
+              console.log('check cartData= '+this.state.cartData)
+              if (!isExist){
+                product.Quantity+=1;
+                this.setState(
+                    {
+                      cartData: this.state.cartData.concat(product)
+                    },
+                    ()=> saveCart(this.state.cartData)
+                );
+                
+                console.log('check Save DATA'+ this.state.cartData)
+              }else{
+                console.log('sp da ton tai')
+              } 
+            }            
+        }catch(e){
+            console.log('Error add: '+e)
+            
+        }
+        
+       
+    }
+*/
+
+_onClickIncreaseQuantity(productId) {
+    const newCart = this.state.cartData.map(e => {
+        if (e.ID !== productId) return e;
+        e.Quantity+=1;
+        return e;
+    });
+    this.setState({ cartData: newCart }, 
+        () => saveCart(this.state.cartData)
+    );
+}
+
+_onClickDecreaseQuantity(product) {
+    if(product.Quantity>0){
+        const newCart = this.state.cartData.map(e => {
+            if (e.ID !== product.ID) return e;
+            e.Quantity -=1
+            return e;
+        });
+        this.setState({ cartData: newCart }, 
+            () => saveCart(this.state.cartData)
+        );
+    }
+}
+
+_onClickRemove(productId) {
+        try{
+            const newCartData = this.state.cartData.filter(e => e.ID !== productId);
+            this.setState({ cartData: newCartData },
+             ()=> saveCart(this.state.cartData)            
+            );
+           
+        }catch(e){
+            console.log('error= '+e)
+        }
+}
+
+    // componentDidUpdate(){
+    //     this.CrawlCartData() 
+    //     console.log('cart update data= ' +this.state.cartData)
+    // }
+
 
     _keyExtractor = (item) => item.Name;
 
@@ -35,12 +122,12 @@ export default class Cart extends Component {
     CrawlCartData(){
         getCart()
         .then(resJSON => {
-            this.setState({cartData:resJSON})            
+            this.setState({cartData:resJSON},/*()=>{this.Flag = true;}*/)                        
         });
+        
     }
 
-    render(){
-        
+    render(){        
         
         if (this.state.cartData.length==0){
             return(
@@ -66,10 +153,17 @@ export default class Cart extends Component {
         );
     }
 
-    componentDidMount(){
-        this.CrawlCartData();
-        console.log('cartDataInit check= ' + this.state.cartData)
-        console.log('cartData init size= '+ this.state.cartData.length)
+
+
+    componentDidMount(){        
+        //this.CrawlCartData(); 
+        // const { navigation } = this.props; 
+        
+        
+        // navigation.addListener('didFocus', () => {
+        //     console.log('check Flag= '+this.Flag)
+        //     this.getParam()         
+        //   });       
       }
 
       ViewItem(item){        
@@ -83,7 +177,7 @@ export default class Cart extends Component {
                                 title="Xóa"                    
                                 titleStyle={{ fontWeight: "20" }}
                                 buttonStyle={styles.btnStyle}
-                                //onPress = {()=>this._onClick(item)}                              
+                                onPress = {()=>this._onClickRemove(item.ID)}                             
                             />
                         </View>
                         <View style={styles.contentMiddle}>
@@ -95,14 +189,14 @@ export default class Cart extends Component {
                                     title="+"                    
                                     titleStyle={{ fontWeight: "20" }}
                                     buttonStyle={styles.buttonAddStyle}
-                                    //onPress = {()=>this._onClick(item)}                              
+                                    onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
                                 />  
                             <Text>{item.Quantity}</Text>      
                             <Button
                                     title="-"                    
                                     titleStyle={{ fontWeight: "20" }}
                                     buttonStyle={styles.buttonSubtractStyle}
-                                    //onPress = {()=>this._onClick(item)}                              
+                                    onPress = {()=>this._onClickDecreaseQuantity(item)}                              
                                 />                                                            
                         </View>
 
