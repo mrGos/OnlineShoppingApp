@@ -131,13 +131,14 @@ _onClickRemove(productId) {
         
         if (this.state.cartData.length==0){
             return(
-                <View>
-                    <Text>GIỎ HÀNG RỖNG</Text>
+                <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                    <Text style={{fontSize:25}}>GIỎ HÀNG RỖNG</Text>
+                    
                 </View>
             );
         }
         return(
-            <View style={{ flex: 1,  }}>
+            <View style={{ flex: 1, }}>
                <FlatList                
                 //read each data row by render Row with rowItem
                 contentContainerStyle={styles.flatContainer}
@@ -149,6 +150,13 @@ _onClickRemove(productId) {
                 }
                 
             />
+                <Button
+                  title="TIẾN HÀNH THANH TOÁN"                    
+                  titleStyle={{ fontWeight: "500" }}
+                  buttonStyle={styles.btnPayment}
+                  //onPress = {()=>this._onClick(item)}
+                  containerStyle={{ marginTop: 20 }}
+                />
             </View>
         );
     }
@@ -279,6 +287,14 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         borderRadius: 2,
         marginLeft:30,
+      },
+      btnPayment:{
+        //backgroundColor: "#2baf2b",
+        backgroundColor: "navy",
+        height:60,
+        borderColor: "transparent",
+        borderWidth: 0,
+        borderRadius: 5
       }
   
   });
