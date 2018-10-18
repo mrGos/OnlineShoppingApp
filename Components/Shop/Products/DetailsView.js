@@ -22,7 +22,7 @@ export default class Products extends Component {
     const { navigation } = this.props;      
     item = navigation.getParam('item', 'NO-ID');
     navigation.addListener('didFocus', () => {
-      this.CrawlCartData();       
+      this.CrawlCartData();
     });
   }
 
@@ -34,7 +34,7 @@ export default class Products extends Component {
       const isExist = this.state.cartData.some(e => e.ID === product.ID);
       console.log('check cartData= '+this.state.cartData)
       if (!isExist){
-        product.Quantity+=1;
+        product.Quantity=1;
         this.setState(
             {
               cartData: this.state.cartData.push(product) 
