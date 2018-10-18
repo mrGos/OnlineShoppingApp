@@ -19,11 +19,16 @@ export default class Products extends Component {
     this.addProductToCart = this.addProductToCart.bind(this)
     this._onClick = this._onClick.bind(this)
     
+    const { navigation } = this.props;      
+    item = navigation.getParam('item', 'NO-ID');
+    navigation.addListener('didFocus', () => {
+      this.CrawlCartData();       
+    });
   }
 
   
   addProductToCart(product) {
-    this.CrawlCartData();
+    //this.CrawlCartData();
     console.log('cartDataInit= '+this.state.cartData)
     try{
       const isExist = this.state.cartData.some(e => e.ID === product.ID);
@@ -62,8 +67,7 @@ CrawlCartData(){
       this.props.navigation.navigate('Cart');
   }
     render(){
-      const { navigation } = this.props;      
-      const item = navigation.getParam('item', 'NO-ID');
+
       //console.log(item.Name);
       
       return(
@@ -91,7 +95,8 @@ CrawlCartData(){
   }
 
   componentDidMount(){
-    this.setState({},()=> this.CrawlCartData())
+    //this.CrawlCartData()
+    //this.setState({},()=> this.CrawlCartData())
     console.log('INIT DATA CART= '+ this.state.cartData)
   }
 

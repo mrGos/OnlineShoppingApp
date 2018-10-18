@@ -24,7 +24,7 @@ export default class Cart extends Component {
         this._onClickIncreaseQuantity = this._onClickIncreaseQuantity.bind(this)
         //this.getParam = this.getParam.bind(this)
         //this.addProductToCart = this.addProductToCart.bind(this)
-        //this._onClickRemove = this._onClickRemove.bind(this)
+        this._onClickRemove = this._onClickRemove.bind(this)
         
         const { navigation } = this.props;         
         
