@@ -38,12 +38,13 @@ export default class Products extends Component {
       console.log('check cartData= '+this.state.cartData)
       if (!isExist && this.state.Flag){
         product.Quantity=1;
+        console.log('flag add sucess= '+this.state.Flag)
         this.setState(
             {
               cartData: this.state.cartData.push(product),Flag:false 
             },
         );
-        console.log('check Save DATA'+ this.state.cartData)
+        
         saveCart(this.state.cartData)
       }else{
         console.log('sp da ton tai va '+ this.state.Flag)
