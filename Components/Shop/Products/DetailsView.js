@@ -46,6 +46,7 @@ export default class Products extends Component {
         );
         
         saveCart(this.state.cartData)
+        this.props.navigation.navigate('Cart');
       }else{
         console.log('sp da ton tai va '+ this.state.Flag)
       } 
@@ -68,7 +69,7 @@ CrawlCartData(){
       //  this.props.navigation.navigate('Cart',{
       //    productParam: product
       //  });
-      this.props.navigation.navigate('Cart');
+      
   }
     render(){
 
