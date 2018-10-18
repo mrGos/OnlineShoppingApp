@@ -13,16 +13,19 @@ export default class Products extends Component {
   constructor(props){
     super(props)
     this.state={
-      cartData:[]
+      cartData:[],
+      Flag:false
     }
     this.CrawlCartData= this.CrawlCartData.bind(this)
     this.addProductToCart = this.addProductToCart.bind(this)
     this._onClick = this._onClick.bind(this)
     
-    const { navigation } = this.props;      
+    
+    const { navigation } = this.props; 
+
     item = navigation.getParam('item', 'NO-ID');
-    navigation.addListener('didFocus', () => {
-      this.CrawlCartData();
+    navigation.addListener('didFocus', () => {      
+        this.setState({},()=>this.CrawlCartData())      
     });
   }
 
@@ -33,17 +36,18 @@ export default class Products extends Component {
     try{
       const isExist = this.state.cartData.some(e => e.ID === product.ID);
       console.log('check cartData= '+this.state.cartData)
-      if (!isExist){
+      if (!isExist && this.state.Flag){
         product.Quantity=1;
+        console.log('flag add sucess= '+this.state.Flag)
         this.setState(
             {
-              cartData: this.state.cartData.push(product) 
+              cartData: this.state.cartData.push(product),Flag:false 
             },
         );
-        console.log('check Save DATA'+ this.state.cartData)
+        
         saveCart(this.state.cartData)
       }else{
-        console.log('sp da ton tai')
+        console.log('sp da ton tai va '+ this.state.Flag)
       } 
     }catch(e){
 
@@ -54,7 +58,7 @@ export default class Products extends Component {
 CrawlCartData(){
   getCart()
   .then(resJSON => {
-     this.setState({cartData:resJSON})            
+     this.setState({cartData:resJSON, Flag:true})            
   });
 }
 
