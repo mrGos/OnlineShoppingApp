@@ -69,7 +69,7 @@ CrawlCartData(){
       //  this.props.navigation.navigate('Cart',{
       //    productParam: product
       //  });
-      
+      //this.props.navigation.navigate('Cart');
   }
     render(){
 
