@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 
+import Collection from './Collection'
+import TopProduct from './TopProduct'
 
 export default class Home extends Component {
     
     render(){
-        return(
-            <View style={{ flex: 1, backgroundColor: 'red' }}>
-                <Text>CONTACT INFO</Text>
-            </View>
+        return( 
+            <ScrollView>
+                <Collection />
+                <TopProduct />
+            </ScrollView>
         );
     }
 }
