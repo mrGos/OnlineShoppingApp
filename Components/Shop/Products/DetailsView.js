@@ -29,6 +29,9 @@ export default class Products extends Component {
     });
   }
 
+  componentWillMount(){
+    console.log(this.props);
+  }
   
   addProductToCart(product) {
     //this.CrawlCartData();

@@ -1,0 +1,197 @@
+import React from 'react'
+import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions,RefreshControl,  FlatList, TouchableOpacity, Platform} from 'react-native'
+import FAIcon from 'react-native-vector-icons/FontAwesome'
+
+//import * as API from '../../../Api/CategoriesApi'
+import getAllProduct from '../../../Api/ProductApi/getAllProduct';
+
+
+const {height, width} = Dimensions.get('window');
+
+const imageWidth = (width - 40)/2-10;
+const imageHeight = (361/((width - 40)/2))*114-10;
+
+class CategoryDetail extends React.PureComponent{
+    constructor(props){
+        super(props);
+        const { navigation } = this.props; 
+        this.state = {
+            IDCategory: navigation.getParam('item').ID,
+            refreshing: false,
+            data : [],
+            error: null,
+            searchbarTxt:'',
+            totalPage: 0,
+            page: 0,
+            totalPages: 0,
+        }
+    }
+
+
+    renderItem = ({item}) =>{
+        return(
+            <TouchableOpacity
+                onPress= {()=> {
+                    this.props.navigation.navigate('Details', {
+                        item: item
+                      });
+                }}
+            >
+                <View style={stylesProductList.productContainer}>
+                    <Image source={item.image} style = {stylesProductList.productImage}/>
+                    <Text style = {stylesProductList.productName}> {item.Name}</Text>
+                    <Text style = {stylesProductList.productPrice}> {item.price}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    loadData = () => {
+        console.log('loaddata')
+        //API.getCategory(this.state.IDCategory,this.state.page, 10, 'popular', 10)
+        getAllProduct("", this.state.page,10)
+        .then((responseJS)=>{
+            console.log(responseJS);
+            this.setState({
+                data: responseJS.Items,
+                totalPages : responseJS.TotalPages,
+                refreshing: false 
+            })
+        })
+        .catch(err=> console.log(err));
+    }
+
+    componentWillMount(){
+        console.log('category detail mount');
+    }
+    
+    componentDidMount(){
+        this.loadData()
+        console.log('category detail did mount');
+    }
+    
+    pageDown = () => {
+        if (this.state.page>0){
+            this.setState ({
+                page: this.state.page -1 
+            }, this.loadData)
+        }
+    }
+
+    pageUp = () =>{
+        if (this.state.page + 1 < this.state.totalPages){
+            this.setState ({
+                page: this.state.page +1 
+            }, this.loadData)
+        }
+    }
+
+
+    
+    
+    render(){
+        return(
+            <View style = {styles.wrapper}>
+                <View style = {styles.textContainer} >
+                    <Text style= {styles.textTopProduct}> {this.props.navigation.getParam('item').Name} </Text>
+                </View>
+                <View style ={styles.page}>
+                    <FAIcon
+                        onPress = {this.pageDown}
+                        name = 'chevron-left'
+                        style = {{
+                            color: 'black',
+                            fontSize: 20
+                        }}
+                    />
+                    <Text style = {{color: 'black', fontSize: 20}}>{this.state.page + 1}</Text>
+                    <FAIcon
+                        onPress = {this.pageUp}
+                        name = 'chevron-right'
+                        style = {{
+                            color: 'black',
+                            fontSize: 20
+                        }}
+                    />
+                </View>
+
+                <View style = {styles.body}>
+                    <FlatList
+                        refreshControl = {
+                            <RefreshControl 
+                                refreshing = {this.state.refreshing}
+                                onRefresh = {this.loadData.bind(this)}
+                            />
+                        } 
+                        data = {this.state.data}
+                        keyExtractor = {(item, index)=> index.toString()}
+                        renderItem = {this.renderItem}
+                        horizontal = {false}
+                        numColumns = {2}
+                    />
+                </View>
+            </View>
+        );  
+    }
+}
+
+const styles = StyleSheet.create({
+    wrapper :{
+        flex:1,
+        margin: 10,
+        backgroundColor : '#E9E9EE',
+        marginBottom:70,
+    },
+    textContainer:{
+        justifyContent :'center', 
+        alignItems: 'center',
+        paddingTop: Platform.OS === 'ios' ? 0 : 50,
+        height : 40 + (Platform.OS === 'ios' ? 0 : 50),
+        paddingBottom: 5,
+    },
+    page:{
+        flexDirection: 'row',
+        
+        justifyContent: 'space-around',
+        height: 20,
+    },
+    body:{
+        flexDirection: 'column',
+        //justifyContent: 'space-around',
+        alignItems: 'stretch',//stretch,//baseline
+        flexWrap: 'wrap',
+        shadowColor: '#2E272B',
+        shadowOffset : {
+            width: 0,
+            height: 3,
+        },
+    },
+    textTopProduct: {
+        fontSize: 20,
+        color : 'black'
+    },
+})
+
+
+const stylesProductList = StyleSheet.create({
+    productContainer:{
+        marginBottom: 10,
+        shadowOpacity: 0.2,
+        marginLeft: 10,
+        marginRight: 10,
+        alignItems: 'center'
+    },
+    productImage:{
+        height: imageHeight,
+        width: imageWidth
+    },
+    productName:{
+        color : 'black',
+    },
+    productPrice:{
+
+        color : 'black',
+    }
+})
+
+export default CategoryDetail

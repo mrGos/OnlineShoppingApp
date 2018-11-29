@@ -1,10 +1,14 @@
 import React from 'react'
-import {Text, View , StyleSheet, Image, Dimensions} from 'react-native'
+import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions, FlatList, TouchableOpacity} from 'react-native'
+
+import {getTopProduct} from '../../../Api/HomeApi'
+
 
 import sp1 from './TempImage/sp1.jpeg'
 import sp2 from './TempImage/sp2.jpeg'
 import sp3 from './TempImage/sp3.jpeg'
 import sp4 from './TempImage/sp4.jpeg'
+import getAllProduct from '../../../Api/ProductApi/getAllProduct';
 
 const {height, width} = Dimensions.get('window');
 
@@ -12,6 +16,60 @@ const imageWidth = (width - 40)/2-10;
 const imageHeight = (361/((width - 40)/2))*114-10;
 
 class TopProduct extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            refreshing: false,
+            data : [],
+            error: null,
+        }
+    }
+
+    renderItem = ({item}) =>{
+        return(
+            <TouchableOpacity
+                onPress= {()=> {
+                    this.props.navigation.navigate('Details', {
+                        item: item
+                      });
+                }}
+            >
+                <View style={stylesProductList.productContainer}>
+                    <Image source={item.Image} style = {stylesProductList.productImage}/>
+                    <Text style = {stylesProductList.productName}> {item.Name}</Text>
+                    <Text style = {stylesProductList.productPrice}> {item.price}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    loadData(){
+        
+        console.log('loaddata')
+        getTopProduct()
+        .then((responseJS)=>{
+            this.setState({
+                data: responseJS.Items,
+                refreshing: false 
+            })
+        })
+    }
+
+    componentWillMount(){
+        console.log('topproduct mount');
+        console.log('props ',this.props);
+        console.log('state ',this.state);
+    }
+    
+    componentDidMount(){
+        this.loadData()
+        console.log('topproduct did mount');
+        console.log('props ',this.props);
+        console.log('state ',this.state);
+        
+    }
+    
+
     render(){
         return(
             <View style = {styles.wrapper}>
@@ -19,33 +77,18 @@ class TopProduct extends React.Component{
                     <Text style= {styles.textTopProduct}> Top Product </Text>
                 </View>
                 <View style = {styles.body}>
-                    <View style={styles.productContainer}>
-                        <Image source={sp1} style = {styles.productImage}/>
-                        <Text style = {styles.productName}> Product name</Text>
-                        <Text style = {styles.productPrice}> Product price</Text>
-                    </View>
-                    <View style={styles.productContainer}>
-                        <Image source={sp2} style = {styles.productImage}/>
-                        <Text style = {styles.productName}> Product name</Text>
-                        <Text style = {styles.productPrice}> Product price</Text>
-                    </View>
-                    <View style={styles.productContainer}>
-                        <Image source={sp3} style = {styles.productImage}/>
-                        <Text style = {styles.productName}> Product name</Text>
-                        <Text style = {styles.productPrice}> Product price</Text>
-                    </View>
-                    <View style={styles.productContainer}>
-                        <Image source={sp4} style = {styles.productImage}/>
-                        <Text style = {styles.productName}> Product name</Text>
-                        <Text style = {styles.productPrice}> Product price</Text>
-                    </View>
+                    <FlatList
+                        data = {this.state.data}
+                        keyExtractor = {(item, index)=> index.toString()}
+                        renderItem = {this.renderItem}
+                        horizontal = {true}
+                        //numColumns = {2}
+                    />
                 </View>
             </View>
         );  
     }
 }
-
-export default TopProduct
 
 const styles = StyleSheet.create({
     wrapper :{
@@ -64,8 +107,9 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     body:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        flexDirection: 'column',
+        //justifyContent: 'space-around',
+        alignItems: 'stretch',//stretch,//baseline
         flexWrap: 'wrap',
         shadowColor: '#2E272B',
         shadowOffset : {
@@ -98,3 +142,31 @@ const styles = StyleSheet.create({
         color : '#D3D3CF',
     }
 })
+
+
+const stylesProductList = StyleSheet.create({
+    productContainer:{
+        shadowColor: '#2E272B',
+        shadowOffset : {
+            width: 0,
+            height: 3,
+        },
+        marginBottom: 10,
+        shadowOpacity: 0.2,
+        marginLeft: 10,
+        marginRight: 10,
+    },
+    productImage:{
+        height: imageHeight,
+        width: imageWidth
+    },
+    productName:{
+        color : '#A3A30A',
+    },
+    productPrice:{
+
+        color : '#D3D3CF',
+    }
+})
+
+export default TopProduct

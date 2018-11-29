@@ -1,5 +1,8 @@
 import React from 'react'
-import {ScrollView, Text, View , StyleSheet, Image, Dimensions} from 'react-native'
+import {ScrollView, Text, View , StyleSheet, Image, Dimensions, FlatList,TouchableOpacity} from 'react-native'
+
+import * as API from '../../../Api/CategoriesApi'
+
 
 import sp1 from '../Home/TempImage/sp1.jpeg'
 import sp2 from '../Home/TempImage/sp2.jpeg'
@@ -13,36 +16,64 @@ const imageWidth = (width - 40)/2-10;
 const imageHeight = (361/((width - 40)/2))*114-10;
 
 class Category extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            refreshing: false,
+            data : [],
+            error: null,
+        }
+    }
+
+
+
+    renderItem = ({item}) =>{
+        console.log(item);
+        return(
+            <TouchableOpacity
+                onPress= {()=> {
+                    this.props.navigation.navigate('CategoryDetail', {
+                        item: item
+                      });
+                }}
+            >
+                <View style={stylesProductList.productContainer}>
+                    <Image source={item.Image} style = {stylesProductList.productImage} {...this.props}/>
+                    <Text style = {stylesProductList.productName}> {item.Name}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    loadData = () =>{
+        console.log('loaddata Cateogory View');
+        API.getAllCategory()
+        .then((responseJS)=>{
+            this.setState({
+                data: responseJS,
+                refreshing: false 
+            })
+        })
+        console.log('Cateogory View state', this.state);
+    }
+
+    componentDidMount(){
+        console.log('Cateogory View did mount');
+        this.loadData();
+    }
+
     render(){
         return(
             <ScrollView>
                 <View style = {styles.wrapper}>
                     <View style = {styles.body}>
-                        <View style={styles.productContainer}>
-                            <Image source={sp1} style = {styles.productImage}/>
-                            <Text style = {styles.productName}> Product name</Text>
-                            <Text style = {styles.productPrice}> Product price</Text>
-                        </View>
-                        <View style={styles.productContainer}>
-                            <Image source={sp2} style = {styles.productImage}/>
-                            <Text style = {styles.productName}> Product name</Text>
-                            <Text style = {styles.productPrice}> Product price</Text>
-                        </View>
-                        <View style={styles.productContainer}>
-                            <Image source={sp3} style = {styles.productImage}/>
-                            <Text style = {styles.productName}> Product name</Text>
-                            <Text style = {styles.productPrice}> Product price</Text>
-                        </View>
-                        <View style={styles.productContainer}>
-                            <Image source={sp4} style = {styles.productImage}/>
-                            <Text style = {styles.productName}> Product name</Text>
-                            <Text style = {styles.productPrice}> Product price</Text>
-                        </View>
-                        <View style={styles.productContainer}>
-                            <Image source={sp5} style = {styles.productImage}/>
-                            <Text style = {styles.productName}> Product name</Text>
-                            <Text style = {styles.productPrice}> Product price</Text>
-                        </View>
+                        <FlatList
+                            data = {this.state.data}
+                            keyExtractor = {(item, index)=> index.toString()}
+                            renderItem = {this.renderItem}
+                            horizontal = {false}
+                            numColumns = {2}
+                        />
                     </View>
                 </View>
             </ScrollView>
@@ -54,44 +85,30 @@ export default Category
 
 const styles = StyleSheet.create({
     wrapper :{
-        margin: 10,
+        flex: 1,
         marginTop:20,
-        backgroundColor : '#FFF',
-        shadowOpacity: 0.2,
+        backgroundColor : 'white',
     },
     body:{
         marginTop:10,
         flexDirection: 'row',
         justifyContent: 'space-around',
         flexWrap: 'wrap',
-        shadowColor: '#2E272B',
-        shadowOffset : {
-            width: 0,
-            height: 3,
-        },
     },
-    textTopProduct: {
-        fontSize: 20,
-        color : '#AFAFAF'
-    },
+})
+
+const stylesProductList = StyleSheet.create({
     productContainer:{
-        shadowColor: '#2E272B',
-        shadowOffset : {
-            width: 0,
-            height: 3,
-        },
-        marginBottom: 10,
-        shadowOpacity: 0.2,
+        margin: 10,
+        alignItems: 'center',
     },
     productImage:{
+        backgroundColor: 'red',
         height: imageHeight,
         width: imageWidth
     },
     productName:{
-        color : '#A3A30A',
+        alignItems: 'center',
+        color : 'black',
     },
-    productPrice:{
-
-        color : '#D3D3CF',
-    }
 })
