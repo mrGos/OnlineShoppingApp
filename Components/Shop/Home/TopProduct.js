@@ -35,8 +35,10 @@ class TopProduct extends React.Component{
             >
                 <View style={stylesProductList.productContainer}>
                     <Image source={{uri:item.Image}} style = {stylesProductList.productImage}/>
-                    <Text style = {stylesProductList.productName}> {item.Name}</Text>
-                    <Text style = {stylesProductList.productPrice}> {item.price}</Text>
+                    <View>
+                        <Text style = {stylesProductList.productName}> {item.Name}</Text>
+                        <Text style = {stylesProductList.productPrice}> {item.price}</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -81,7 +83,7 @@ class TopProduct extends React.Component{
                         data = {this.state.data}
                         keyExtractor = {(item, index)=> index.toString()}
                         renderItem = {this.renderItem}
-                        horizontal = {true}
+                        //horizontal = {true}
                         //numColumns = {2}
                     />
                 </View>
@@ -93,8 +95,9 @@ class TopProduct extends React.Component{
 const styles = StyleSheet.create({
     wrapper :{
         margin: 10,
-        backgroundColor : '#FFF',
+        backgroundColor : 'rgb(233,233,238)',
         shadowOpacity: 0.2,
+        borderRadius: 3
     },
     textContainer:{
         justifyContent :'center', 
@@ -108,8 +111,7 @@ const styles = StyleSheet.create({
     },
     body:{
         flexDirection: 'column',
-        //justifyContent: 'space-around',
-        alignItems: 'stretch',//stretch,//baseline
+        alignItems: 'stretch',
         flexWrap: 'wrap',
         shadowColor: '#2E272B',
         shadowOffset : {
@@ -121,51 +123,35 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color : '#AFAFAF'
     },
-    productContainer:{
-        shadowColor: '#2E272B',
-        shadowOffset : {
-            width: 0,
-            height: 3,
-        },
-        marginBottom: 10,
-        shadowOpacity: 0.2,
-    },
-    productImage:{
-        height: imageHeight,
-        width: imageWidth
-    },
-    productName:{
-        color : '#A3A30A',
-    },
-    productPrice:{
-
-        color : '#D3D3CF',
-    }
 })
 
 
 const stylesProductList = StyleSheet.create({
     productContainer:{
-        shadowColor: '#2E272B',
-        shadowOffset : {
-            width: 0,
-            height: 3,
-        },
+        // shadowColor: '#2E272B',
+        // shadowOffset : {
+        //     width: 0,
+        //     height: 3,
+        // },
         marginBottom: 10,
         shadowOpacity: 0.2,
         marginLeft: 10,
         marginRight: 10,
+        flex: 1,
     },
     productImage:{
         height: imageHeight,
-        width: imageWidth
+        //width: imageWidth
     },
     productName:{
-        color : '#A3A30A',
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 15,
     },
     productPrice:{
-
-        color : '#D3D3CF',
+        fontWeight: 'bold',
+        fontSize: 15,
+        color: '#FAFAFA'
     }
 })
 

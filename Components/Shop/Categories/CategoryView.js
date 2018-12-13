@@ -38,7 +38,6 @@ class Category extends React.Component {
                 }}
             >
                 <View style={stylesProductList.productContainer}>
-                    <Image source={item.Image} style = {stylesProductList.productImage} {...this.props}/>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>
                 </View>
             </TouchableOpacity>
@@ -85,15 +84,17 @@ export default Category
 
 const styles = StyleSheet.create({
     wrapper :{
-        flex: 1,
+        flex: 2,
         marginTop:20,
-        backgroundColor : 'white',
+        backgroundColor : 'rgb(233,233,238)',
     },
     body:{
         marginTop:10,
         flexDirection: 'row',
         justifyContent: 'space-around',
         flexWrap: 'wrap',
+        flexGrow: 1,
+        flexBasis: 0,
     },
 })
 
@@ -101,6 +102,12 @@ const stylesProductList = StyleSheet.create({
     productContainer:{
         margin: 10,
         alignItems: 'center',
+        borderRadius: 10,
+        backgroundColor: 'red',
+        height: 30,
+        flexGrow: 1,
+        flexBasis: 0,
+        flex: 1,
     },
     productImage:{
         backgroundColor: 'red',
@@ -110,5 +117,7 @@ const stylesProductList = StyleSheet.create({
     productName:{
         alignItems: 'center',
         color : 'black',
+        fontWeight: 'bold',
+        fontSize: 20,
     },
 })

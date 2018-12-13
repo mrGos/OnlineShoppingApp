@@ -163,7 +163,6 @@ _onClickRemove(productId) {
                 renderItem={ ({item}) =>              
                     this.ViewItem(item)                  
                 }
-                
             />
                 <Button
                   title="TIẾN HÀNH THANH TOÁN"                    

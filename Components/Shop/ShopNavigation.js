@@ -12,7 +12,7 @@ import Home from './Home/HomeView';
 import Cart from './Cart/CartView';
 import Details from './Products/DetailsView';
 import Search from './Products/SearchResult'
-
+import CheckOrder from './Cart/CheckOrder'
 
 const HomeStack = createStackNavigator({
     Home :{screen: Home,navigationOptions:{ header:null} },
@@ -30,6 +30,14 @@ const ProductStack = createStackNavigator({
     Details: { screen: Details }, 
     Search:{screen:Search}
   });
+
+const CartStack = createStackNavigator({
+    CheckOrder: {screen: CheckOrder},
+    Cart : {screen: Cart }
+},{
+    navigationOptions: {header: null}
+})
+
 
 export default createBottomTabNavigator({
     Home: { screen: HomeStack, 
@@ -56,7 +64,7 @@ export default createBottomTabNavigator({
                                 size={24}/>)
         }    
     },
-    Cart: { screen: Cart, 
+    Cart: { screen: CartStack, 
         navigationOptions:{
             tabBarIcon:({tintColor})=>(<Ionicons  
                                 name={Platform.OS === "ios" ? "ios-cart" : "md-cart"} 
