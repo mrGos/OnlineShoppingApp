@@ -87,6 +87,7 @@ CrawlCartData(){
                 <Text>Giá: {item.Price} VND</Text>
                 <Text>Bảo hành: {item.Warranty} tháng</Text>
                 <Text>Mô tả: {item.Description}</Text>
+                <Text>Content: {item.Content/*.replace("<p>","").replace("</p>","")*/} </Text>
               </View>
               <Button
                   title="THÊM VÀO GIỎ HÀNG"                    

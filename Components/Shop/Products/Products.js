@@ -10,7 +10,7 @@ import React, {Component} from 'react';
 import {Text, View,FlatList,Image,RefreshControl,ActivityIndicator,StyleSheet,TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
-import getAllProduct from '../../../Api/ProductApi/getAllProduct';
+import {getAllProduct} from '../../../Api/ProductApi/getProduct';
 import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 

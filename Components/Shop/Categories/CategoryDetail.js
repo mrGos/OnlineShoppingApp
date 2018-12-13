@@ -3,8 +3,8 @@ import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions,RefreshCon
 import FAIcon from 'react-native-vector-icons/FontAwesome'
 
 //import * as API from '../../../Api/CategoriesApi'
-import getAllProduct from '../../../Api/ProductApi/getAllProduct';
-
+//import getAllProduct from '../../../Api/ProductApi/getAllProduct';
+import getGategory from '../../../Api/CategoriesApi/getCategory'
 
 const {height, width} = Dimensions.get('window');
 
@@ -22,7 +22,7 @@ class CategoryDetail extends React.PureComponent{
             error: null,
             searchbarTxt:'',
             totalPage: 0,
-            page: 0,
+            page: 1,
             totalPages: 0,
         }
     }
@@ -49,7 +49,7 @@ class CategoryDetail extends React.PureComponent{
     loadData = () => {
         console.log('loaddata')
         //API.getCategory(this.state.IDCategory,this.state.page, 10, 'popular', 10)
-        getAllProduct("", this.state.page,10)
+        getGategory(this.state.IDCategory, this.state.page,2)
         .then((responseJS)=>{
             console.log(responseJS);
             this.setState({
@@ -63,6 +63,8 @@ class CategoryDetail extends React.PureComponent{
 
     componentWillMount(){
         console.log('category detail mount');
+        console.log(this.props);
+        console.log(this.state);
     }
     
     componentDidMount(){
@@ -71,7 +73,7 @@ class CategoryDetail extends React.PureComponent{
     }
     
     pageDown = () => {
-        if (this.state.page>0){
+        if (this.state.page>1){
             this.setState ({
                 page: this.state.page -1 
             }, this.loadData)
@@ -79,7 +81,7 @@ class CategoryDetail extends React.PureComponent{
     }
 
     pageUp = () =>{
-        if (this.state.page + 1 < this.state.totalPages){
+        if (this.state.page < this.state.totalPages){
             this.setState ({
                 page: this.state.page +1 
             }, this.loadData)
@@ -104,7 +106,7 @@ class CategoryDetail extends React.PureComponent{
                             fontSize: 20
                         }}
                     />
-                    <Text style = {{color: 'black', fontSize: 20}}>{this.state.page + 1}</Text>
+                    <Text style = {{color: 'black', fontSize: 20}}>{this.state.page}</Text>
                     <FAIcon
                         onPress = {this.pageUp}
                         name = 'chevron-right'

@@ -1,14 +1,13 @@
 import React from 'react'
 import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions, FlatList, TouchableOpacity} from 'react-native'
 
-import {getTopProduct} from '../../../Api/HomeApi'
+import {getTopProduct} from '../../../Api/ProductApi/getProduct'
 
 
 import sp1 from './TempImage/sp1.jpeg'
 import sp2 from './TempImage/sp2.jpeg'
 import sp3 from './TempImage/sp3.jpeg'
 import sp4 from './TempImage/sp4.jpeg'
-import getAllProduct from '../../../Api/ProductApi/getAllProduct';
 
 const {height, width} = Dimensions.get('window');
 
@@ -35,7 +34,7 @@ class TopProduct extends React.Component{
                 }}
             >
                 <View style={stylesProductList.productContainer}>
-                    <Image source={item.Image} style = {stylesProductList.productImage}/>
+                    <Image source={{uri:item.Image}} style = {stylesProductList.productImage}/>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>
                     <Text style = {stylesProductList.productPrice}> {item.price}</Text>
                 </View>
@@ -46,10 +45,11 @@ class TopProduct extends React.Component{
     loadData(){
         
         console.log('loaddata')
-        getTopProduct()
+        getTopProduct(4)
         .then((responseJS)=>{
+            console.log(responseJS);
             this.setState({
-                data: responseJS.Items,
+                data: responseJS,
                 refreshing: false 
             })
         })

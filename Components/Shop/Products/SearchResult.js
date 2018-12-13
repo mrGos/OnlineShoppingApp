@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,FlatList,Image,TouchableOpacity,StyleSheet } from 'react-native';
 
-import getAllProduct from '../../../Api/ProductApi/getAllProduct';
+import {getAllProduct} from '../../../Api/ProductApi/getProduct';
 import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 const numColumns = 2;
