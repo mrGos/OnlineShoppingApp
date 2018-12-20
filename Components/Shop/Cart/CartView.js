@@ -75,6 +75,9 @@ export default class Cart extends Component {
 */
 
 _onClickIncreaseQuantity(productId) {
+    console.log('_onClickIncreaseQuantity');
+        console.log(this.props);
+        console.log(this.state);
     const newCart = this.state.cartData.map(e => {
         if (e.ID !== productId) return e;
         e.Quantity+=1;
@@ -86,6 +89,9 @@ _onClickIncreaseQuantity(productId) {
 }
 
 _onClickDecreaseQuantity(product) {
+    console.log('_onClickDecreaseQuantity');
+        console.log(this.props);
+        console.log(this.state);
     if(product.Quantity>0){
         const newCart = this.state.cartData.map(e => {
             if (e.ID !== product.ID) return e;
@@ -99,6 +105,9 @@ _onClickDecreaseQuantity(product) {
 }
 
 _onClickRemove(productId) {
+        console.log('_onClickRemove');
+        console.log(this.props);
+        console.log(this.state);
         try{
             const newCartData = this.state.cartData.filter(e => e.ID !== productId);
             this.setState({ cartData: newCartData },
@@ -127,6 +136,12 @@ _onClickRemove(productId) {
         
     }
 
+    componentWillMount(){
+        console.log('cartview will mount');
+        console.log(this.props);
+        console.log(this.state);
+    }
+
     render(){        
         
         if (this.state.cartData.length==0){
@@ -148,19 +163,22 @@ _onClickRemove(productId) {
                 renderItem={ ({item}) =>              
                     this.ViewItem(item)                  
                 }
-                
             />
                 <Button
                   title="TIẾN HÀNH THANH TOÁN"                    
                   titleStyle={{ fontWeight: "500" }}
                   buttonStyle={styles.btnPayment}
-                  //onPress = {()=>this._onClick(item)}
+                  onPress = {()=>this._onClick()}
                   containerStyle={{ marginTop: 20 }}
                 />
             </View>
         );
     }
 
+    _onClick = () =>{
+        console.log(this.state)
+        this.props.navigation.navigate('CheckOrder',{data: this.state.cartData})
+    }
 
 
     componentDidMount(){        
@@ -194,15 +212,15 @@ _onClickRemove(productId) {
                         </View>
                         <View style={styles.contentBottom}>
                             <Button
-                                    title="+"                    
-                                    titleStyle={{ fontWeight: "20" }}
+                                    title='+'                    
+                                    titleStyle={{ fontWeight: '20', color: 'black' }}
                                     buttonStyle={styles.buttonAddStyle}
                                     onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
                                 />  
                             <Text>{item.Quantity}</Text>      
                             <Button
-                                    title="-"                    
-                                    titleStyle={{ fontWeight: "20" }}
+                                    title='-'                    
+                                    titleStyle={{ fontWeight: '20' , color: 'black'}}
                                     buttonStyle={styles.buttonSubtractStyle}
                                     onPress = {()=>this._onClickDecreaseQuantity(item)}                              
                                 />                                                            
