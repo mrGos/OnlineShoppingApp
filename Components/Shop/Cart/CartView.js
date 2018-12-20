@@ -168,13 +168,17 @@ _onClickRemove(productId) {
                   title="TIẾN HÀNH THANH TOÁN"                    
                   titleStyle={{ fontWeight: "500" }}
                   buttonStyle={styles.btnPayment}
-                  //onPress = {()=>this._onClick(item)}
+                  onPress = {()=>this._onClick()}
                   containerStyle={{ marginTop: 20 }}
                 />
             </View>
         );
     }
 
+    _onClick = () =>{
+        console.log(this.state)
+        this.props.navigation.navigate('CheckOrder',{data: this.state.cartData})
+    }
 
 
     componentDidMount(){        

@@ -32,8 +32,8 @@ const ProductStack = createStackNavigator({
   });
 
 const CartStack = createStackNavigator({
+    Cart : {screen: Cart },
     CheckOrder: {screen: CheckOrder},
-    Cart : {screen: Cart }
 },{
     navigationOptions: {header: null}
 })
@@ -83,7 +83,7 @@ export default createBottomTabNavigator({
   
 },
   {
-   initialRouteName:'Product',
+   initialRouteName:'Home',
    navigationOptions: {
     header: null 
     },

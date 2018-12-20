@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "16.5.0",
     "react-native": "0.57.1",
+    "react-native-autogrow-textinput": "^5.2.0",
     "react-native-drawer": "^2.5.1",
     "react-native-elements": "^0.19.1",
     "react-native-tab-navigator": "^0.3.4",
