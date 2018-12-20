@@ -4718,6 +4718,10 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
+react-native-autogrow-textinput@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-autogrow-textinput/-/react-native-autogrow-textinput-5.2.0.tgz#acf736454781f5beaba8b7d9c943b7333691b65e"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"

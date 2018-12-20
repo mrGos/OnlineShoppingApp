@@ -27,40 +27,6 @@ class CategoryDetail extends React.PureComponent{
         }
     }
 
-
-    renderItem = ({item}) =>{
-        return(
-            <TouchableOpacity
-                onPress= {()=> {
-                    this.props.navigation.navigate('Details', {
-                        item: item
-                      });
-                }}
-            >
-                <View style={stylesProductList.productContainer}>
-                    <Image source={item.image} style = {stylesProductList.productImage}/>
-                    <Text style = {stylesProductList.productName}> {item.Name}</Text>
-                    <Text style = {stylesProductList.productPrice}> {item.price}</Text>
-                </View>
-            </TouchableOpacity>
-        );
-    }
-
-    loadData = () => {
-        console.log('loaddata')
-        //API.getCategory(this.state.IDCategory,this.state.page, 10, 'popular', 10)
-        getGategory(this.state.IDCategory, this.state.page,2)
-        .then((responseJS)=>{
-            console.log(responseJS);
-            this.setState({
-                data: responseJS.Items,
-                totalPages : responseJS.TotalPages,
-                refreshing: false 
-            })
-        })
-        .catch(err=> console.log(err));
-    }
-
     componentWillMount(){
         console.log('category detail mount');
         console.log(this.props);
@@ -88,8 +54,37 @@ class CategoryDetail extends React.PureComponent{
         }
     }
 
+    loadData = () => {
+        console.log('loaddata')
+       getGategory(this.state.IDCategory, this.state.page,2)
+        .then((responseJS)=>{
+            console.log(responseJS);
+            this.setState({
+                data: responseJS.Items,
+                totalPages : responseJS.TotalPages,
+                refreshing: false 
+            })
+        })
+        .catch(err=> console.log(err));
+    }
 
-    
+    renderItem = ({item}) =>{
+        return(
+            <TouchableOpacity
+                onPress= {()=> {
+                    this.props.navigation.navigate('Details', {
+                        item: item
+                      });
+                }}
+            >
+                <View style={stylesProductList.productContainer}>
+                    <Image source={item.image} style = {stylesProductList.productImage}/>
+                    <Text style = {stylesProductList.productName}> {item.Name}</Text>
+                    <Text style = {stylesProductList.productPrice}> {item.price}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
     
     render(){
         return(

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Text , View, RefreshControl, ActivityIndicator} from 'react-native';
+import { ScrollView, Text , View, RefreshControl, ActivityIndicator,SafeAreaView} from 'react-native';
 
 import Collection from './Collection'
 import TopProduct from './TopProduct'
@@ -45,18 +45,20 @@ export default class Home extends Component {
         
 
         return( 
-            <ScrollView
-                refreshControl = {
-                    <RefreshControl 
-                        refreshing= {this.state.refreshing}
-                        onRefresh = {this.handleRefresh}
+            <SafeAreaView style={{flex: 1}}>
+                <ScrollView
+                    refreshControl = {
+                        <RefreshControl 
+                            refreshing= {this.state.refreshing}
+                            onRefresh = {this.handleRefresh}
+                        />
+                    }
+                >
+                    <Collection />
+                    <TopProduct {...this.props} 
                     />
-                }
-            >
-                <Collection />
-                <TopProduct {...this.props} 
-                />
-            </ScrollView>
+                </ScrollView>
+            </SafeAreaView>
         );
     }
 }
