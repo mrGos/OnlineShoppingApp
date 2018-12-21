@@ -1,5 +1,5 @@
 import React from 'react'
-import {ScrollView, Text, View , StyleSheet, Image, Dimensions, FlatList,TouchableOpacity} from 'react-native'
+import {SafeAreaView,ScrollView, Text, View , StyleSheet, Image, Dimensions, FlatList,TouchableOpacity} from 'react-native'
 
 import * as API from '../../../Api/CategoriesApi'
 
@@ -63,19 +63,21 @@ class Category extends React.Component {
 
     render(){
         return(
-            <ScrollView>
-                <View style = {styles.wrapper}>
-                    <View style = {styles.body}>
-                        <FlatList
-                            data = {this.state.data}
-                            keyExtractor = {(item, index)=> index.toString()}
-                            renderItem = {this.renderItem}
-                            horizontal = {false}
-                            numColumns = {2}
-                        />
+            <SafeAreaView style ={{flex: 1}}>
+                <ScrollView>
+                    <View style = {styles.wrapper}>
+                        <View style = {styles.body}>
+                            <FlatList
+                                data = {this.state.data}
+                                keyExtractor = {(item, index)=> index.toString()}
+                                renderItem = {this.renderItem}
+                                horizontal = {false}
+                                numColumns = {1}
+                            />
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
+                </ScrollView>
+            </SafeAreaView>
         );  
     }
 }
@@ -103,11 +105,17 @@ const stylesProductList = StyleSheet.create({
         margin: 10,
         alignItems: 'center',
         borderRadius: 10,
-        backgroundColor: 'red',
-        height: 30,
+        //backgroundColor: 'red',
+        height: 40,
         flexGrow: 1,
         flexBasis: 0,
         flex: 1,
+        shadowColor: '#2E272B',
+        shadowOffset : {
+            width: 0,
+            height: 3,
+        },
+        
     },
     productImage:{
         backgroundColor: 'red',

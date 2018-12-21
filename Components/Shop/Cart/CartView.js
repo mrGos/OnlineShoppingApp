@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image,FlatList } from 'react-native';
+import { View, Text,StyleSheet,Image,FlatList,SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements'
 
 
@@ -194,7 +194,7 @@ _onClickRemove(productId) {
 
       ViewItem(item){        
         return(
-
+            <SafeAreaView style={{flex: 1}}>
             <View style={styles.itemContainer}>
                     { <Image source={{uri:item.Image}} style={styles.imgItem}/> }
                     <View style={styles.content}>
@@ -229,7 +229,7 @@ _onClickRemove(productId) {
                         
                     </View>               
             </View>
-
+            </SafeAreaView>
         );
       }
 }

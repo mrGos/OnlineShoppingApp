@@ -18,7 +18,7 @@ import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 const screen = require('Dimensions');
 const window = screen.get('window');
-const numColumns = 2;
+const numColumns = 1 ;
 
 export default class Products extends Component {
 
@@ -161,11 +161,12 @@ export default class Products extends Component {
     }
 
     return (           
-        <SafeAreaView style = {{flex: 1, backgroundColor: 'rgb(57,62,66)'}}>
+        <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
           <View>
             <SearchBar
                 //lightTheme
-                round              
+                round          
+                style = {styles.SearchBar}    
                 clearIcon={true}
                 searchIcon={true} // You could have passed `null` too
                 //onClear={someMethod}
@@ -220,17 +221,26 @@ export default class Products extends Component {
 }
 
 const styles = StyleSheet.create({
-  
+  SearchBar:{
+    backgroundColor: 'transparent'
+  },
   itemContainer:{
+    // flex: 1,
+    // margin: 5,
+    // width: window.width/2,
+    // height:window.height/2,
+    // backgroundColor: '#FFF',
+    // alignItems:'center',
+    // justifyContent: 'center',
+    // borderWidth:1,
+    // borderRadius:10
+    marginBottom: 10,
+    shadowOpacity: 0.2,
+    marginLeft: 20,
+    marginRight: 20,
     flex: 1,
-    margin: 5,
-    width: window.width/2,
-    height:window.height/2,
-    backgroundColor: '#FFF',
-    alignItems:'center',
-    justifyContent: 'center',
-    borderWidth:1,
-    borderRadius:10
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   
   flatContainer:{    
@@ -238,16 +248,16 @@ const styles = StyleSheet.create({
     backgroundColor:'#CCC'
   },
   imgItem:{
-    width: window.width/2-20,
-    height:window.height/2,
+    width: 300,///window.width/2-20,
+    height:300,///window.height/2,
     flex:9, 
     resizeMode: "stretch"
   },
   page:{
     flexDirection: 'row',
-    
+    alignItems: 'center',
     justifyContent: 'space-around',
-    height: 20,
+    height: 30,
   },
 
 });
