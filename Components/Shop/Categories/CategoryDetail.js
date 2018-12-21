@@ -1,5 +1,5 @@
 import React from 'react'
-import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions,RefreshControl,  FlatList, TouchableOpacity, Platform} from 'react-native'
+import {SafeAreaView,Text, View , StyleSheet, Image, ActivityIndicator, Dimensions,RefreshControl,  FlatList, TouchableOpacity, Platform} from 'react-native'
 import FAIcon from 'react-native-vector-icons/FontAwesome'
 
 //import * as API from '../../../Api/CategoriesApi'
@@ -88,46 +88,48 @@ class CategoryDetail extends React.PureComponent{
     
     render(){
         return(
-            <View style = {styles.wrapper}>
-                <View style = {styles.textContainer} >
-                    <Text style= {styles.textTopProduct}> {this.props.navigation.getParam('item').Name} </Text>
-                </View>
-                <View style ={styles.page}>
-                    <FAIcon
-                        onPress = {this.pageDown}
-                        name = 'chevron-left'
-                        style = {{
-                            color: 'black',
-                            fontSize: 20
-                        }}
-                    />
-                    <Text style = {{color: 'black', fontSize: 20}}>{this.state.page}</Text>
-                    <FAIcon
-                        onPress = {this.pageUp}
-                        name = 'chevron-right'
-                        style = {{
-                            color: 'black',
-                            fontSize: 20
-                        }}
-                    />
-                </View>
+            <SafeAreaView style= {{flex: 1}}>
+                <View style = {styles.wrapper}>
+                    <View style = {styles.textContainer} >
+                        <Text style= {styles.textTopProduct}> {this.props.navigation.getParam('item').Name} </Text>
+                    </View>
+                    <View style ={styles.page}>
+                        <FAIcon
+                            onPress = {this.pageDown}
+                            name = 'chevron-left'
+                            style = {{
+                                color: 'black',
+                                fontSize: 20
+                            }}
+                        />
+                        <Text style = {{color: 'black', fontSize: 20}}>{this.state.page}</Text>
+                        <FAIcon
+                            onPress = {this.pageUp}
+                            name = 'chevron-right'
+                            style = {{
+                                color: 'black',
+                                fontSize: 20
+                            }}
+                        />
+                    </View>
 
-                <View style = {styles.body}>
-                    <FlatList
-                        refreshControl = {
-                            <RefreshControl 
-                                refreshing = {this.state.refreshing}
-                                onRefresh = {this.loadData.bind(this)}
-                            />
-                        } 
-                        data = {this.state.data}
-                        keyExtractor = {(item, index)=> index.toString()}
-                        renderItem = {this.renderItem}
-                        horizontal = {false}
-                        numColumns = {2}
-                    />
+                    <View style = {styles.body}>
+                        <FlatList
+                            refreshControl = {
+                                <RefreshControl 
+                                    refreshing = {this.state.refreshing}
+                                    onRefresh = {this.loadData.bind(this)}
+                                />
+                            } 
+                            data = {this.state.data}
+                            keyExtractor = {(item, index)=> index.toString()}
+                            renderItem = {this.renderItem}
+                            horizontal = {false}
+                            numColumns = {2}
+                        />
+                    </View>
                 </View>
-            </View>
+            </SafeAreaView>
         );  
     }
 }

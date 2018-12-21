@@ -206,7 +206,7 @@ export default class Products extends Component {
               onEndReachedThreshold={1}
               
               //read each data row by render Row with rowItem
-              contentContainerStyle={this.state.containerStyle}
+              contentContainerStyle={{backgroundColor: 'transparent'}}//this.state.containerStyle}
               data={this.state.dataSource}  
               keyExtractor={this._keyExtractor}
               numColumns = {numColumns}        
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   
   flatContainer:{    

@@ -15,10 +15,12 @@ class CheckOrder extends Component{
             data: []
         }
     }
-    renderItem = (item) => {
+    renderItem = (rawitem) => {
+        console.log('CheckOrder Item: ', rawitem)
+        const {item}= rawitem
         return (
             <TouchableOpacity>
-                <View style = {styles.container}>
+                <View style = {styles.Itemcontainer}>
                     <View>
                         <Image
                             resizeMode = 'contain'
@@ -30,30 +32,24 @@ class CheckOrder extends Component{
                                 width: 120,
                                 borderTopLeftRadius: 5,
                                 borderBottomLeftRadius: 5,
-                                backgroundColor: 'black'
                             }}
                             source = {{uri:item.Image}}
                             
                         />
                     </View>
-                    <View style= {styles.info}>
+                    <View style= {styles.ItemInfo}>
+                        <View/>
                         <View style ={styles.nameHost}>
                             <Text size= 'normal' bold = {true} color = 'red'>
-                                {this.props.Name}
+                                {item.Name}
                             </Text>    
-                        </View>
-                        <View style ={styles.nameActivity}>
-                            <View style= {{flexDirection: 'column',flexWrap: 'wrap', width :150,}}>
-                                <Text size= 'medium'  bold= {true}>
-                                    {this.props.nameActivity}
-                                </Text>
-                            </View>
                         </View>
                         <View style ={styles.nameCategory}>
                             <Text size= 'small' bold = {false}>
-                                {this.props.nameCategory}
+                                {item.Price}
                             </Text>
                         </View>
+                        <View />
                     </View>
                 </View>
             </TouchableOpacity>
@@ -61,10 +57,15 @@ class CheckOrder extends Component{
     }
 
     componentWillMount(){
+        console.log(this.props.navigation.getParam('data'))
         this.setState({
             data: this.props.navigation.getParam('data')
         })
        
+    }
+    componentDidMount(){
+        console.log('cart check')
+        console.log(this.state.data)
     }
 
     _onChangeName(text) {
@@ -94,6 +95,7 @@ class CheckOrder extends Component{
             <SafeAreaView style ={{flex: 1}}>
                 <View style = {styles.container}>
                     <View style = {styles.input}>
+                        <Text style= {{ fontSize: 20,}}> Name: </Text>
                         <AutoGrowingTextInput
                             value={this.state.textValue}
                             onChange={(text) => this._onChangeName(text)}
@@ -105,6 +107,7 @@ class CheckOrder extends Component{
                             enableScrollToCaret
                             ref={(r) => { this._textInput = r; }}
                         />
+                        <Text style= {{ fontSize: 20,}}> Phone number: </Text>
                         <AutoGrowingTextInput
                             value={this.state.textValue}
                             onChange={(text) => this._onChangePhoneNumber(text)}
@@ -116,6 +119,7 @@ class CheckOrder extends Component{
                             enableScrollToCaret
                             ref={(r) => { this._textInput = r; }}
                         />
+                        <Text style= {{ fontSize: 20, borderBottomWidth:2}}> Address: </Text>
                         <AutoGrowingTextInput
                             value={this.state.textValue}
                             onChange={(text) => this._onChangeAddress(text)}
@@ -126,7 +130,8 @@ class CheckOrder extends Component{
                             minHeight={30}
                             enableScrollToCaret
                             ref={(r) => { this._textInput = r; }}
-                        />          
+                        />    
+                        <View style={{height:10}}/>      
                         <FlatList
                             data = {this.state.data}
                             keyExtractor = {(item, index)=> index.toString()}
@@ -178,6 +183,16 @@ const styles = StyleSheet.create({
         borderWidth: 2, 
         borderColor: 'black', 
         borderRadius: 30,
-
-    }
+    },
+    Itemcontainer:{
+        flex: 1,
+        flexDirection: 'row',
+        //backgroundColor: 'red',
+        margin: 5,
+        borderRadius: 5
+    },
+    ItemInfo:{
+        flexDirection: 'column',
+        justifyContent: 'space-around'
+    },
 })
