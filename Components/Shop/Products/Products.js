@@ -74,12 +74,12 @@ export default class Products extends Component {
 
   loadData = () => {
     console.log('loaddata page', this.state.page)
-    getAllProduct('',this.state.page,2)
+    getAllProduct('',this.state.page,pageSizeDefault)
       .then((responseJson) => {
         console.log(responseJson);
         console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
         this.setState({      
-          dataSource: responseJson.Items,
+          dataSource: [...this.state.dataSource,...responseJson.Items],
           totalPages: responseJson.TotalPages,
           refreshing:false,
         });
@@ -90,6 +90,15 @@ export default class Products extends Component {
         console.error(error);
       });
   }
+
+  loadMore = () =>{
+    if (this.state.page < this.state.totalPages-1){
+      this.setState({
+        page: this.state.page+1,
+      },this.loadData)
+    }
+  }
+
   loadNewData(){
     this.setState({
       page:0,
@@ -151,6 +160,24 @@ export default class Products extends Component {
     );
   }
 
+  renderButton = () =>{
+    return(
+      <TouchableOpacity 
+        style = {styles.buttonStyle}
+        onPress = {this.loadMore}
+      >
+        <Text style = {{fontSize: 20,fontWeight: 'bold'}}>Loadmore</Text> 
+      </TouchableOpacity>
+    )
+  }
+
+  resetData = () => {
+    this.setState({
+      page: 0,
+      dataSource: [],
+    }, this.loadData)
+  }
+
   render() {
     if(this.state.refreshing){
       return(
@@ -170,40 +197,23 @@ export default class Products extends Component {
                 clearIcon={true}
                 searchIcon={true} // You could have passed `null` too
                 //onClear={someMethod}
-                onChangeText={(searchbarTxt) => this.setState({searchbarTxt})}
+                onChangeText={(searchbarTxt) =>  this.setState({searchbarTxt})}
                 onSubmitEditing={this.onSearchSubmmit.bind(this)}
                 value ={this.state.searchbarTxt}
             />     
-            <View style ={styles.page}>
-                <FAIcon
-                    onPress = {this.pageDown}
-                    name = 'chevron-left'
-                    style = {{
-                        color: 'black',
-                        fontSize: 20
-                    }}
-                />
-                <Text style = {{color: 'black', fontSize: 20}}>{this.state.page+1}</Text>
-                <FAIcon
-                    onPress = {this.pageUp}
-                    name = 'chevron-right'
-                    style = {{
-                        color: 'black',
-                        fontSize: 20
-                    }}
-                />
-            </View>   
+              
+            
             <FlatList                                  
               refreshControl = {
                 <RefreshControl
                   refreshing={this.state.refreshing}              //bool IsRefresh indicator
                   //onRefresh={this.loadNewData.bind(this)}         // If yes, do function
-                  onRefresh={this.loadData}
+                  onRefresh={this.resetData}
                 />
               }
               
-              onEndReached={this.onEndReached.bind(this)}
-              onEndReachedThreshold={1}
+              ListFooterComponent={this.renderButton}
+              //onEndReachedThreshold={1}
               
               //read each data row by render Row with rowItem
               contentContainerStyle={{backgroundColor: 'transparent'}}//this.state.containerStyle}
@@ -215,7 +225,7 @@ export default class Products extends Component {
               }
             />
           </View>
-        </SafeAreaView>
+      </SafeAreaView>
     );
   }
 }
@@ -225,15 +235,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   itemContainer:{
-    // flex: 1,
-    // margin: 5,
-    // width: window.width/2,
-    // height:window.height/2,
-    // backgroundColor: '#FFF',
-    // alignItems:'center',
-    // justifyContent: 'center',
-    // borderWidth:1,
-    // borderRadius:10
     marginBottom: 10,
     shadowOpacity: 0.2,
     marginLeft: 20,
@@ -242,7 +243,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
+  buttonStyle:{
+    height: 50, 
+    width: 250, 
+    alignSelf: 'center',
+    alignItems : 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent', 
+    borderWidth: 2, 
+    borderColor: 'black', 
+    borderRadius: 30,
+    marginBottom:100,
+  },
   flatContainer:{    
     flexDirection:'column',
     backgroundColor:'#CCC'
@@ -262,5 +274,22 @@ const styles = StyleSheet.create({
 
 });
 
-
-
+{/* <View style ={styles.page}>
+<FAIcon
+onPress = {this.pageDown}
+name = 'chevron-left'
+style = {{
+    color: 'black',
+    fontSize: 20
+}}
+/>
+<Text style = {{color: 'black', fontSize: 20}}>{this.state.page+1}</Text>
+<FAIcon
+onPress = {this.pageUp}
+name = 'chevron-right'
+style = {{
+    color: 'black',
+    fontSize: 20
+}}
+/>
+</View>  */}

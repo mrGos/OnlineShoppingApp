@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text,StyleSheet,Image,FlatList,SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements'
-
+import FAIcon from 'react-native-vector-icons/FontAwesome'
 
 import getCart from '../../../Api/CartApi/getCart'
 import saveCart from '../../../Api/CartApi/saveCart'
@@ -180,29 +180,16 @@ _onClickRemove(productId) {
         this.props.navigation.navigate('CheckOrder',{data: this.state.cartData})
     }
 
-
-    componentDidMount(){        
-        //this.CrawlCartData(); 
-        // const { navigation } = this.props; 
-        
-        
-        // navigation.addListener('didFocus', () => {
-        //     console.log('check Flag= '+this.Flag)
-        //     this.getParam()         
-        //   });       
-      }
-
       ViewItem(item){        
         return(
             <SafeAreaView style={{flex: 1}}>
             <View style={styles.itemContainer}>
-                    { <Image source={{uri:item.Image}} style={styles.imgItem}/> }
+                    <Image source={{uri:item.Image}} style={styles.imgItem}/>
                     <View style={styles.content}>
                         <View style={styles.contentTop}>
-                            <Button
-                                title="Xóa"                    
-                                titleStyle={{ fontWeight: "20" }}
-                                buttonStyle={styles.btnStyle}
+                            <FAIcon
+                                name="remove"      
+                                size={30}              
                                 onPress = {()=>this._onClickRemove(item.ID)}                             
                             />
                         </View>
@@ -211,19 +198,21 @@ _onClickRemove(productId) {
                             <Text style={{fontSize:24}}>Giá: {item.Price}</Text> 
                         </View>
                         <View style={styles.contentBottom}>
-                            <Button
-                                    title='+'                    
-                                    titleStyle={{ fontWeight: '20', color: 'black' }}
-                                    buttonStyle={styles.buttonAddStyle}
-                                    onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
-                                />  
-                            <Text>{item.Quantity}</Text>      
-                            <Button
-                                    title='-'                    
-                                    titleStyle={{ fontWeight: '20' , color: 'black'}}
-                                    buttonStyle={styles.buttonSubtractStyle}
-                                    onPress = {()=>this._onClickDecreaseQuantity(item)}                              
-                                />                                                            
+                            <View/>
+                            <FAIcon
+                                name = 'minus'
+                                style ={{color: 'red'}}
+                                size = {30}
+                                onPress = {()=>this._onClickDecreaseQuantity(item)}                              
+                            />     
+                            <Text>{item.Quantity}</Text>       
+                            <FAIcon
+                                name = 'plus'
+                                style = {{color: 'green'}}
+                                size = {30}
+                                onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
+                            />  
+                            <View/>
                         </View>
 
                         
@@ -241,7 +230,7 @@ const styles = StyleSheet.create({
       marginBottom: 5,   
       marginLeft: 5,
       marginRight: 5,   
-      height:window.height/4,
+      height:120,//window.height/4,
       backgroundColor: '#FFF',
       flexDirection:'row',
       justifyContent: 'center',
@@ -256,9 +245,10 @@ const styles = StyleSheet.create({
     },
     imgItem:{
       marginTop:5,      
-      height:window.height/4-20,
+      height:100,//window.height/4-20,
       flex:1, 
-      resizeMode: "stretch"
+      resizeMode: "stretch",
+      alignSelf: 'center'
     },
     content:{
         flex:3,
@@ -266,22 +256,24 @@ const styles = StyleSheet.create({
     },
     contentTop:{
         flex:1,
+        paddingRight: 10,
+        justifyContent: 'flex-start',
         alignItems:'flex-end',
-        paddingTop:5
     },
     contentMiddle:{
-        flex:3,
+        flex:2,
         flexDirection:'column',
         alignItems:'center'
     },
     contentBottom:{
         flex:1,
-        flexDirection:'row-reverse',
-        justifyContent:'space-between'
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems: 'center',
     },
     btnStyle:{
         //backgroundColor: "#2baf2b",
-        backgroundColor: "black",
+        //backgroundColor: "black",
         height:25,
         width:60,
         borderColor: "transparent",

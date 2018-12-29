@@ -33,13 +33,11 @@ class TopProduct extends React.Component{
                       });
                 }}
             >
-                <View style={stylesProductList.productContainer}>
-                    <Image source={{uri:item.Image}} style = {stylesProductList.productImage}/>
-                    <View>
-                        <Text style = {stylesProductList.productName}> {item.Name}</Text>
-                        <Text style = {stylesProductList.productPrice}> {item.price}</Text>
-                    </View>
-                </View>
+                <View style={styles.itemContainer}>
+                <Image source={{uri:item.Image}} style={styles.imgItem}/> 
+                <Text style={{flex:1}}>{item.Name}</Text> 
+                <Text style={{flex:1}}>Giá: {item.Price}</Text>                
+            </View>
             </TouchableOpacity>
         );
     }
@@ -121,38 +119,23 @@ const styles = StyleSheet.create({
     },
     textTopProduct: {
         fontSize: 20,
-        color : '#AFAFAF'
+        color : 'black'
     },
-})
-
-
-const stylesProductList = StyleSheet.create({
-    productContainer:{
-        // shadowColor: '#2E272B',
-        // shadowOffset : {
-        //     width: 0,
-        //     height: 3,
-        // },
+    itemContainer:{
         marginBottom: 10,
         shadowOpacity: 0.2,
-        marginLeft: 10,
-        marginRight: 10,
+        marginLeft: 20,
+        marginRight: 20,
         flex: 1,
-    },
-    productImage:{
-        height: imageHeight,
-        //width: imageWidth
-    },
-    productName:{
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize: 15,
-    },
-    productPrice:{
-        fontWeight: 'bold',
-        fontSize: 15,
-        color: '#FAFAFA'
-    }
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      imgItem:{
+        width: 300,///window.width/2-20,
+        height:300,///window.height/2,
+        flex:9, 
+        resizeMode: "stretch"
+      },
 })
 
 export default TopProduct
