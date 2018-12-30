@@ -14,8 +14,9 @@ export default class Cart extends Component {
     constructor(props){
         super(props)
         this.state={
-            cartData:[], 
-                      
+            cartData:[],
+            price: 0, 
+            quantity: 0,   
         }
         //this.Flag = false 
         
@@ -74,37 +75,58 @@ export default class Cart extends Component {
     }
 */
 
-_onClickIncreaseQuantity(productId) {
-    console.log('_onClickIncreaseQuantity');
-        console.log(this.props);
-        console.log(this.state);
-    const newCart = this.state.cartData.map(e => {
-        if (e.ID !== productId) return e;
-        e.Quantity+=1;
-        return e;
-    });
-    this.setState({ cartData: newCart }, 
-        () => saveCart(this.state.cartData)
-    );
-}
+    updatePriceAndQuantity (){
+        let sumPrice = 0;
+        let Quantity = 0;
+        this.state.cartData.forEach(e => {
+            sumPrice = sumPrice + e.Price*e.Quantity;
+            Quantity = Quantity + e.Quantity; 
+        })
+        this.setState({
+            price:sumPrice,
+            quantity: Quantity,
+        },()=> {console.log(this.state, sumPrice)})
+    }
 
-_onClickDecreaseQuantity(product) {
-    console.log('_onClickDecreaseQuantity');
-        console.log(this.props);
-        console.log(this.state);
-    if(product.Quantity>0){
+    _onClickIncreaseQuantity(productId) {
+        console.log('_onClickIncreaseQuantity');
+            console.log(this.props);
+            console.log(this.state);
         const newCart = this.state.cartData.map(e => {
-            if (e.ID !== product.ID) return e;
-            e.Quantity -=1
+            if (e.ID !== productId) return e;
+            e.Quantity+=1;
             return e;
         });
-        this.setState({ cartData: newCart }, 
-            () => saveCart(this.state.cartData)
+        this.setState({ 
+            cartData: newCart}, 
+            () => {
+                this.updatePriceAndQuantity();
+                saveCart(this.state.cartData)
+            }
         );
     }
-}
 
-_onClickRemove(productId) {
+    _onClickDecreaseQuantity(product) {
+        console.log('_onClickDecreaseQuantity');
+            console.log(this.props);
+            console.log(this.state);
+        if(product.Quantity>0){
+            const newCart = this.state.cartData.map(e => {
+                if (e.ID !== product.ID) return e;
+                e.Quantity -=1
+                return e;
+            });
+            this.setState({ 
+                cartData: newCart}, 
+                () => {
+                    this.updatePriceAndQuantity()
+                    saveCart(this.state.cartData)
+                }
+            );
+        }
+    }
+
+    _onClickRemove(productId) {
         console.log('_onClickRemove');
         console.log(this.props);
         console.log(this.state);
@@ -117,7 +139,7 @@ _onClickRemove(productId) {
         }catch(e){
             console.log('error= '+e)
         }
-}
+    }
 
     // componentDidUpdate(){
     //     this.CrawlCartData() 
@@ -138,7 +160,7 @@ _onClickRemove(productId) {
 
     componentWillMount(){
         console.log('cartview will mount');
-        console.log(this.props);
+        this.updatePriceAndQuantity();
         console.log(this.state);
     }
 
@@ -177,13 +199,13 @@ _onClickRemove(productId) {
 
     _onClick = () =>{
         console.log(this.state)
-        this.props.navigation.navigate('CheckOrder',{data: this.state.cartData})
+        this.props.navigation.navigate('CheckOrder',{data: this.state.cartData, price: this.state.price, quantity: this.state.quantity})
     }
 
       ViewItem(item){        
         return(
             <SafeAreaView style={{flex: 1}}>
-            <View style={styles.itemContainer}>
+                <View style={styles.itemContainer}>
                     <Image source={{uri:item.Image}} style={styles.imgItem}/>
                     <View style={styles.content}>
                         <View style={styles.contentTop}>
@@ -213,11 +235,9 @@ _onClickRemove(productId) {
                                 onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
                             />  
                             <View/>
-                        </View>
-
-                        
+                        </View> 
                     </View>               
-            </View>
+                </View>
             </SafeAreaView>
         );
       }

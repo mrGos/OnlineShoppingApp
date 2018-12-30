@@ -211,12 +211,54 @@ class CheckOrder extends Component{
             name: null,
             phoneNumber: null,
             address: null,
-            Price: 10000000,
-            count: 2,
-            discount: 40000,
+            price: 0,
+            count: 0,
+            discount: 0,
             data: []
         }
     }
+   
+    componentWillMount(){
+        this.setState({
+            data: this.props.navigation.getParam('data'),
+            price: this.props.navigation.getParam('price'),
+            count: this.props.navigation.getParam('quantity')
+        }, ()=>{
+            console.log(this.props.navigation.getParam('data'))
+            console.log(this.props.navigation.getParam('price'))
+            console.log(this.props.navigation.getParam('quantity'))
+            console.log(this.state)
+        })
+       
+    }
+    componentDidMount(){
+        console.log('cart check')
+        console.log(this.state.data)
+    }
+
+    _onChangeName(text) {
+        this.setState({ name: text.nativeEvent.text || '' });
+    }
+
+    _onChangePhoneNumber(text) {
+        this.setState({ phoneNumber: text.nativeEvent.text || '' });
+    }
+
+    _onChangeAddress(text) {
+        this.setState({ address: text.nativeEvent.text || '' });
+    }
+
+    sendData = () =>{
+        const data = {
+            'name' : this.state.name,
+            'phoneNumber' : this.state.phoneNumber,
+            'address' :this.state.address,
+            'card': this.state.data
+        }
+        console.log('is it here?')
+        orderCard(data);
+    }
+
     renderItem = ({item}) => {
         return (
             <TouchableOpacity>
@@ -256,40 +298,6 @@ class CheckOrder extends Component{
         )
     }
 
-    componentWillMount(){
-        console.log(this.props.navigation.getParam('data'))
-        this.setState({
-            data: this.props.navigation.getParam('data')
-        })
-       
-    }
-    componentDidMount(){
-        console.log('cart check')
-        console.log(this.state.data)
-    }
-
-    _onChangeName(text) {
-        this.setState({ name: text.nativeEvent.text || '' });
-    }
-
-    _onChangePhoneNumber(text) {
-        this.setState({ phoneNumber: text.nativeEvent.text || '' });
-    }
-
-    _onChangeAddress(text) {
-        this.setState({ address: text.nativeEvent.text || '' });
-    }
-
-    sendData = () =>{
-        const data = {
-            'name' : this.state.name,
-            'phoneNumber' : this.state.phoneNumber,
-            'address' :this.state.address,
-            'card': this.state.data
-        }
-        console.log('is it here?')
-        orderCard(data);
-    }
     render(){
         return (
             <SafeAreaView style ={{flex: 1}}>
@@ -342,7 +350,7 @@ class CheckOrder extends Component{
                                 <View style= {stylesCount.titleStyle}>
                                     <Text style={stylesCount.fontStyle}>Số tiền: </Text>
                                 </View>    
-                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.Price}</Text>
+                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.price}</Text>
                             </View>
                             <View style={{flex: 1, flexDirection:'row'}}>
                                 <View style= {stylesCount.titleStyle}>
@@ -354,7 +362,7 @@ class CheckOrder extends Component{
                                 <View style= {stylesCount.titleStyle}>
                                     <Text style={stylesCount.fontStyle}>Tổng tiền: </Text> 
                                 </View>
-                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.Price-this.state.discount}</Text> 
+                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.price-this.state.discount}</Text> 
                             </View>
                         </View>
                         <View style={{height:10}}/>      

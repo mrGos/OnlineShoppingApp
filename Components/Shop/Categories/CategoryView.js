@@ -259,7 +259,7 @@ class Category extends React.Component {
                                 keyExtractor = {(item, index)=> index.toString()}
                                 renderItem = {this.renderItem}
                                 horizontal = {false}
-                                numColumns = {2}
+                                numColumns = {1}
                             />
                         </View>
                     </View>
