@@ -208,7 +208,7 @@ class CheckOrder extends Component{
     constructor(props){
         super(props);
         this.state={
-            name: null,
+            name: null, 
             phoneNumber: null,
             address: null,
             price: 0,
@@ -379,7 +379,7 @@ class CheckOrder extends Component{
                             onPress = {this.sendData}
                         >
                             <Text style = {{fontSize: 20,fontWeight: 'bold'}}>Đặt hàng</Text> 
-                        </TouchableOpacity>
+                        </TouchableOpacity> 
                     </View>
                 </View>
             </SafeAreaView>
@@ -391,7 +391,7 @@ export default CheckOrder
 
 const styles = StyleSheet.create({
     container:{
-        flex :1,
+        flex: 1,
         margin: 10,
     },
     textInput: {
@@ -406,7 +406,6 @@ const styles = StyleSheet.create({
     },
     textInput:{
         fontSize: 20,
-        height: 25,
         margin: 5,
     },
     buttonStyle:{

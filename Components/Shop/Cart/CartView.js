@@ -177,15 +177,15 @@ export default class Cart extends Component {
         return(
             <View style={{ flex: 1, }}>
                <FlatList                
-                //read each data row by render Row with rowItem
-                contentContainerStyle={styles.flatContainer}
-                data={this.state.cartData}  
-                keyExtractor={this._keyExtractor}
-                numColumns = {numColumns}        
-                renderItem={ ({item}) =>              
-                    this.ViewItem(item)                  
-                }
-            />
+                    //read each data row by render Row with rowItem
+                    contentContainerStyle={styles.flatContainer}
+                    data={this.state.cartData}  
+                    keyExtractor={this._keyExtractor}
+                    numColumns = {numColumns}        
+                    renderItem={ ({item}) =>              
+                        this.ViewItem(item)                  
+                    }
+                />
                 <Button
                   title="TIẾN HÀNH THANH TOÁN"                    
                   titleStyle={{ fontWeight: "500" }}
