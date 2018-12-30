@@ -1,7 +1,7 @@
 import React from 'react'
 import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions, FlatList, TouchableOpacity} from 'react-native'
 
-import {getTopProduct} from '../../../Api/ProductApi/getProduct'
+import {getLasted} from '../../../Api/HomeApi'
 
 
 import sp1 from './TempImage/sp1.jpeg'
@@ -14,7 +14,7 @@ const {height, width} = Dimensions.get('window');
 const imageWidth = (width - 40)/2-10;
 const imageHeight = (361/((width - 40)/2))*114-10;
 
-class TopProduct extends React.Component{
+class LastedProduct extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -34,10 +34,10 @@ class TopProduct extends React.Component{
                 }}
             >
                 <View style={styles.itemContainer}>
-                <Image source={{uri:item.Image}} style={styles.imgItem}/> 
-                <Text style={{flex:1}}>{item.Name}</Text> 
-                <Text style={{flex:1}}>Giá: {item.Price}</Text>                
-            </View>
+                    <Image source={{uri:item.Image}} style={styles.imgItem}/> 
+                    <Text style={{flex:1}}>{item.Name}</Text> 
+                    <Text style={{flex:1}}>Giá: {item.Price}</Text>                
+                </View>
             </TouchableOpacity>
         );
     }
@@ -45,7 +45,7 @@ class TopProduct extends React.Component{
     loadData(){
         
         console.log('loaddata')
-        getTopProduct(4)
+        getLasted(2)
         .then((responseJS)=>{
             console.log(responseJS);
             this.setState({
@@ -74,7 +74,7 @@ class TopProduct extends React.Component{
         return(
             <View style = {styles.wrapper}>
                 <View style = {styles.textContainer} >
-                    <Text style= {styles.textTopProduct}> Top Product </Text>
+                    <Text style= {styles.textLastedProduct}> Lasted Product </Text>
                 </View>
                 <View style = {styles.body}>
                     <FlatList
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
             height: 3,
         },
     },
-    textTopProduct: {
+    textLastedProduct: {
         fontSize: 20,
         color : 'black'
     },
@@ -138,4 +138,6 @@ const styles = StyleSheet.create({
       },
 })
 
-export default TopProduct
+
+
+export default LastedProduct

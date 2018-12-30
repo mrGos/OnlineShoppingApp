@@ -1,5 +1,7 @@
 import getTopProduct from './TopProductApi'
+import getLasted from './lastedProductAPI'
 
 export {
-    getTopProduct
+    getTopProduct,
+    getLasted
 }

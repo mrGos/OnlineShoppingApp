@@ -3,6 +3,8 @@ import { ScrollView, Text , View, RefreshControl, ActivityIndicator,SafeAreaView
 
 import Collection from './Collection'
 import TopProduct from './TopProduct'
+import LastedProduct from './LastedProduct'
+
 
 export default class Home extends Component {
     constructor(props){
@@ -53,10 +55,10 @@ export default class Home extends Component {
                             onRefresh = {this.handleRefresh}
                         />
                     }
-                >
-                    <Collection />
-                    <TopProduct {...this.props} 
-                    />
+                >   
+                    <TopProduct {...this.props} />
+                    <LastedProduct {...this.props}/>
+                    
                 </ScrollView>
             </SafeAreaView>
         );

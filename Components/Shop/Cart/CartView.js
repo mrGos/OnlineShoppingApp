@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image,FlatList } from 'react-native';
+import { View, Text,StyleSheet,Image,FlatList,SafeAreaView } from 'react-native';
 import { Button } from 'react-native-elements'
-
+import FAIcon from 'react-native-vector-icons/FontAwesome'
 
 import getCart from '../../../Api/CartApi/getCart'
 import saveCart from '../../../Api/CartApi/saveCart'
@@ -14,8 +14,9 @@ export default class Cart extends Component {
     constructor(props){
         super(props)
         this.state={
-            cartData:[], 
-                      
+            cartData:[],
+            price: 0, 
+            quantity: 0,   
         }
         //this.Flag = false 
         
@@ -74,37 +75,58 @@ export default class Cart extends Component {
     }
 */
 
-_onClickIncreaseQuantity(productId) {
-    console.log('_onClickIncreaseQuantity');
-        console.log(this.props);
-        console.log(this.state);
-    const newCart = this.state.cartData.map(e => {
-        if (e.ID !== productId) return e;
-        e.Quantity+=1;
-        return e;
-    });
-    this.setState({ cartData: newCart }, 
-        () => saveCart(this.state.cartData)
-    );
-}
+    updatePriceAndQuantity (){
+        let sumPrice = 0;
+        let Quantity = 0;
+        this.state.cartData.forEach(e => {
+            sumPrice = sumPrice + e.Price*e.Quantity;
+            Quantity = Quantity + e.Quantity; 
+        })
+        this.setState({
+            price:sumPrice,
+            quantity: Quantity,
+        },()=> {console.log(this.state, sumPrice)})
+    }
 
-_onClickDecreaseQuantity(product) {
-    console.log('_onClickDecreaseQuantity');
-        console.log(this.props);
-        console.log(this.state);
-    if(product.Quantity>0){
+    _onClickIncreaseQuantity(productId) {
+        console.log('_onClickIncreaseQuantity');
+            console.log(this.props);
+            console.log(this.state);
         const newCart = this.state.cartData.map(e => {
-            if (e.ID !== product.ID) return e;
-            e.Quantity -=1
+            if (e.ID !== productId) return e;
+            e.Quantity+=1;
             return e;
         });
-        this.setState({ cartData: newCart }, 
-            () => saveCart(this.state.cartData)
+        this.setState({ 
+            cartData: newCart}, 
+            () => {
+                this.updatePriceAndQuantity();
+                saveCart(this.state.cartData)
+            }
         );
     }
-}
 
-_onClickRemove(productId) {
+    _onClickDecreaseQuantity(product) {
+        console.log('_onClickDecreaseQuantity');
+            console.log(this.props);
+            console.log(this.state);
+        if(product.Quantity>0){
+            const newCart = this.state.cartData.map(e => {
+                if (e.ID !== product.ID) return e;
+                e.Quantity -=1
+                return e;
+            });
+            this.setState({ 
+                cartData: newCart}, 
+                () => {
+                    this.updatePriceAndQuantity()
+                    saveCart(this.state.cartData)
+                }
+            );
+        }
+    }
+
+    _onClickRemove(productId) {
         console.log('_onClickRemove');
         console.log(this.props);
         console.log(this.state);
@@ -117,7 +139,7 @@ _onClickRemove(productId) {
         }catch(e){
             console.log('error= '+e)
         }
-}
+    }
 
     // componentDidUpdate(){
     //     this.CrawlCartData() 
@@ -138,7 +160,7 @@ _onClickRemove(productId) {
 
     componentWillMount(){
         console.log('cartview will mount');
-        console.log(this.props);
+        this.updatePriceAndQuantity();
         console.log(this.state);
     }
 
@@ -155,15 +177,15 @@ _onClickRemove(productId) {
         return(
             <View style={{ flex: 1, }}>
                <FlatList                
-                //read each data row by render Row with rowItem
-                contentContainerStyle={styles.flatContainer}
-                data={this.state.cartData}  
-                keyExtractor={this._keyExtractor}
-                numColumns = {numColumns}        
-                renderItem={ ({item}) =>              
-                    this.ViewItem(item)                  
-                }
-            />
+                    //read each data row by render Row with rowItem
+                    contentContainerStyle={styles.flatContainer}
+                    data={this.state.cartData}  
+                    keyExtractor={this._keyExtractor}
+                    numColumns = {numColumns}        
+                    renderItem={ ({item}) =>              
+                        this.ViewItem(item)                  
+                    }
+                />
                 <Button
                   title="TIẾN HÀNH THANH TOÁN"                    
                   titleStyle={{ fontWeight: "500" }}
@@ -177,32 +199,20 @@ _onClickRemove(productId) {
 
     _onClick = () =>{
         console.log(this.state)
-        this.props.navigation.navigate('CheckOrder',{data: this.state.cartData})
+        this.props.navigation.navigate('CheckOrder',{data: this.state.cartData, price: this.state.price, quantity: this.state.quantity})
     }
 
 
-    componentDidMount(){        
-        //this.CrawlCartData(); 
-        // const { navigation } = this.props; 
-        
-        
-        // navigation.addListener('didFocus', () => {
-        //     console.log('check Flag= '+this.Flag)
-        //     this.getParam()         
-        //   });       
-      }
-
       ViewItem(item){        
         return(
-
-            <View style={styles.itemContainer}>
-                    { <Image source={{uri:item.Image}} style={styles.imgItem}/> }
+            <SafeAreaView style={{flex: 1}}>
+                <View style={styles.itemContainer}>
+                    <Image source={{uri:item.Image}} style={styles.imgItem}/>
                     <View style={styles.content}>
                         <View style={styles.contentTop}>
-                            <Button
-                                title="Xóa"                    
-                                titleStyle={{ fontWeight: "20" }}
-                                buttonStyle={styles.btnStyle}
+                            <FAIcon
+                                name="remove"      
+                                size={30}              
                                 onPress = {()=>this._onClickRemove(item.ID)}                             
                             />
                         </View>
@@ -211,25 +221,25 @@ _onClickRemove(productId) {
                             <Text style={{fontSize:24}}>Giá: {item.Price}</Text> 
                         </View>
                         <View style={styles.contentBottom}>
-                            <Button
-                                    title='+'                    
-                                    titleStyle={{ fontWeight: '20', color: 'black' }}
-                                    buttonStyle={styles.buttonAddStyle}
-                                    onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
-                                />  
-                            <Text>{item.Quantity}</Text>      
-                            <Button
-                                    title='-'                    
-                                    titleStyle={{ fontWeight: '20' , color: 'black'}}
-                                    buttonStyle={styles.buttonSubtractStyle}
-                                    onPress = {()=>this._onClickDecreaseQuantity(item)}                              
-                                />                                                            
-                        </View>
-
-                        
+                            <View/>
+                            <FAIcon
+                                name = 'minus'
+                                style ={{color: 'red'}}
+                                size = {30}
+                                onPress = {()=>this._onClickDecreaseQuantity(item)}                              
+                            />     
+                            <Text>{item.Quantity}</Text>       
+                            <FAIcon
+                                name = 'plus'
+                                style = {{color: 'green'}}
+                                size = {30}
+                                onPress = {()=>this._onClickIncreaseQuantity(item.ID)}                              
+                            />  
+                            <View/>
+                        </View> 
                     </View>               
-            </View>
-
+                </View>
+            </SafeAreaView>
         );
       }
 }
@@ -241,7 +251,7 @@ const styles = StyleSheet.create({
       marginBottom: 5,   
       marginLeft: 5,
       marginRight: 5,   
-      height:window.height/4,
+      height:120,//window.height/4,
       backgroundColor: '#FFF',
       flexDirection:'row',
       justifyContent: 'center',
@@ -256,9 +266,10 @@ const styles = StyleSheet.create({
     },
     imgItem:{
       marginTop:5,      
-      height:window.height/4-20,
+      height:100,//window.height/4-20,
       flex:1, 
-      resizeMode: "stretch"
+      resizeMode: "stretch",
+      alignSelf: 'center'
     },
     content:{
         flex:3,
@@ -266,22 +277,24 @@ const styles = StyleSheet.create({
     },
     contentTop:{
         flex:1,
+        paddingRight: 10,
+        justifyContent: 'flex-start',
         alignItems:'flex-end',
-        paddingTop:5
     },
     contentMiddle:{
-        flex:3,
+        flex:2,
         flexDirection:'column',
         alignItems:'center'
     },
     contentBottom:{
         flex:1,
-        flexDirection:'row-reverse',
-        justifyContent:'space-between'
+        flexDirection:'row',
+        justifyContent:'space-around',
+        alignItems: 'center',
     },
     btnStyle:{
         //backgroundColor: "#2baf2b",
-        backgroundColor: "black",
+        //backgroundColor: "black",
         height:25,
         width:60,
         borderColor: "transparent",
