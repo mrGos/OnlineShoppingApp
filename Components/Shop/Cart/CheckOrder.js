@@ -302,8 +302,10 @@ class CheckOrder extends Component{
         return (
             <SafeAreaView style ={{flex: 1}}>
                 <View style = {styles.container}>
+
                     <View style = {styles.input}>                 
                         <Text style= {{ fontSize: 20,}}> Name: </Text>
+
                         <AutoGrowingTextInput
                             value={this.state.textValue}
                             onChange={(text) => this._onChangeName(text)}
@@ -316,6 +318,7 @@ class CheckOrder extends Component{
                             ref={(r) => { this._textInput = r; }}
                         />
                         <Text style= {{ fontSize: 20,}}> Phone number: </Text>
+
                         <AutoGrowingTextInput
                             value={this.state.textValue}
                             onChange={(text) => this._onChangePhoneNumber(text)}
@@ -366,6 +369,7 @@ class CheckOrder extends Component{
                             </View>
                         </View>
                         <View style={{height:10}}/>      
+
                         <FlatList
                             data = {this.state.data}
                             keyExtractor = {(item, index)=> index.toString()}

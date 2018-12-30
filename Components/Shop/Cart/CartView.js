@@ -202,6 +202,7 @@ export default class Cart extends Component {
         this.props.navigation.navigate('CheckOrder',{data: this.state.cartData, price: this.state.price, quantity: this.state.quantity})
     }
 
+
       ViewItem(item){        
         return(
             <SafeAreaView style={{flex: 1}}>

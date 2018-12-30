@@ -41,9 +41,6 @@ export default class Products extends Component {
     this.loadData();
     //this.CrawlProductData("",0,pageSizeDefault());
   }
-
-
-
 //  CrawlProductData(keyword,page,pageSize){
 //   getAllProduct(keyword,page,pageSize)
 //     .then((responseJson) => {
@@ -70,8 +67,6 @@ export default class Products extends Component {
 //       console.error(error);
 //     });
 //   }
-
-
   loadData = () => {
     console.log('loaddata page', this.state.page)
     getAllProduct('',this.state.page,pageSizeDefault)
@@ -98,7 +93,24 @@ export default class Products extends Component {
       },this.loadData)
     }
   }
-
+  loadData = () => {
+    console.log('loaddata page', this.state.page)
+    getAllProduct('',this.state.page,2)
+      .then((responseJson) => {
+        console.log(responseJson);
+        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+        this.setState({      
+          dataSource: responseJson.Items,
+          totalPages: responseJson.TotalPages,
+          refreshing:false,
+        });
+        console.log(this.state)
+      })
+      .catch((error) => {
+        console.log('is it here?')
+        console.error(error);
+      });
+  }
   loadNewData(){
     this.setState({
       page:0,
@@ -187,7 +199,7 @@ export default class Products extends Component {
       )
     }
 
-    return (           
+    return ( 
         <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
           <View>
             <SearchBar
@@ -201,8 +213,6 @@ export default class Products extends Component {
                 onSubmitEditing={this.onSearchSubmmit.bind(this)}
                 value ={this.state.searchbarTxt}
             />     
-              
-            
             <FlatList                                  
               refreshControl = {
                 <RefreshControl
