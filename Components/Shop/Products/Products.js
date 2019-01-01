@@ -38,79 +38,78 @@ export default class Products extends Component {
 
 
   componentDidMount(){
-    this.loadData();
-    //this.CrawlProductData("",0,pageSizeDefault());
+   // this.loadData();
+    this.CrawlProductData("",0,pageSizeDefault());
   }
-//  CrawlProductData(keyword,page,pageSize){
-//   getAllProduct(keyword,page,pageSize)
-//     .then((responseJson) => {
-//       console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
-//       if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
-//           console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-//           this.setState({      
-//             //dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),  
-//             dataSource: this.state.dataSource.concat(responseJson.Items),
-//             totalPages: responseJson.TotalPages,
-//             refreshing:false,
-    
-//             page:this.state.page+1,
-//           });
-//           console.log(this.state.dataSource.length)
+ CrawlProductData(keyword,page,pageSize){
+  getAllProduct(keyword,page,pageSize)
+    .then((responseJson) => {
+      console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
+      if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
+          console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+          this.setState({      
+            //dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),  
+            dataSource: this.state.dataSource.concat(responseJson.Items),
+            totalPages: responseJson.TotalPages,
+            refreshing:false,    
+            page:this.state.page+1,
+          });
+          console.log(this.state.dataSource.length)
        
-//       }else{
-//         console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
-//       }
+      }else{
+        console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
+      }
       
-//     })
-//     .catch((error) => {
-//       console.log('is it here?')
-//       console.error(error);
-//     });
-//   }
-  loadData = () => {
-    console.log('loaddata page', this.state.page)
-    getAllProduct('',this.state.page,pageSizeDefault)
-      .then((responseJson) => {
-        console.log(responseJson);
-        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: [...this.state.dataSource,...responseJson.Items],
-          totalPages: responseJson.TotalPages,
-          refreshing:false,
-        });
-        console.log(this.state)
-      })
-      .catch((error) => {
-        console.log('is it here?')
-        console.error(error);
-      });
+    })
+    .catch((error) => {
+      console.log('is it here?')
+      console.error(error);
+    });
   }
+  // loadData = () => {
+  //   console.log('loaddata page', this.state.page)
+  //   getAllProduct('',this.state.page,pageSizeDefault)
+  //     .then((responseJson) => {
+  //       console.log(responseJson);
+  //       console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+  //       this.setState({      
+  //         dataSource: [...this.state.dataSource,...responseJson.Items],
+  //         totalPages: responseJson.TotalPages,
+  //         refreshing:false,
+  //       });
+  //       console.log(this.state)
+  //     })
+  //     .catch((error) => {
+  //       console.log('is it here?')
+  //       console.error(error);
+  //     });
+  // }
 
   loadMore = () =>{
     if (this.state.page < this.state.totalPages-1){
       this.setState({
         page: this.state.page+1,
-      },this.loadData)
+      },this.CrawlProductData("",this.state.page,pageSizeDefault()))
     }
   }
-  loadData = () => {
-    console.log('loaddata page', this.state.page)
-    getAllProduct('',this.state.page,2)
-      .then((responseJson) => {
-        console.log(responseJson);
-        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: responseJson.Items,
-          totalPages: responseJson.TotalPages,
-          refreshing:false,
-        });
-        console.log(this.state)
-      })
-      .catch((error) => {
-        console.log('is it here?')
-        console.error(error);
-      });
-  }
+  // loadData = () => {
+  //   console.log('loaddata page', this.state.page)
+  //   getAllProduct('',this.state.page,2)
+  //     .then((responseJson) => {
+  //       console.log(responseJson);
+  //       console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+  //       this.setState({      
+  //         dataSource: responseJson.Items,
+  //         totalPages: responseJson.TotalPages,
+  //         refreshing:false,
+  //       });
+  //       console.log(this.state)
+  //     })
+  //     .catch((error) => {
+  //       console.log('is it here?')
+  //       console.error(error);
+  //     });
+  // }
   loadNewData(){
     this.setState({
       page:0,
@@ -217,8 +216,8 @@ export default class Products extends Component {
               refreshControl = {
                 <RefreshControl
                   refreshing={this.state.refreshing}              //bool IsRefresh indicator
-                  //onRefresh={this.loadNewData.bind(this)}         // If yes, do function
-                  onRefresh={this.resetData}
+                  onRefresh={this.loadNewData.bind(this)}         // If yes, do function
+                  //onRefresh={this.resetData}
                 />
               }
               

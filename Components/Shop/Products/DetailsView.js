@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Text, View,Image,StyleSheet,ScrollView} from 'react-native';
 import { Card,Button } from 'react-native-elements'
+import { WebView } from 'react-native';
 
 import saveCart from '../../../Api/CartApi/saveCart'
 import getCart from '../../../Api/CartApi/getCart'
@@ -86,8 +87,10 @@ CrawlCartData(){
               <View style={{flex:1,justifyContent:'center', alignSelf:'center'}}>
                 <Text>Giá: {item.Price} VND</Text>
                 <Text>Bảo hành: {item.Warranty} tháng</Text>
-                <Text>Mô tả: {item.Description}</Text>
-                <Text>Content: {item.Content/*.replace("<p>","").replace("</p>","")*/} </Text>
+                <Text>Mô tả: {item.Description}</Text>                
+                {/* <Text>Content: {item.Content} </Text> */}
+
+
               </View>
               <Button
                   title="THÊM VÀO GIỎ HÀNG"                    
