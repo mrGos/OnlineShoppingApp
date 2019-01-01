@@ -7,21 +7,40 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import ContactInfo from './ContactInfo/ContactInfo';
 import Products from './Products/Products';
 import Category from './Categories/CategoryView';
+import CategoryDetail from './Categories/CategoryDetail'
 import Home from './Home/HomeView';
 import Cart from './Cart/CartView';
 import Details from './Products/DetailsView';
 import Search from './Products/SearchResult'
+import CheckOrder from './Cart/CheckOrder'
 
+const HomeStack = createStackNavigator({
+    Home :{screen: Home,navigationOptions:{ header:null} },
+    Details: { screen: Details }, 
+})
 
+const CategoryStack = createStackNavigator({
+    Category :{screen: Category,navigationOptions:{ header:null} },
+    CategoryDetail :{screen: CategoryDetail,navigationOptions:{ header:null} },
+    Details: { screen: Details }, 
+})
 
 const ProductStack = createStackNavigator({
     Products: { screen: Products,navigationOptions:{ header:null} },
-    Details: { screen: Details },
+    Details: { screen: Details }, 
     Search:{screen:Search}
   });
 
+const CartStack = createStackNavigator({
+    Cart : {screen: Cart },
+    CheckOrder: {screen: CheckOrder},
+},{
+    navigationOptions: {header: null}
+})
+
+
 export default createBottomTabNavigator({
-    Home: { screen: Home, 
+    Home: { screen: HomeStack, 
             navigationOptions:{
                 tabBarIcon:({tintColor})=>(<Ionicons  
                                     name={Platform.OS === "ios" ? "ios-home" : "md-home"} 
@@ -29,7 +48,7 @@ export default createBottomTabNavigator({
                                     size={24} />)
             }      
     },
-    Category: { screen: Category, 
+    Category: { screen: CategoryStack, 
         navigationOptions:{
             tabBarIcon:({tintColor})=>(<Ionicons  
                                 name={Platform.OS === "ios" ? "ios-list" : "md-list"} 
@@ -45,7 +64,7 @@ export default createBottomTabNavigator({
                                 size={24}/>)
         }    
     },
-    Cart: { screen: Cart, 
+    Cart: { screen: CartStack, 
         navigationOptions:{
             tabBarIcon:({tintColor})=>(<Ionicons  
                                 name={Platform.OS === "ios" ? "ios-cart" : "md-cart"} 
@@ -64,7 +83,7 @@ export default createBottomTabNavigator({
   
 },
   {
-   initialRouteName:'Product',
+   initialRouteName:'Home',
    navigationOptions: {
     header: null 
     },
