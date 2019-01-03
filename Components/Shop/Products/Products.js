@@ -32,8 +32,12 @@ export default class Products extends Component {
       totalPages:1,
       refreshing: false,
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-      dataSource:[]
+      dataSource:[],
+      categories:[],
+      txtAll:"All"
     };
+
+    
   }
 
 
@@ -41,12 +45,13 @@ export default class Products extends Component {
    // this.loadData();
     this.CrawlProductData("",0,pageSizeDefault());
   }
+
  CrawlProductData(keyword,page,pageSize){
   getAllProduct(keyword,page,pageSize)
     .then((responseJson) => {
-      console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
+      //console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
       if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
-          console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+          //console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
           this.setState({      
             //dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),  
             dataSource: this.state.dataSource.concat(responseJson.Items),
@@ -54,7 +59,7 @@ export default class Products extends Component {
             refreshing:false,    
             page:this.state.page+1,
           });
-          console.log(this.state.dataSource.length)
+         // console.log(this.state.dataSource.length)
        
       }else{
         console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
@@ -62,7 +67,7 @@ export default class Products extends Component {
       
     })
     .catch((error) => {
-      console.log('is it here?')
+      //console.log('is it here?')
       console.error(error);
     });
   }
@@ -84,6 +89,31 @@ export default class Products extends Component {
   //       console.error(error);
   //     });
   // }
+
+   //category passing pram
+  listeningCategoryParam(){   
+    //props
+    const { navigation } = this.props;
+
+    let categoryItemReceive = navigation.getParam('CategoryItem', 'NO-CATEGORY');
+
+    navigation.addListener('didFocus', () => {    
+      if(categoryItemReceive != 'NO-CATEGORY'){
+          if(!this.state.categories.includes(categoryItemReceive)){
+            console.log('Categories add '+categoryItemReceive.Name);      
+            this.setState({      
+              categories: this.state.categories.concat(categoryItemReceive),
+              txtAll:""
+            });    
+          }else{
+            console.log('Categories exists '+categoryItemReceive.Name);
+          }
+      }else{
+        console.log('listen NO-CATEGORY');
+      }
+       // this.setState({},()=>this.CrawlCartData())      
+    });
+  }
 
   loadMore = () =>{
     if (this.state.page < this.state.totalPages-1){
@@ -118,7 +148,7 @@ export default class Products extends Component {
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       dataSource: []
     });
-    console.log('refresh: data='+this.state.dataSource.length+' - refreshing:'+this.state.refreshing+'- page='+this.state.page)
+    //console.log('refresh: data='+this.state.dataSource.length+' - refreshing:'+this.state.refreshing+'- page='+this.state.page)
     this.CrawlProductData("",0,pageSizeDefault());  
   }
 
@@ -134,13 +164,36 @@ export default class Products extends Component {
     });
   }
 
+arrayRemove(arr, value) {
+
+    return arr.filter(function(ele){
+        return ele != value;
+    });
+ 
+ }
+
+onClickCategoryItem(item){
+  let result = this.arrayRemove(this.state.categories, item);  
+  if(result.length==0){
+    this.setState({txtAll:"All",categories:[]})
+    return;
+  }
+    this.setState({
+      categories:[],
+      categories:result
+    },()=>{
+      //crawl new data by category
+    }
+    )
+}
+
   onSearchSubmmit(){
     if(this.state.searchbarTxt!=''){
       this.props.navigation.navigate('Search', {
         txt: this.state.searchbarTxt
       });
     }
-    console.log('onSubmit: '+this.state.searchbarTxt);
+    //console.log('onSubmit: '+this.state.searchbarTxt);
   }
 
   pageDown = () => {
@@ -158,6 +211,7 @@ export default class Products extends Component {
           },this.loadData)
       }
   }
+
 
   ViewItem(item){
     return(
@@ -197,7 +251,8 @@ export default class Products extends Component {
         </View>
       )
     }
-
+    this.listeningCategoryParam();
+    
     return ( 
         <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
           <View>
@@ -211,7 +266,30 @@ export default class Products extends Component {
                 onChangeText={(searchbarTxt) =>  this.setState({searchbarTxt})}
                 onSubmitEditing={this.onSearchSubmmit.bind(this)}
                 value ={this.state.searchbarTxt}
-            />     
+            />   
+
+            <View style={styles.categorySection}>
+              <Text style={{fontSize:16}}>Categories: {this.state.txtAll}                        
+              </Text>
+              <View>
+                <FlatList
+                    style = {styles.categoryList}
+                    horizontal
+                    data={this.state.categories}
+                    renderItem={ ({item}) =>              
+                    <TouchableOpacity onPress={()=> this.onClickCategoryItem(item)}>
+                      <View style={styles.categoryItem}>
+                        <Text>{item.Name}</Text>
+                      </View>
+                    </TouchableOpacity>                  
+                    }
+                    keyExtractor={this._keyExtractor}
+                />   
+               </View>
+            </View>
+
+            
+
             <FlatList                                  
               refreshControl = {
                 <RefreshControl
@@ -280,6 +358,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     height: 30,
   },
+  categorySection:{
+    height:60,
+    backgroundColor:"white",
+    borderBottomColor:"black",
+    borderBottomWidth:1,
+    marginBottom:20
+  },
+categoryList:{
+
+},
+categoryItem:{
+marginRight:5,
+marginLeft:3,
+borderWidth: 1,
+borderRadius:5,
+justifyContent:'center',
+padding:4,
+},
 
 });
 

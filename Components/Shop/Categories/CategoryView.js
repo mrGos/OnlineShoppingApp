@@ -154,20 +154,30 @@ class Category extends React.Component {
             refreshing: false,
             data : [],
             error: null,
-        }
+        }        
+        
+    }
+
+    onPressCategory (item){
+        console.log('prepare passing Category: '+item.Name);
+        this.props.navigation.navigate('Products',{
+            CategoryItem:item
+        });
+        //console.log('passing category item '+ item.Name);
     }
 
 
-
     renderItem = ({item}) =>{
-        console.log(item);
+        //console.log(item.Name);
         return(
             <TouchableOpacity
-                onPress= {()=> {
-                    this.props.navigation.navigate('CategoryDetail', {
-                        item: item
-                      });
-                }}
+                // onPress= {()=> {
+                //     this.props.navigation.navigate('CategoryDetail', {
+                //         item: item
+                //       });
+                // }}
+               
+                onPress ={()=>this.onPressCategory(item)}
             >
                 <View style={stylesProductList.productContainer}>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>
