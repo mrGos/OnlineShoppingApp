@@ -11,6 +11,8 @@ import {Text, View,FlatList,Image,RefreshControl,ActivityIndicator,StyleSheet,To
 import { SearchBar } from 'react-native-elements';
 import FAIcon from 'react-native-vector-icons/FontAwesome'
 
+import getCategories from '../../../Api/CategoriesApi/getAsyncStorageCategories'
+import saveCategories from '../../../Api/CategoriesApi/saveCategories'
 
 import {getAllProduct} from '../../../Api/ProductApi/getProduct';
 import {pageSizeDefault} from '../../../Common/PaginationDefault';
@@ -36,7 +38,7 @@ export default class Products extends Component {
       categories:[],
       txtAll:"All",
     };
-
+    this.listeningCategoryParam();
     
   }
 
@@ -94,23 +96,27 @@ export default class Products extends Component {
   listeningCategoryParam(){       
     let { navigation } = this.props;
 
-    let categoryItemReceive = navigation.getParam('CategoryItem', 'NOPARAM');
+    //let categoryItemReceive = navigation.getParam('CategoryItem', 'NOPARAM');
 
     navigation.addListener('didFocus', () => {    
-      if(  categoryItemReceive != 'NOPARAM'){
-          if(!this.state.categories.includes(categoryItemReceive)){
-            console.log('Categories add '+categoryItemReceive.Name);      
-            this.setState({      
-              categories: this.state.categories.concat(categoryItemReceive),
-              txtAll:""
-            });    
-          }else{
-            console.log('Categories exists '+categoryItemReceive.Name);
-          }
-      }else{
-        console.log('listen NO-CATEGORY');
-      }
-       // this.setState({},()=>this.CrawlCartData())      
+      // if(  categoryItemReceive != 'NOPARAM'){
+      //     if(!this.state.categories.includes(categoryItemReceive)){
+      //       console.log('Categories add '+categoryItemReceive.Name);      
+      //       this.setState({      
+      //         categories: this.state.categories.concat(categoryItemReceive),
+      //         txtAll:""
+      //       });                
+      //     }else{
+      //       console.log('Categories exists '+categoryItemReceive.Name);
+      //     }          
+      // }else{
+      //   console.log('listen NO-CATEGORY');
+      // }
+          
+      getCategories()
+        .then(resJSON => {
+            this.setState({categories:resJSON},/*()=>{this.Flag = true;}*/()=>console.log('categoriesParam: '+this.state.categories))                        
+        });
     });
   }
 
@@ -166,7 +172,6 @@ export default class Products extends Component {
   }
 
 arrayRemove(arr, value) {
-
     return arr.filter(function(ele){
         return ele != value;
     });
@@ -175,15 +180,18 @@ arrayRemove(arr, value) {
 
 onClickCategoryItem(item){
   let result = this.arrayRemove(this.state.categories, item);  
-  if(result.length==0){
-    this.setState({txtAll:"All",categories:[]})
-    return;
-  }
+  // if(result.length==0){
+  //   this.setState({txtAll:"All",categories:[]})
+  //   return;
+  // }
     this.setState({
+      txtAll:(this.state.categories.length==0)?"All":"",
       categories:[],
       categories:result
-    },()=>{
+    }, async ()=>{
       //crawl new data by category
+       await saveCategories(this.state.categories)
+      console.log('save categories '+ this.state.categories)
     }
     )
 }
@@ -252,7 +260,7 @@ onClickCategoryItem(item){
         </View>
       )
     }
-    this.listeningCategoryParam();
+    //this.listeningCategoryParam();
     
     return ( 
         <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
