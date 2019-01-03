@@ -95,9 +95,6 @@ export default class Products extends Component {
    //category passing pram
   listeningCategoryParam(){       
     let { navigation } = this.props;
-
-    //let categoryItemReceive = navigation.getParam('CategoryItem', 'NOPARAM');
-
     navigation.addListener('didFocus', () => {    
       // if(  categoryItemReceive != 'NOPARAM'){
       //     if(!this.state.categories.includes(categoryItemReceive)){
@@ -115,7 +112,7 @@ export default class Products extends Component {
           
       getCategories()
         .then(resJSON => {
-            this.setState({categories:resJSON},/*()=>{this.Flag = true;}*/()=>console.log('categoriesParam: '+this.state.categories))                        
+            this.setState({categories:resJSON},/*()=>{this.Flag = true;}*/)                        
         });
     });
   }
@@ -154,9 +151,14 @@ export default class Products extends Component {
       categories:[],
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       dataSource: []
-    });
+    },
+    async ()=>{
+      await saveCategories(this.state.categories)
+      await this.CrawlProductData("",0,pageSizeDefault());
+    }
+    );
     //console.log('refresh: data='+this.state.dataSource.length+' - refreshing:'+this.state.refreshing+'- page='+this.state.page)
-    this.CrawlProductData("",0,pageSizeDefault());  
+      
   }
 
   _keyExtractor = (item, index) => item.Name;
