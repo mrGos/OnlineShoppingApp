@@ -34,7 +34,7 @@ export default class Products extends Component {
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       dataSource:[],
       categories:[],
-      txtAll:"All"
+      txtAll:"All",
     };
 
     
@@ -91,14 +91,13 @@ export default class Products extends Component {
   // }
 
    //category passing pram
-  listeningCategoryParam(){   
-    //props
-    const { navigation } = this.props;
+  listeningCategoryParam(){       
+    let { navigation } = this.props;
 
-    let categoryItemReceive = navigation.getParam('CategoryItem', 'NO-CATEGORY');
+    let categoryItemReceive = navigation.getParam('CategoryItem', 'NOPARAM');
 
     navigation.addListener('didFocus', () => {    
-      if(categoryItemReceive != 'NO-CATEGORY'){
+      if(  categoryItemReceive != 'NOPARAM'){
           if(!this.state.categories.includes(categoryItemReceive)){
             console.log('Categories add '+categoryItemReceive.Name);      
             this.setState({      
@@ -145,6 +144,8 @@ export default class Products extends Component {
       page:0,
       totalPages:1,
       refreshing: false,
+      txtAll:"All",
+      categories:[],
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       dataSource: []
     });
@@ -255,7 +256,7 @@ onClickCategoryItem(item){
     
     return ( 
         <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
-          <View>
+          <View style={styles.header}>
             <SearchBar
                 //lightTheme
                 round          
@@ -318,8 +319,11 @@ onClickCategoryItem(item){
 }
 
 const styles = StyleSheet.create({
+  header:{
+    flex:2
+  },
   SearchBar:{
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   itemContainer:{
     marginBottom: 10,
@@ -363,7 +367,7 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
     borderBottomColor:"black",
     borderBottomWidth:1,
-    marginBottom:20
+    //marginBottom:20
   },
 categoryList:{
 
