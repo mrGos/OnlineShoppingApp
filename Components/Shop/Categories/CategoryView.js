@@ -134,7 +134,8 @@ import React from 'react'
 import {SafeAreaView,ScrollView, Text, View , StyleSheet, Image, Dimensions, FlatList,TouchableOpacity} from 'react-native'
 
 import * as API from '../../../Api/CategoriesApi'
-
+import getCategories from '../../../Api/CategoriesApi/getAsyncStorageCategories'
+import saveCategories from '../../../Api/CategoriesApi/saveCategories'
 
 import sp1 from '../Home/TempImage/sp1.jpeg'
 import sp2 from '../Home/TempImage/sp2.jpeg'
@@ -154,13 +155,44 @@ class Category extends React.Component {
             refreshing: false,
             data : [],
             error: null,
-        }
+            categories:[]
+        }        
+        this.listeningCategoryParam()
     }
 
+    onPressCategory (item){
+        const isExist = this.state.categories.some(e => e.ID === item.ID);
+        console.log('prepare passing Category: '+item.Name);
+        if(!isExist){
+            this.setState({
+                categories:this.state.categories.concat(item)            
+            },
+            async ()=>{
+                saveCategories(this.state.categories)
+               await this.props.navigation.navigate('Products',{
+                    //CategoryItem:item
+                }); 
+            }
+            )
+        }else{
+            this.props.navigation.navigate('Products',{
+                //CategoryItem:item
+            }); 
+        }                      
+    }
 
+    listeningCategoryParam(){
+    let { navigation } = this.props;
+    navigation.addListener('didFocus', () => {              
+      getCategories()
+        .then(resJSON => {
+            this.setState({categories:resJSON},/*()=>{this.Flag = true;}*/()=>console.log('categoriesParam: '+this.state.categories))                        
+        });
+    });
+    }
 
     renderItem = ({item}) =>{
-        console.log(item);
+        //console.log(item.Name);
         return(
             <TouchableOpacity
                 onPress= {()=> {
@@ -168,6 +200,8 @@ class Category extends React.Component {
                         item: item
                       });
                 }}
+               
+                //onPress ={()=>this.onPressCategory(item)}
             >
                 <View style={stylesProductList.productContainer}>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>

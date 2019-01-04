@@ -11,6 +11,8 @@ import {Text, View,FlatList,Image,RefreshControl,ActivityIndicator,StyleSheet,To
 import { SearchBar } from 'react-native-elements';
 import FAIcon from 'react-native-vector-icons/FontAwesome'
 
+import getCategories from '../../../Api/CategoriesApi/getAsyncStorageCategories'
+import saveCategories from '../../../Api/CategoriesApi/saveCategories'
 
 import {getAllProduct} from '../../../Api/ProductApi/getProduct';
 import {pageSizeDefault} from '../../../Common/PaginationDefault';
@@ -32,95 +34,122 @@ export default class Products extends Component {
       totalPages:1,
       refreshing: false,
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-      dataSource:[]
+      dataSource:[],
+      categories:[],
+      txtAll:"All",
     };
+    this.listeningCategoryParam();
+    
   }
 
 
   componentDidMount(){
-    this.loadData();
-    //this.CrawlProductData("",0,pageSizeDefault());
+   // this.loadData();
+    this.CrawlProductData("",0,pageSizeDefault());
   }
-//  CrawlProductData(keyword,page,pageSize){
-//   getAllProduct(keyword,page,pageSize)
-//     .then((responseJson) => {
-//       console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
-//       if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
-//           console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-//           this.setState({      
-//             //dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),  
-//             dataSource: this.state.dataSource.concat(responseJson.Items),
-//             totalPages: responseJson.TotalPages,
-//             refreshing:false,
-    
-//             page:this.state.page+1,
-//           });
-//           console.log(this.state.dataSource.length)
-       
-//       }else{
-//         console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
-//       }
-      
-//     })
-//     .catch((error) => {
-//       console.log('is it here?')
-//       console.error(error);
-//     });
-//   }
-  loadData = () => {
-    console.log('loaddata page', this.state.page)
-    getAllProduct('',this.state.page,pageSizeDefault)
-      .then((responseJson) => {
-        console.log(responseJson);
-        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: [...this.state.dataSource,...responseJson.Items],
-          totalPages: responseJson.TotalPages,
-          refreshing:false,
+
+ CrawlProductData(keyword,page,pageSize){  
+    getAllProduct(keyword,page,pageSize)
+    .then((responseJson) => {
+      //console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
+      if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
+          //console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+          this.setState({      
+            //dataSource: this.state.dataSource.cloneWithRows(responseJson.Items),  
+            dataSource: this.state.dataSource.concat(responseJson.Items),
+            totalPages: responseJson.TotalPages,
+            refreshing:false,    
+            page:this.state.page+1,
+          });       
+      }else{
+        console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
+      }      
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+  }
+  
+  // loadData = () => {
+  //   console.log('loaddata page', this.state.page)
+  //   getAllProduct('',this.state.page,pageSizeDefault)
+  //     .then((responseJson) => {
+  //       console.log(responseJson);
+  //       console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+  //       this.setState({      
+  //         dataSource: [...this.state.dataSource,...responseJson.Items],
+  //         totalPages: responseJson.TotalPages,
+  //         refreshing:false,
+  //       });
+  //       console.log(this.state)
+  //     })
+  //     .catch((error) => {
+  //       console.log('is it here?')
+  //       console.error(error);
+  //     });
+  // }
+
+   //category passing pram
+  listeningCategoryParam(){       
+    let { navigation } = this.props;
+    navigation.addListener('didFocus', () => {                    
+      getCategories()
+        .then(resJSON => {
+            this.setState({
+              categories:resJSON, 
+              txtAll:(resJSON.length==0)?"All":"",
+              page:0,
+              totalPages:1,
+            },
+            this.CrawlProductData("",0,pageSizeDefault())
+            )                        
         });
-        console.log(this.state)
-      })
-      .catch((error) => {
-        console.log('is it here?')
-        console.error(error);
-      });
+    });
   }
 
   loadMore = () =>{
     if (this.state.page < this.state.totalPages-1){
       this.setState({
         page: this.state.page+1,
-      },this.loadData)
+      },this.CrawlProductData("",this.state.page,pageSizeDefault()))
     }
   }
-  loadData = () => {
-    console.log('loaddata page', this.state.page)
-    getAllProduct('',this.state.page,2)
-      .then((responseJson) => {
-        console.log(responseJson);
-        console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
-        this.setState({      
-          dataSource: responseJson.Items,
-          totalPages: responseJson.TotalPages,
-          refreshing:false,
-        });
-        console.log(this.state)
-      })
-      .catch((error) => {
-        console.log('is it here?')
-        console.error(error);
-      });
-  }
+  // loadData = () => {
+  //   console.log('loaddata page', this.state.page)
+  //   getAllProduct('',this.state.page,2)
+  //     .then((responseJson) => {
+  //       console.log(responseJson);
+  //       console.log( "current "+this.state.page+"- total:"+responseJson.TotalPages);
+  //       this.setState({      
+  //         dataSource: responseJson.Items,
+  //         totalPages: responseJson.TotalPages,
+  //         refreshing:false,
+  //       });
+  //       console.log(this.state)
+  //     })
+  //     .catch((error) => {
+  //       console.log('is it here?')
+  //       console.error(error);
+  //     });
+  // }
   loadNewData(){
     this.setState({
       page:0,
       totalPages:1,
       refreshing: false,
+      txtAll:"All",
+      categories:[],
       //dataSource: new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
       dataSource: []
-    });
-    console.log('refresh: data='+this.state.dataSource.length+' - refreshing:'+this.state.refreshing+'- page='+this.state.page)
-    this.CrawlProductData("",0,pageSizeDefault());  
+    },
+    async ()=>{
+      await saveCategories(this.state.categories)
+      await this.CrawlProductData("",0,pageSizeDefault());
+    }
+    );
+    //console.log('refresh: data='+this.state.dataSource.length+' - refreshing:'+this.state.refreshing+'- page='+this.state.page)
+      
   }
 
   _keyExtractor = (item, index) => item.Name;
@@ -135,13 +164,35 @@ export default class Products extends Component {
     });
   }
 
+arrayRemove(arr, value) {
+    return arr.filter(function(ele){
+        return ele != value;
+    });
+ 
+ }
+
+onClickCategoryItem(item){
+  
+    let newCategories = this.state.categories.filter(e => e.ID !== item.ID) 
+
+    this.setState({
+      txtAll:(newCategories.length==0)?"All":"",
+      categories:[],
+      categories:newCategories
+    },  ()=>{
+      //crawl new data by category
+        saveCategories(this.state.categories)
+    }
+    );
+}
+
   onSearchSubmmit(){
     if(this.state.searchbarTxt!=''){
       this.props.navigation.navigate('Search', {
         txt: this.state.searchbarTxt
       });
     }
-    console.log('onSubmit: '+this.state.searchbarTxt);
+    //console.log('onSubmit: '+this.state.searchbarTxt);
   }
 
   pageDown = () => {
@@ -159,6 +210,7 @@ export default class Products extends Component {
           },this.loadData)
       }
   }
+
 
   ViewItem(item){
     return(
@@ -198,10 +250,11 @@ export default class Products extends Component {
         </View>
       )
     }
-
+    //this.listeningCategoryParam();
+    
     return ( 
         <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
-          <View>
+          <View style={styles.header}>
             <SearchBar
                 //lightTheme
                 round          
@@ -212,13 +265,36 @@ export default class Products extends Component {
                 onChangeText={(searchbarTxt) =>  this.setState({searchbarTxt})}
                 onSubmitEditing={this.onSearchSubmmit.bind(this)}
                 value ={this.state.searchbarTxt}
-            />     
+            />   
+
+            <View style={styles.categorySection}>
+              <Text style={{fontSize:16}}>Categories: {this.state.txtAll}                        
+              </Text>
+              <View>
+                <FlatList
+                    style = {styles.categoryList}
+                    horizontal
+                    data={this.state.categories}
+                    renderItem={ ({item}) =>              
+                    <TouchableOpacity onPress={()=> this.onClickCategoryItem(item)}>
+                      <View style={styles.categoryItem}>
+                        <Text>{item.Name}</Text>
+                      </View>
+                    </TouchableOpacity>                  
+                    }
+                    keyExtractor={this._keyExtractor}
+                />   
+               </View>
+            </View>
+
+            
+
             <FlatList                                  
               refreshControl = {
                 <RefreshControl
                   refreshing={this.state.refreshing}              //bool IsRefresh indicator
-                  //onRefresh={this.loadNewData.bind(this)}         // If yes, do function
-                  onRefresh={this.resetData}
+                  onRefresh={this.loadNewData.bind(this)}         // If yes, do function
+                  //onRefresh={this.resetData}
                 />
               }
               
@@ -241,8 +317,11 @@ export default class Products extends Component {
 }
 
 const styles = StyleSheet.create({
+  header:{
+    flex:2
+  },
   SearchBar:{
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   },
   itemContainer:{
     marginBottom: 10,
@@ -281,6 +360,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     height: 30,
   },
+  categorySection:{
+    height:60,
+    backgroundColor:"white",
+    borderBottomColor:"black",
+    borderBottomWidth:1,
+    display: 'none',
+    //marginBottom:20
+  },
+categoryList:{
+  margin:50
+},
+categoryItem:{
+marginRight:5,
+marginLeft:3,
+borderWidth: 1,
+borderRadius:5,
+justifyContent:'center',
+padding:4,
+},
 
 });
 

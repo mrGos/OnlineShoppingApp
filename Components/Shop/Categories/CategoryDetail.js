@@ -78,7 +78,7 @@ class CategoryDetail extends React.PureComponent{
                 }}
             >
                 <View style={stylesProductList.productContainer}>
-                    <Image source={item.image} style = {stylesProductList.productImage}/>
+                    <Image source={{uri:item.Image}} style = {stylesProductList.productImage}/>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>
                     <Text style = {stylesProductList.productPrice}> {item.price}</Text>
                 </View>
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
             width: 0,
             height: 3,
         },
+        marginTop:20,
     },
     textTopProduct: {
         fontSize: 20,
