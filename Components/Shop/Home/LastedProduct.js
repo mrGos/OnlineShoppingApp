@@ -3,6 +3,7 @@ import {Text, View , StyleSheet, Image, ActivityIndicator, Dimensions, FlatList,
 
 import {getLasted} from '../../../Api/HomeApi'
 
+import Swiper from 'react-native-swiper'
 
 import sp1 from './TempImage/sp1.jpeg'
 import sp2 from './TempImage/sp2.jpeg'
@@ -21,25 +22,20 @@ class LastedProduct extends React.Component{
             refreshing: false,
             data : [],
             error: null,
+            dataTest : [
+                {
+                    Image: '/TempImage/sp1.jpeg',
+                    Name: 'test1',
+                    Price: '1'
+                },
+                {
+                    Image: '/TempImage/sp1.jpeg',
+                    Name: 'test2',
+                    Price: '2'
+                },
+                
+            ]
         }
-    }
-
-    renderItem = ({item}) =>{
-        return(
-            <TouchableOpacity
-                onPress= {()=> {
-                    this.props.navigation.navigate('Details', {
-                        item: item
-                      });
-                }}
-            >
-                <View style={styles.itemContainer}>
-                    <Image source={{uri:item.Image}} style={styles.imgItem}/> 
-                    <Text style={{flex:1}}>{item.Name}</Text> 
-                    <Text style={{flex:1}}>Giá: {item.Price}</Text>                
-                </View>
-            </TouchableOpacity>
-        );
     }
 
     loadData(){
@@ -68,6 +64,10 @@ class LastedProduct extends React.Component{
         console.log('state ',this.state);
         
     }
+
+    componentDidUpdate(prevProps, prevState){
+        console.log(this.props, this.state)
+    }
     
 
     render(){
@@ -76,15 +76,37 @@ class LastedProduct extends React.Component{
                 <View style = {styles.textContainer} >
                     <Text style= {styles.textLastedProduct}> Lasted Product </Text>
                 </View>
-                <View style = {styles.body}>
-                    <FlatList
-                        data = {this.state.data}
-                        keyExtractor = {(item, index)=> index.toString()}
-                        renderItem = {this.renderItem}
-                        //horizontal = {true}
-                        //numColumns = {2}
-                    />
-                </View>
+                    <Swiper 
+                        height = {400} 
+                        loop={false}
+                        loadMinimal = {false} 
+                        style = {styles.body}
+                        dot={<View style={{backgroundColor: 'rgba(0,0,0,.2)', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                        activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                        paginationStyle={{bottom: -1,}}
+                    > 
+                        {
+                            this.state.data.map((item, i)=> {
+                                return (
+                                    <TouchableOpacity 
+                                        style ={{flex: 1}} 
+                                        key = {i}
+                                        onPress= {()=> {
+                                            this.props.navigation.navigate('Details', {
+                                                item: item
+                                              });
+                                        }}
+                                    >
+                                        <View style={styles.itemContainer}>
+                                            <Image source={{uri:item.Image}} style={styles.imgItem}/> 
+                                            <Text style={{flex:1}}>{item.Name}</Text> 
+                                            <Text style={{flex:1}}>Giá: {item.Price}</Text>                
+                                        </View>
+                                    </TouchableOpacity>
+                                )
+                            })
+                        }
+                    </Swiper>
             </View>
         );  
     }
@@ -111,6 +133,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'stretch',
         flexWrap: 'wrap',
+        height : 350,
         shadowColor: '#2E272B',
         shadowOffset : {
             width: 0,
