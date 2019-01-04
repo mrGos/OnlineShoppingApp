@@ -161,17 +161,24 @@ class Category extends React.Component {
     }
 
     onPressCategory (item){
+        const isExist = this.state.categories.some(e => e.ID === item.ID);
         console.log('prepare passing Category: '+item.Name);
-        this.setState({
-            categories:this.state.categories.concat(item)            
-        },
-        async ()=>{
-            saveCategories(this.state.categories)
-           await this.props.navigation.navigate('Products',{
+        if(!isExist){
+            this.setState({
+                categories:this.state.categories.concat(item)            
+            },
+            async ()=>{
+                saveCategories(this.state.categories)
+               await this.props.navigation.navigate('Products',{
+                    //CategoryItem:item
+                }); 
+            }
+            )
+        }else{
+            this.props.navigation.navigate('Products',{
                 //CategoryItem:item
             }); 
-        }
-        )               
+        }                      
     }
 
     listeningCategoryParam(){
@@ -188,13 +195,13 @@ class Category extends React.Component {
         //console.log(item.Name);
         return(
             <TouchableOpacity
-                // onPress= {()=> {
-                //     this.props.navigation.navigate('CategoryDetail', {
-                //         item: item
-                //       });
-                // }}
+                onPress= {()=> {
+                    this.props.navigation.navigate('CategoryDetail', {
+                        item: item
+                      });
+                }}
                
-                onPress ={()=>this.onPressCategory(item)}
+                //onPress ={()=>this.onPressCategory(item)}
             >
                 <View style={stylesProductList.productContainer}>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>

@@ -48,8 +48,8 @@ export default class Products extends Component {
     this.CrawlProductData("",0,pageSizeDefault());
   }
 
- CrawlProductData(keyword,page,pageSize){
-  getAllProduct(keyword,page,pageSize)
+ CrawlProductData(keyword,page,pageSize){  
+    getAllProduct(keyword,page,pageSize)
     .then((responseJson) => {
       //console.log('lengthItems='+responseJson.Items.length+'- page= '+this.state.page+'- totalPage'+ this.state.totalPages);
       if(this.state.page<this.state.totalPages&&responseJson.Items.length!=0){
@@ -60,19 +60,17 @@ export default class Products extends Component {
             totalPages: responseJson.TotalPages,
             refreshing:false,    
             page:this.state.page+1,
-          });
-         // console.log(this.state.dataSource.length)
-       
+          });       
       }else{
         console.log('het du lieu, page= '+ this.state.page+'- total='+this.state.totalPages)
-      }
-      
+      }      
     })
     .catch((error) => {
-      //console.log('is it here?')
       console.error(error);
     });
+  
   }
+  
   // loadData = () => {
   //   console.log('loaddata page', this.state.page)
   //   getAllProduct('',this.state.page,pageSizeDefault)
@@ -95,24 +93,17 @@ export default class Products extends Component {
    //category passing pram
   listeningCategoryParam(){       
     let { navigation } = this.props;
-    navigation.addListener('didFocus', () => {    
-      // if(  categoryItemReceive != 'NOPARAM'){
-      //     if(!this.state.categories.includes(categoryItemReceive)){
-      //       console.log('Categories add '+categoryItemReceive.Name);      
-      //       this.setState({      
-      //         categories: this.state.categories.concat(categoryItemReceive),
-      //         txtAll:""
-      //       });                
-      //     }else{
-      //       console.log('Categories exists '+categoryItemReceive.Name);
-      //     }          
-      // }else{
-      //   console.log('listen NO-CATEGORY');
-      // }
-          
+    navigation.addListener('didFocus', () => {                    
       getCategories()
         .then(resJSON => {
-            this.setState({categories:resJSON},/*()=>{this.Flag = true;}*/)                        
+            this.setState({
+              categories:resJSON, 
+              txtAll:(resJSON.length==0)?"All":"",
+              page:0,
+              totalPages:1,
+            },
+            this.CrawlProductData("",0,pageSizeDefault())
+            )                        
         });
     });
   }
@@ -181,21 +172,18 @@ arrayRemove(arr, value) {
  }
 
 onClickCategoryItem(item){
-  let result = this.arrayRemove(this.state.categories, item);  
-  // if(result.length==0){
-  //   this.setState({txtAll:"All",categories:[]})
-  //   return;
-  // }
+  
+    let newCategories = this.state.categories.filter(e => e.ID !== item.ID) 
+
     this.setState({
-      txtAll:(this.state.categories.length==0)?"All":"",
+      txtAll:(newCategories.length==0)?"All":"",
       categories:[],
-      categories:result
-    }, async ()=>{
+      categories:newCategories
+    },  ()=>{
       //crawl new data by category
-       await saveCategories(this.state.categories)
-      console.log('save categories '+ this.state.categories)
+        saveCategories(this.state.categories)
     }
-    )
+    );
 }
 
   onSearchSubmmit(){
@@ -377,10 +365,11 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
     borderBottomColor:"black",
     borderBottomWidth:1,
+    display: 'none',
     //marginBottom:20
   },
 categoryList:{
-
+  margin:50
 },
 categoryItem:{
 marginRight:5,
