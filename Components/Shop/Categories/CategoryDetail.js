@@ -5,6 +5,7 @@ import FAIcon from 'react-native-vector-icons/FontAwesome'
 //import * as API from '../../../Api/CategoriesApi'
 //import getAllProduct from '../../../Api/ProductApi/getAllProduct';
 import getGategory from '../../../Api/CategoriesApi/getCategory'
+import {pageSizeDefault} from '../../../Common/PaginationDefault';
 
 const {height, width} = Dimensions.get('window');
 
@@ -56,7 +57,7 @@ class CategoryDetail extends React.PureComponent{
 
     loadData = () => {
         console.log('loaddata')
-       getGategory(this.state.IDCategory, this.state.page,2)
+       getGategory(this.state.IDCategory, this.state.page,pageSizeDefault())
         .then((responseJS)=>{
             console.log(responseJS);
             this.setState({
@@ -87,50 +88,60 @@ class CategoryDetail extends React.PureComponent{
     }
     
     render(){
-        return(
-            <SafeAreaView style= {{flex: 1}}>
-                <View style = {styles.wrapper}>
-                    <View style = {styles.textContainer} >
-                        <Text style= {styles.textTopProduct}> {this.props.navigation.getParam('item').Name} </Text>
+        if(this.state.data.length==0){
+            return(
+            <View style={styles.nodatastyle}>
+                <Text style={{fontSize:30}}>NO DATA</Text>
+            </View>
+            );
+        }else{
+            return(
+                <SafeAreaView style= {{flex: 1}}>
+                    <View style = {styles.wrapper}>
+                        <View style = {styles.textContainer} >
+                            <Text style= {styles.textTopProduct}> {this.props.navigation.getParam('item').Name} </Text>
+                        </View>
+                        <View style ={styles.page}>
+                            <FAIcon
+                                onPress = {this.pageDown}
+                                name = 'chevron-left'
+                                style = {{
+                                    color: 'black',
+                                    fontSize: 20
+                                }}
+                            />
+                            <Text style = {{color: 'black', fontSize: 20}}>{this.state.page}</Text>
+                            <FAIcon
+                                onPress = {this.pageUp}
+                                name = 'chevron-right'
+                                style = {{
+                                    color: 'black',
+                                    fontSize: 20
+                                }}
+                            />
+                        </View>
+    
+                        <View style = {styles.body}>
+                            <FlatList
+                            style={styles.listStyle}
+                                refreshControl = {
+                                    <RefreshControl 
+                                        refreshing = {this.state.refreshing}
+                                        onRefresh = {this.loadData.bind(this)}
+                                    />
+                                } 
+                                data = {this.state.data}
+                                keyExtractor = {(item, index)=> index.toString()}
+                                renderItem = {this.renderItem}
+                                horizontal = {false}
+                                numColumns = {2}
+                            />
+                        </View>
                     </View>
-                    <View style ={styles.page}>
-                        <FAIcon
-                            onPress = {this.pageDown}
-                            name = 'chevron-left'
-                            style = {{
-                                color: 'black',
-                                fontSize: 20
-                            }}
-                        />
-                        <Text style = {{color: 'black', fontSize: 20}}>{this.state.page}</Text>
-                        <FAIcon
-                            onPress = {this.pageUp}
-                            name = 'chevron-right'
-                            style = {{
-                                color: 'black',
-                                fontSize: 20
-                            }}
-                        />
-                    </View>
-
-                    <View style = {styles.body}>
-                        <FlatList
-                            refreshControl = {
-                                <RefreshControl 
-                                    refreshing = {this.state.refreshing}
-                                    onRefresh = {this.loadData.bind(this)}
-                                />
-                            } 
-                            data = {this.state.data}
-                            keyExtractor = {(item, index)=> index.toString()}
-                            renderItem = {this.renderItem}
-                            horizontal = {false}
-                            numColumns = {2}
-                        />
-                    </View>
-                </View>
-            </SafeAreaView>
-        );  
+                </SafeAreaView>
+            );
+        }
+          
     }
 }
 
@@ -164,12 +175,19 @@ const styles = StyleSheet.create({
             width: 0,
             height: 3,
         },
-        marginTop:20,
     },
     textTopProduct: {
         fontSize: 20,
         color : 'black'
     },
+    nodatastyle:{
+        justifyContent:'center',
+        flex:1,
+        alignItems:'center',
+    },
+    listStyle:{
+        marginTop:30
+    }
 })
 
 

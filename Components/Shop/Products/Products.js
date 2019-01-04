@@ -38,7 +38,7 @@ export default class Products extends Component {
       categories:[],
       txtAll:"All",
     };
-    this.listeningCategoryParam();
+    //this.listeningCategoryParam();
     
   }
 
