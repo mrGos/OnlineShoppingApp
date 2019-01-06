@@ -47,7 +47,7 @@ class TopProduct extends React.Component{
         console.log('loaddata')
         getTopProduct(4)
         .then((responseJS)=>{
-            console.log(responseJS);
+            //console.log(responseJS);
             this.setState({
                 data: responseJS,
                 refreshing: false 
@@ -56,16 +56,16 @@ class TopProduct extends React.Component{
     }
 
     componentWillMount(){
-        console.log('topproduct mount');
-        console.log('props ',this.props);
-        console.log('state ',this.state);
+        // console.log('topproduct mount');
+        // console.log('props ',this.props);
+        // console.log('state ',this.state);
     }
     
     componentDidMount(){
         this.loadData()
-        console.log('topproduct did mount');
-        console.log('props ',this.props);
-        console.log('state ',this.state);
+        // console.log('topproduct did mount');
+        // console.log('props ',this.props);
+        // console.log('state ',this.state);
         
     }
     

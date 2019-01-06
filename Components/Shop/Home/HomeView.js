@@ -5,7 +5,6 @@ import Collection from './Collection'
 import TopProduct from './TopProduct'
 import LastedProduct from './LastedProduct'
 
-
 export default class Home extends Component {
     constructor(props){
         super(props);
@@ -16,9 +15,9 @@ export default class Home extends Component {
     }
 
     componentWillMount(){
-        console.log('home mount');
-        console.log('props ',this.props);
-        console.log('state ',this.state);
+        // console.log('home mount');
+        // console.log('props ',this.props);
+        // console.log('state ',this.state);
     }
 
     handleRefresh(){
@@ -30,9 +29,9 @@ export default class Home extends Component {
         console.log('state ',this.state);
     }
     componentDidMount(){
-        console.log('home did mount');
-        console.log('props ',this.props);
-        console.log('state ',this.state);
+        // console.log('home did mount');
+        // console.log('props ',this.props);
+        // console.log('state ',this.state);
     }
     
     render(){
@@ -56,6 +55,7 @@ export default class Home extends Component {
                         />
                     }
                 >   
+                    <Collection {...this.props} />
                     <TopProduct {...this.props} />
                     <LastedProduct {...this.props}/>
                     

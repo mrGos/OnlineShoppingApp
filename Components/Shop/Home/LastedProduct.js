@@ -43,7 +43,7 @@ class LastedProduct extends React.Component{
         console.log('loaddata')
         getLasted(2)
         .then((responseJS)=>{
-            console.log(responseJS);
+            //console.log(responseJS);
             this.setState({
                 data: responseJS,
                 refreshing: false 
@@ -52,21 +52,21 @@ class LastedProduct extends React.Component{
     }
 
     componentWillMount(){
-        console.log('topproduct mount');
-        console.log('props ',this.props);
-        console.log('state ',this.state);
+        //console.log('topproduct mount');
+        //console.log('props ',this.props);
+        //console.log('state ',this.state);
     }
     
     componentDidMount(){
         this.loadData()
-        console.log('topproduct did mount');
-        console.log('props ',this.props);
-        console.log('state ',this.state);
+        //console.log('topproduct did mount');
+        //console.log('props ',this.props);
+        //console.log('state ',this.state);
         
     }
 
     componentDidUpdate(prevProps, prevState){
-        console.log(this.props, this.state)
+        //console.log(this.props, this.state)
     }
     
 
