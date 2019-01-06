@@ -2,6 +2,8 @@ import React from 'react';
 import {Text, View, StyleSheet, Dimensions, Image} from 'react-native';
 
 import getHome from '../../../Api/HomeApi/homeAPI'
+import Swiper from 'react-native-swiper'
+
 import bannerImage from './TempImage/banner.jpg' 
 
 const {height} = Dimensions.get('window');
@@ -39,7 +41,7 @@ class Collection extends React.Component{
             console.log('SLIDES:...........')
             console.log(responseJS.Slides);
             this.setState({
-                data: responseJS,
+                data: responseJS.Slides,
                 refreshing: false 
             })
         })
@@ -51,15 +53,36 @@ class Collection extends React.Component{
 
     render(){
         return(
-            <View style ={styles.wrapper}>
-                <View style = {{flew :1, justifyContent :'center', paddingBottom:10 }} > 
-                    <Text style = {styles.textCollection}> Spring Collection</Text>
-                </View>
-                <View style = {styles.body}>
-                    <Image source={{uri:this.state.data.Image}} style = {styles.imageCollection} />
-                </View>
+            <View style = {styles.wrapper}>   
+                    <View style = {styles.textContainer} >
+                        <Text style= {styles.textLastedProduct}> Banner </Text>
+                    </View>             
+                    <Swiper 
+                        height = {400} 
+                        loop={false}
+                        loadMinimal = {false} 
+                        style = {styles.body}
+                        dot={<View style={{backgroundColor: 'rgba(0,0,0,.2)', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                        activeDot={<View style={{backgroundColor: '#000', width: 8, height: 8, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
+                        paginationStyle={{bottom: -1,}}
+                    > 
+                        {
+                            this.state.data.map((item, i)=> {
+                                return (
+                                    <View 
+                                        style ={{flex: 1}} 
+                                        key = {i}                                        
+                                    >
+                                        <View style={styles.itemContainer}>
+                                            <Image source={{uri:item.Image}} style={styles.imgItem}/>                                                          
+                                        </View>
+                                    </View>
+                                )
+                            })
+                        }
+                    </Swiper>
             </View>
-        );
+        );  
     }
 }
 
@@ -68,11 +91,10 @@ export default Collection
 
 const styles = StyleSheet.create({
     wrapper :{
-        margin: 10,
-        marginTop: 20,
-        marginBottom: 20,
-        backgroundColor : '#FFF',
+        margin: 0,
+        backgroundColor : 'rgb(233,233,238)',
         shadowOpacity: 0.2,
+        borderRadius: 3
     },
     textContainer:{
         justifyContent :'center', 
@@ -84,23 +106,32 @@ const styles = StyleSheet.create({
         height : 40,
         paddingBottom: 5
     },
-    textCollection:{
-        fontSize: 20,
-        color : '#AFAFAF'
-    },
     body:{
-        flexDirection: 'row',
-        justifyContent: 'space-around',
+        flexDirection: 'column',
+        alignItems: 'stretch',
         flexWrap: 'wrap',
+        height : 250,
         shadowColor: '#2E272B',
         shadowOffset : {
             width: 0,
             height: 3,
         },
-        marginBottom: 10,
     },
-    imageCollection: {
-        height : imageHeight,
-        width : imageWidth
-    }
+    textLastedProduct: {
+        fontSize: 20,
+        color : 'black'
+    },
+    itemContainer:{
+        marginBottom: 10,
+        shadowOpacity: 0.2,        
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      imgItem:{
+        width: width,
+        height:200,///window.height/2,
+        flex:9, 
+        resizeMode: "stretch"
+      },
 })
