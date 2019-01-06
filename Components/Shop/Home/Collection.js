@@ -58,8 +58,10 @@ class Collection extends React.Component{
                         <Text style= {styles.textLastedProduct}> Banner </Text>
                     </View>             
                     <Swiper 
-                        height = {400} 
-                        loop={false}
+                        height = {200} 
+                        loop={true}
+                        autoplay= {true}
+                        autoplayTimeout= {15}
                         loadMinimal = {false} 
                         style = {styles.body}
                         dot={<View style={{backgroundColor: 'rgba(0,0,0,.2)', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
@@ -74,7 +76,11 @@ class Collection extends React.Component{
                                         key = {i}                                        
                                     >
                                         <View style={styles.itemContainer}>
-                                            <Image source={{uri:item.Image}} style={styles.imgItem}/>                                                          
+                                            <Image 
+                                                //source={{uri:'https://cdn.tgdd.vn/qcao/05_01_2019_12_55_45_siu-sim-800-300.png'/*item.Image*/}} 
+                                                source={{uri:item.Image}} 
+                                                style={styles.imgItem}
+                                                resizeMode= {'contain'}/>                                                          
                                         </View>
                                     </View>
                                 )
@@ -91,7 +97,7 @@ export default Collection
 
 const styles = StyleSheet.create({
     wrapper :{
-        margin: 0,
+        margin: 10,
         backgroundColor : 'rgb(233,233,238)',
         shadowOpacity: 0.2,
         borderRadius: 3
@@ -129,8 +135,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       imgItem:{
-        width: width,
-        height:200,///window.height/2,
+        width: width-20,
+        ///window.height/2,
         flex:9, 
         resizeMode: "stretch"
       },
