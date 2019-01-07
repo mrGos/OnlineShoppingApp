@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView, Text , View, RefreshControl, ActivityIndicator,SafeAreaView,StyleSheet} from 'react-native';
 import { Card,Button,Header } from 'react-native-elements'
 import Drawer from 'react-native-drawer';
-
+import MIcon from 'react-native-vector-icons/MaterialIcons'
 import Collection from './Collection'
 import TopProduct from './TopProduct'
 import LastedProduct from './LastedProduct'
@@ -76,7 +76,7 @@ export default class Home extends Component {
                 >   
                     <Header         
                         placement="left"               
-                        leftComponent={<Button  style={{icon: 'menu', color: '#fff' }} onPress={()=>{this.openControlPanel()}}></Button>}
+                        leftComponent={<MIcon name='menu' onPress={()=>{this.openControlPanel()}} style ={{color: 'white'}} size= {25}/>}
                         centerComponent={{ text: 'HOME', style: { color: '#fff' } }}
                         rightComponent={{ icon: 'home', color: '#fff' }}
                         backgroundColor='black'
