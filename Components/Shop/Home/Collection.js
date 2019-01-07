@@ -54,9 +54,9 @@ class Collection extends React.Component{
     render(){
         return(
             <View style = {styles.wrapper}>   
-                    <View style = {styles.textContainer} >
+                    {/* <View style = {styles.textContainer} >
                         <Text style= {styles.textLastedProduct}> Banner </Text>
-                    </View>             
+                    </View>              */}
                     <Swiper 
                         height = {400} 
                         loop={false}
@@ -133,5 +133,5 @@ const styles = StyleSheet.create({
         height:200,///window.height/2,
         flex:9, 
         resizeMode: "stretch"
-      },
+      },      
 })
