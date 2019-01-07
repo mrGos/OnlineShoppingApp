@@ -54,14 +54,9 @@ class Collection extends React.Component{
     render(){
         return(
             <View style = {styles.wrapper}>   
-                    {/* <View style = {styles.textContainer} >
-                        <Text style= {styles.textLastedProduct}> Banner </Text>
-                    </View>              */}
                     <Swiper 
                         height = {200} 
-                        loop={true}
-                        autoplay= {true}
-                        autoplayTimeout= {15}
+                        loop={false}
                         loadMinimal = {false} 
                         style = {styles.body}
                         dot={<View style={{backgroundColor: 'rgba(0,0,0,.2)', width: 5, height: 5, borderRadius: 4, marginLeft: 3, marginRight: 3, marginTop: 3, marginBottom: 3}} />}
@@ -76,11 +71,7 @@ class Collection extends React.Component{
                                         key = {i}                                        
                                     >
                                         <View style={styles.itemContainer}>
-                                            <Image 
-                                                //source={{uri:'https://cdn.tgdd.vn/qcao/05_01_2019_12_55_45_siu-sim-800-300.png'/*item.Image*/}} 
-                                                source={{uri:item.Image}} 
-                                                style={styles.imgItem}
-                                                resizeMode= {'contain'}/>                                                          
+                                            <Image source={{uri:item.Image}}  style={styles.imgItem}/>                                                          
                                         </View>
                                     </View>
                                 )
