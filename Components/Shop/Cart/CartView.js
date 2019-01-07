@@ -141,11 +141,6 @@ export default class Cart extends Component {
         }
     }
 
-    // componentDidUpdate(){
-    //     this.CrawlCartData() 
-    //     console.log('cart update data= ' +this.state.cartData)
-    // }
-
 
     _keyExtractor = (item) => item.Name;
 
@@ -153,13 +148,16 @@ export default class Cart extends Component {
     CrawlCartData(){
         getCart()
         .then(resJSON => {
-            this.setState({cartData:resJSON},/*()=>{this.Flag = true;}*/)                        
+            this.setState({cartData:resJSON},()=>{
+                this.updatePriceAndQuantity();
+            }/*()=>{this.Flag = true;}*/)                        
         });
         
     }
 
     componentWillMount(){
         console.log('cartview will mount');
+        this.CrawlCartData();
         this.updatePriceAndQuantity();
         console.log(this.state);
     }

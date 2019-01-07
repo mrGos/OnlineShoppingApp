@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {TextInput, FlatList, StyleSheet, View, Button,SafeAreaView,Image, TouchableOpacity, Text} from 'react-native'
+import {TextInput, FlatList, StyleSheet, View, Button,SafeAreaView,Image, TouchableOpacity, Text, ScrollView} from 'react-native'
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 
 import  orderCard from '../../../Api/CartApi/orderCard'
@@ -101,13 +101,16 @@ class CheckOrder extends Component{
                     <View style= {styles.ItemInfo}>
                         <View/>
                         <View style ={styles.nameHost}>
-                            <Text size= 'normal' bold = {true} color = 'red'>
+                            <Text style= {{fontWeight: 'bold', fontSize: 15,}}>
                                 {item.Name}
                             </Text>    
                         </View>
+                        <View>
+                            <Text>Số lượng: {item.Quantity}</Text>
+                        </View>
                         <View style ={styles.nameCategory}>
-                            <Text size= 'small' bold = {false}>
-                                {item.Price}
+                            <Text >
+                                Đơn giá: {item.Price}
                             </Text>
                         </View>
                         <View />
@@ -120,92 +123,94 @@ class CheckOrder extends Component{
     render(){
         return (
             <SafeAreaView style ={{flex: 1}}>
-                <View style = {styles.container}>
-                    <View style = {styles.input}>                 
-                        <Text style= {{ fontSize: 20,}}> Name: </Text>
-                        <AutoGrowingTextInput
-                            value={this.state.textValue}
-                            onChange={(text) => this._onChangeName(text)}
-                            style={styles.textInput}
-                            placeholder={'Enter your name'}
-                            placeholderTextColor='#66737C'
-                            maxHeight={200}
-                            minHeight={30}
-                            enableScrollToCaret
-                            ref={(r) => { this._textInput = r; }}
-                        />
-                        <Text style= {{ fontSize: 20,}}> Phone number: </Text>
+                <ScrollView style = {{flex: 1}}>
+                    <View style = {styles.container}>
+                        <View style = {styles.input}>                 
+                            <Text style= {{ fontSize: 20,}}> Name: </Text>
+                            <AutoGrowingTextInput
+                                value={this.state.textValue}
+                                onChange={(text) => this._onChangeName(text)}
+                                style={styles.textInput}
+                                placeholder={'Enter your name'}
+                                placeholderTextColor='#66737C'
+                                maxHeight={200}
+                                minHeight={30}
+                                enableScrollToCaret
+                                ref={(r) => { this._textInput = r; }}
+                            />
+                            <Text style= {{ fontSize: 20,}}> Phone number: </Text>
 
-                        <AutoGrowingTextInput
-                            value={this.state.textValue}
-                            onChange={(text) => this._onChangePhoneNumber(text)}
-                            style={styles.textInput}
-                            placeholder={'Enter your phone number'}
-                            placeholderTextColor='#66737C'
-                            maxHeight={200}
-                            minHeight={30}
-                            enableScrollToCaret
-                            ref={(r) => { this._textInput = r; }}
-                            blurOnSubmit={false}
-                            errorStyle={{textAlign: 'center', fontSize: 12}}
-                            errorMessage={this.state.phoneNumberValidate ? null : 'Please enter a valid email address'}
-                        />
-                        <Text style= {{ fontSize: 20, borderBottomWidth:2}}> Address: </Text>
-                        <AutoGrowingTextInput
-                            value={this.state.textValue}
-                            onChange={(text) => this._onChangeAddress(text)}
-                            style={styles.textInput}
-                            placeholder={'Enter your Address'}
-                            placeholderTextColor='#66737C'
-                            maxHeight={200}
-                            minHeight={30}
-                            enableScrollToCaret
-                            ref={(r) => { this._textInput = r; }}
-                        />    
-                        <View style={{height :90}}>
-                            <View style={stylesCount.row}>
-                                <View style= {stylesCount.titleStyle}>
-                                    <Text style={stylesCount.fontStyle}>Số lượng sản phẩm: </Text>
+                            <AutoGrowingTextInput
+                                value={this.state.textValue}
+                                onChange={(text) => this._onChangePhoneNumber(text)}
+                                style={styles.textInput}
+                                placeholder={'Enter your phone number'}
+                                placeholderTextColor='#66737C'
+                                maxHeight={200}
+                                minHeight={30}
+                                enableScrollToCaret
+                                ref={(r) => { this._textInput = r; }}
+                                blurOnSubmit={false}
+                                errorStyle={{textAlign: 'center', fontSize: 12}}
+                                errorMessage={this.state.phoneNumberValidate ? null : 'Please enter a valid email address'}
+                            />
+                            <Text style= {{ fontSize: 20, borderBottomWidth:2}}> Address: </Text>
+                            <AutoGrowingTextInput
+                                value={this.state.textValue}
+                                onChange={(text) => this._onChangeAddress(text)}
+                                style={styles.textInput}
+                                placeholder={'Enter your Address'}
+                                placeholderTextColor='#66737C'
+                                maxHeight={200}
+                                minHeight={30}
+                                enableScrollToCaret
+                                ref={(r) => { this._textInput = r; }}
+                            />    
+                            <View style={{height :90}}>
+                                <View style={stylesCount.row}>
+                                    <View style= {stylesCount.titleStyle}>
+                                        <Text style={stylesCount.fontStyle}>Số lượng sản phẩm: </Text>
+                                    </View>
+                                    <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.count} </Text>
                                 </View>
-                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.count} </Text>
-                            </View>
-                            <View style={stylesCount.row}>
-                                <View style= {stylesCount.titleStyle}>
-                                    <Text style={stylesCount.fontStyle}>Số tiền: </Text>
-                                </View>    
-                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.price}</Text>
-                            </View>
-                            <View style={stylesCount.row}>
-                                <View style= {stylesCount.titleStyle}>
-                                    <Text style={stylesCount.fontStyle}>Giảm giá: </Text>
+                                <View style={stylesCount.row}>
+                                    <View style= {stylesCount.titleStyle}>
+                                        <Text style={stylesCount.fontStyle}>Số tiền: </Text>
+                                    </View>    
+                                    <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.price}</Text>
                                 </View>
-                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.discount}</Text>
-                            </View>
-                            <View style={stylesCount.row}>
-                                <View style= {stylesCount.titleStyle}>
-                                    <Text style={stylesCount.fontStyle}>Tổng tiền: </Text> 
+                                <View style={stylesCount.row}>
+                                    <View style= {stylesCount.titleStyle}>
+                                        <Text style={stylesCount.fontStyle}>Giảm giá: </Text>
+                                    </View>
+                                    <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.discount}</Text>
                                 </View>
-                                <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.price-this.state.discount}</Text> 
+                                <View style={stylesCount.row}>
+                                    <View style= {stylesCount.titleStyle}>
+                                        <Text style={stylesCount.fontStyle}>Tổng tiền: </Text> 
+                                    </View>
+                                    <Text style ={[stylesCount.valueStyle,stylesCount.fontStyle]}>{this.state.price-this.state.discount}</Text> 
+                                </View>
                             </View>
+                            <View style={{height:10}}/>      
+
+                            <FlatList
+                                data = {this.state.data}
+                                keyExtractor = {(item, index)=> index.toString()}
+                                renderItem = {this.renderItem}
+                            />
+                
                         </View>
-                        <View style={{height:10}}/>      
-
-                        <FlatList
-                            data = {this.state.data}
-                            keyExtractor = {(item, index)=> index.toString()}
-                            renderItem = {this.renderItem}
-                        />
-            
+                        <View style ={{justifyContent: 'flex-end', alignItems: 'center'}}>
+                            <TouchableOpacity 
+                                style = {styles.buttonStyle}
+                                onPress = {this.sendData}
+                            >
+                                <Text style = {{fontSize: 20,fontWeight: 'bold'}}>Đặt hàng</Text> 
+                            </TouchableOpacity> 
+                        </View>
                     </View>
-                    <View style ={{justifyContent: 'flex-end', alignItems: 'center'}}>
-                        <TouchableOpacity 
-                            style = {styles.buttonStyle}
-                            onPress = {this.sendData}
-                        >
-                            <Text style = {{fontSize: 20,fontWeight: 'bold'}}>Đặt hàng</Text> 
-                        </TouchableOpacity> 
-                    </View>
-                </View>
+                </ScrollView>
             </SafeAreaView>
         )
     }

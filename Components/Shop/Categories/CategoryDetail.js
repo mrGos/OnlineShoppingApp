@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         
         justifyContent: 'space-around',
-        height: 20,
+        height: 25,
     },
     body:{
         flexDirection: 'column',
