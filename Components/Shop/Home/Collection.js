@@ -54,11 +54,8 @@ class Collection extends React.Component{
     render(){
         return(
             <View style = {styles.wrapper}>   
-                    {/* <View style = {styles.textContainer} >
-                        <Text style= {styles.textLastedProduct}> Banner </Text>
-                    </View>              */}
                     <Swiper 
-                        height = {400} 
+                        height = {200} 
                         loop={false}
                         loadMinimal = {false} 
                         style = {styles.body}
@@ -74,7 +71,7 @@ class Collection extends React.Component{
                                         key = {i}                                        
                                     >
                                         <View style={styles.itemContainer}>
-                                            <Image source={{uri:item.Image}} style={styles.imgItem}/>                                                          
+                                            <Image source={{uri:item.Image}}  style={styles.imgItem}/>                                                          
                                         </View>
                                     </View>
                                 )
