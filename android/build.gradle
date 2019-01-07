@@ -3,11 +3,25 @@
 buildscript {
     ext {
         buildToolsVersion = "27.0.3"
-        minSdkVersion = 16
+        minSdkVersion = 19
         compileSdkVersion = 27
-        targetSdkVersion = 26
+        targetSdkVersion = 27
         supportLibVersion = "27.1.1"
+        googleFirebaseVersion = "16.0.1"
+        googlePlayServicesVersion = "15.0.1"
     }
+
+    subprojects {
+        afterEvaluate {project ->
+            if (project.hasProperty("android")) {
+                android {
+                    compileSdkVersion 27
+                    buildToolsVersion '27.0.3'
+                }
+            }
+        }
+    }
+
     repositories {
         jcenter()
         google()
@@ -22,13 +36,14 @@ buildscript {
 
 allprojects {
     repositories {
+        
+        google()
         mavenLocal()
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
-        google()
     }
 }
 
