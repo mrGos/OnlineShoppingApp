@@ -88,7 +88,6 @@ export default Collection
 
 const styles = StyleSheet.create({
     wrapper :{
-        margin: 10,
         backgroundColor : 'rgb(233,233,238)',
         shadowOpacity: 0.2,
         borderRadius: 3
