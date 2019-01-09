@@ -1,34 +1,32 @@
 import getUrl from '../../Common/UrlConfig';
 import axios from 'axios';
 
-export default createOrder = (orderViewModel, listcart) =>{
-    
-    
-var params =JSON.stringify({'orderViewModel':orderViewModel,'listcart':listcart})
+export default createOrder = async  (orderViewModel, listcart) =>{ 
+
 let url = getUrl() + 'shoppingcart/createcart';
 
-let data = JSON.stringify({
+const params = JSON.stringify({
     orderViewModel: orderViewModel,
-    listcart: listcart,
+    listcart: listcart==null?"nodata":listcart,
 })
 
-axios.post(url, data, {
-    headers: {
-        'Content-Type': 'application/json',
-    }
-}).then(res => {
-    return res
-}); 
-// return axios({
-//         url: url,
-//         method: 'post',
-//         params: params,
+//  return  axios.post(url, params, {
 //         headers: {
-//         Accept: 'application/json',
-//         'Content-Type': 'application/json',
+//             'Content-Type': 'application/json',
 //         }
-//     })
-    // .then(res => {
-    //     return res
-    // });    
+//     }).then(res => {
+//         return res
+//     }); 
+return axios({
+        url: url,
+        method: 'post',
+        params: params,
+        headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        }
+    })
+    .then(res => {
+        return res
+    });    
 }
