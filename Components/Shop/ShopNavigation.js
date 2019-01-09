@@ -13,6 +13,8 @@ import Cart from './Cart/CartView';
 import Details from './Products/DetailsView';
 import Search from './Products/SearchResult'
 import CheckOrder from './Cart/CheckOrder'
+import Login from './Login'
+import SignUp from './SignUp'
 
 const HomeStack = createStackNavigator({
     Home :{screen: Home,navigationOptions:{ header:null} },
@@ -30,14 +32,16 @@ const ProductStack = createStackNavigator({
     Details: { screen: Details }, 
     Search:{screen:Search}
   });
-
 const CartStack = createStackNavigator({
     Cart : {screen: Cart },
     CheckOrder: {screen: CheckOrder},
 },{
     navigationOptions: {header: null}
 })
-
+const AuthStack = createStackNavigator({
+    Login: {screen: Login},
+    SignUp: {screen:SignUp}
+},{headerMode: 'none'})
 
 export default createBottomTabNavigator({
     Home: { screen: HomeStack, 

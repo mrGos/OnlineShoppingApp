@@ -26,6 +26,12 @@ class Login extends Component {
     };
   }
 
+  
+  componentWillUpdate(nextProps, nextState) {
+    console.log(nextState)
+  }
+  
+
   async componentDidMount() {
     this.setState({ fontLoaded: true });
   }
@@ -37,7 +43,6 @@ class Login extends Component {
 
   submitLoginCredentials() {
     const { showLoading } = this.state;
-
     this.setState({
       showLoading: !showLoading
     });
@@ -77,9 +82,9 @@ class Login extends Component {
                   />
                 }
                 containerStyle={{marginVertical: 10}}
-                onChangeText={email => this.setState({email})}
+                onChangeText={email => this.setState({email, email_valid: this.validateEmail(email)})}
                 value={email}
-                inputStyle={{marginLeft: 10, color: COLOR_TEXT}}
+                inputStyle={{marginLeft: 10, color: COLOR_TEXT, width: 250}}
                 keyboardAppearance='light'
                 placeholder='Email'
                 autoFocus={false}
@@ -88,10 +93,6 @@ class Login extends Component {
                 keyboardType='email-address'
                 returnKeyType='next'
                 ref={ input => this.emailInput = input }
-                onSubmitEditing={() => {
-                  this.setState({email_valid: this.validateEmail(email)});
-                  this.passwordInput.focus();
-                }}
                 blurOnSubmit={false}
                 placeholderTextColor={COLOR_TEXT}
                 errorStyle={{textAlign: 'center', fontSize: 12}}
@@ -108,7 +109,7 @@ class Login extends Component {
                 containerStyle={{marginVertical: 10}}
                 onChangeText={(password) => this.setState({password})}
                 value={password}
-                inputStyle={{marginLeft: 10, color: COLOR_TEXT}}
+                inputStyle={{marginLeft: 10, color: COLOR_TEXT, width:250}}
                 secureTextEntry={true}
                 keyboardAppearance='light'
                 placeholder='Password'
@@ -128,7 +129,7 @@ class Login extends Component {
               onPress={this.submitLoginCredentials.bind(this)}
               loading={showLoading}
               loadingProps={{size: 'small', color: COLOR_TEXT}}
-              disabled={ !email_valid && password.length < 8}
+              disabled={ !email_valid || password.length < 8}
               buttonStyle={{height: 50, width: 250, backgroundColor: 'transparent', borderWidth: 2, borderColor: COLOR_TEXT, borderRadius: 30}}
               containerStyle={{marginVertical: 10}}
               titleStyle={{fontWeight: 'bold', color: COLOR_TEXT}}
@@ -143,7 +144,7 @@ class Login extends Component {
                 activeOpacity={0.5}
                 titleStyle={{color: COLOR_TEXT, fontSize: 15}}
                 containerStyle={{marginTop: -10}}
-                onPress={() => console.log('Account created')}
+                onPress={() => this.props.navigation.navigate('SignUp')}
               />
             </View>
           </View> :
@@ -157,7 +158,8 @@ class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    alignItems: 'center'
   },
   bgImage: {
     flex: 1,

@@ -132,8 +132,11 @@ export default class Cart extends Component {
         console.log(this.state);
         try{
             const newCartData = this.state.cartData.filter(e => e.ID !== productId);
-            this.setState({ cartData: newCartData },
-             ()=> saveCart(this.state.cartData)            
+            this.setState({ cartData: newCartData ,},
+                ()=> {
+                    this.updatePriceAndQuantity()
+                    saveCart(this.state.cartData)  
+                }            
             );
            
         }catch(e){
