@@ -5,6 +5,8 @@ import { Input, Button } from 'react-native-elements'
 
 // import { Font } from 'expo';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {Login} from '../../../Api/AuthApi'
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -51,12 +53,14 @@ class Login extends Component {
 
   login = () => {
     const data = {
-        IdNumber: this.state.email,
-        password: this.state.password
+      'email': this.state.email,
+      'password': this.state.password
     }
-    const payload = {
-        data
-    }
+    Login(data)
+    .then((response)=>{
+
+    })
+
     
   }
 
