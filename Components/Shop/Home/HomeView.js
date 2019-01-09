@@ -8,6 +8,7 @@ import Collection from './Collection'
 import TopProduct from './TopProduct'
 import LastedProduct from './LastedProduct'
 
+
 export default class Home extends Component {
     constructor(props){
         super(props);
@@ -40,7 +41,7 @@ export default class Home extends Component {
     closeControlPanel = () => {
         this._drawer.close()
       };
-      openControlPanel = () => {
+    openControlPanel = () => {
         this._drawer.open()
       };
 
@@ -59,10 +60,10 @@ export default class Home extends Component {
 
             <Drawer
                 tapToClose={true}
-                openDrawerOffset={0.5} // 50% gap on the right side of drawer
+                openDrawerOffset={0.3} // 30% gap on the right side of drawer
                 ref={(ref) => this._drawer = ref}
                 content={
-                <View style={{ flex:1, backgroundColor:"blue"}}></View>
+                <View style={{ flex:1, backgroundColor:"#2E3238"}}></View>
                 }
             >
 

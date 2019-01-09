@@ -16,7 +16,7 @@ const instructions = Platform.select({
 
 
 const args = {
-  number: '0938422612', // String value with the number to call
+  number: '16520570', // String value with the number to call
   prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
 }
 
