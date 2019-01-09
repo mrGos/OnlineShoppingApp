@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import {TextInput, FlatList, StyleSheet, View, Button,SafeAreaView,Image, TouchableOpacity, Text, ScrollView} from 'react-native'
+import {TextInput, FlatList, StyleSheet, View, Button,SafeAreaView,Image, TouchableOpacity, Text, ScrollView,Alert } from 'react-native'
 import {AutoGrowingTextInput} from 'react-native-autogrow-textinput';
 
 import  orderCard from '../../../Api/CartApi/orderCard'
-
+import createOrder from  './../../../Api/CartApi/createOrder'
+import saveCart from '../../../Api/CartApi/saveCart';
 
 class CheckOrder extends Component{
     constructor(props){
@@ -26,26 +27,26 @@ class CheckOrder extends Component{
             price: this.props.navigation.getParam('price'),
             count: this.props.navigation.getParam('quantity')
         }, ()=>{
-            console.log(this.props.navigation.getParam('data'))
-            console.log(this.props.navigation.getParam('price'))
-            console.log(this.props.navigation.getParam('quantity'))
-            console.log(this.state)
+           // console.log(this.props.navigation.getParam('data'))
+            //console.log(this.props.navigation.getParam('price'))
+            //console.log(this.props.navigation.getParam('quantity'))
+            //console.log(this.state)
         })
        
     }
     componentDidMount(){
-        console.log('cart check')
+        //console.log('cart check')
         console.log(this.state.data)
     }
 
     componentDidUpdate(prevPros, preState){
-        console.log('did update');
+        //console.log('did update');
         console.log(this.props, this.state);
     }
 
     validatePhoneNumber(phoneNumber){
         const val = /(09|01[2|6|8|9])+([0-9]{8})\b/
-        console.log('validate phone number: ',phoneNumber,val.test(phoneNumber))
+        //console.log('validate phone number: ',phoneNumber,val.test(phoneNumber))
         return val.test(phoneNumber)
     }
 
@@ -67,15 +68,47 @@ class CheckOrder extends Component{
         this.setState({ address: text.nativeEvent.text || '' });
     }
 
-    sendData = () =>{
-        const data = {
-            'name' : this.state.name,
-            'phoneNumber' : this.state.phoneNumber,
-            'address' :this.state.address,
-            'card': this.state.data
-        }
-        console.log('is it here?')
-        orderCard(data);
+    sendData =  () =>{
+        let orderViewModel = {
+            CustomerName:  this.state.name,
+            CustomerAddress:this.state.address,
+            CustomerEmail: '',
+            CustomerMobile:this.state.phoneNumber,
+            CustomerMessage:'',
+            PaymentMethod: 'CASH',
+            BankCode: null,
+            Status: false,            
+            //'card': this.state.data
+        };  
+        let listcart=  this.state.data;
+         createOrder(orderViewModel,listcart)
+        .then(resJSON => {
+            console.log(resJSON.data.status);
+            if(resJSON.data.status==true){
+                this.setState({
+                    data:[]
+                },
+                ()=>{
+                    
+                    Alert.alert(
+                        'Annoucement',
+                        'Your Order is successful',
+                        [                         
+                          {text: 'OK', onPress: () => {
+                            saveCart(this.state.data);
+                            this.props.navigation.pop();
+                          }},
+                        ],
+                        { cancelable: false }
+                      )
+                    //this.props.navigation.pop()
+                })
+                
+            }
+        })
+        .catch((error) => {
+            console.error('send data Error'+ error);
+          });
     }
 
     renderItem = ({item}) => {

@@ -127,9 +127,9 @@ export default class Cart extends Component {
     }
 
     _onClickRemove(productId) {
-        console.log('_onClickRemove');
-        console.log(this.props);
-        console.log(this.state);
+        //console.log('_onClickRemove');
+       // console.log(this.props);
+        //console.log(this.state);
         try{
             const newCartData = this.state.cartData.filter(e => e.ID !== productId);
             this.setState({ cartData: newCartData },
@@ -137,7 +137,7 @@ export default class Cart extends Component {
             );
            
         }catch(e){
-            console.log('error= '+e)
+            //console.log('error= '+e)
         }
     }
 
@@ -159,7 +159,7 @@ export default class Cart extends Component {
         console.log('cartview will mount');
         this.CrawlCartData();
         this.updatePriceAndQuantity();
-        console.log(this.state);
+        //console.log(this.state);
     }
 
     render(){        
