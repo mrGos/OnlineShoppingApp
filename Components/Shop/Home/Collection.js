@@ -19,19 +19,6 @@ class Collection extends React.Component{
             refreshing: false,
             data : [],
             error: null,
-            dataTest : [
-                {
-                    Image: '/TempImage/sp1.jpeg',
-                    Name: 'test1',
-                    Price: '1'
-                },
-                {
-                    Image: '/TempImage/sp1.jpeg',
-                    Name: 'test2',
-                    Price: '2'
-                },
-                
-            ]
         }
     }
 
