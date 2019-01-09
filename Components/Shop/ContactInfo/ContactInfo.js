@@ -5,7 +5,7 @@ import {Linking, Alert, AppRegistry,Platform, StyleSheet, Text, View} from 'reac
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Button } from 'react-native-elements';
+import { Button,Header } from 'react-native-elements';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -20,7 +20,8 @@ const args = {
   prompt: false // Optional boolean property. Determines if the user should be prompt prior to the call 
 }
 
-
+const screen = require('Dimensions');
+const window = screen.get('window');
 
 
 export default class App extends Component {
@@ -42,9 +43,12 @@ export default class App extends Component {
 
   render() {
     return (
-      <View style={{flex:1}} >
-          
-          <Text style={styles.welcome} >Shop Info Contact</Text>
+      <View style={{flex:1,backgroundColor:'#E9E9EF'}} >
+          <Header         
+                        placement="left"  
+                        centerComponent={{ text: 'Contact Us', style: { color: '#fff' } }}
+                        backgroundColor='black'
+                    />
 
           <View
             style={{
