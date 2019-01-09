@@ -52,7 +52,7 @@ CrawlProductData(keyword,page,pageSize){
         if(this.state.dataSource.length!=0){
             return(
                 <View style={{ flex: 1 }}>
-                    <Text style={styles.resultStyle}> Kết quả tìm kiếm {txtSearching}: </Text>
+                    <Text style={styles.resultStyle}> Kết quả tìm kiếm "{txtSearching}": </Text>
                     <FlatList                                
                         
                         //read each data row by render Row with rowItem
@@ -100,16 +100,14 @@ const styles = StyleSheet.create({
       margin: 5,
       width: window.width/2,
       height:window.height/2,
-      backgroundColor: '#FFF',
+      backgroundColor: '#E9E9EF',
       alignItems:'center',
       justifyContent: 'center',
-      borderWidth:1,
-      borderRadius:10
     },
     
     flatContainer:{    
       flexDirection:'column',
-      backgroundColor:'#CCC'
+      backgroundColor:'#E9E9EF'
     },
     imgItem:{
       width: window.width/2-20,
@@ -119,7 +117,10 @@ const styles = StyleSheet.create({
     },
     resultStyle:{
         fontSize:24,
-        marginBottom:5,
+        marginBottom:20,
+        fontWeight: 'bold',
+        // font-family: 'lucida grande', tahoma, verdana, arial, sans-serif;
+        fontFamily: 'sans-serif',
     },
   
   });
