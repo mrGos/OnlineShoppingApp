@@ -46,10 +46,10 @@ const CartStack = createStackNavigator({
 
 export const AuthStack = createStackNavigator({
     Login: {screen: Login},
-    User: {screen: global.auth?SignUp:User},
+    User: {screen: global.auth?Login:User},
     SignUp: {screen: SignUp}
 
-},{headerMode: 'none'})
+},{headerMode:'none'})
 
 export default createBottomTabNavigator({
     Home: { screen: HomeStack, 

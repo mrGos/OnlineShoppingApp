@@ -157,7 +157,7 @@ class Category extends React.Component {
             error: null,
             categories:[]
         }        
-        this.listeningCategoryParam()
+        
     }
 
     onPressCategory (item){
