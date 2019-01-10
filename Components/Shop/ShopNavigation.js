@@ -13,8 +13,11 @@ import Cart from './Cart/CartView';
 import Details from './Products/DetailsView';
 import Search from './Products/SearchResult'
 import CheckOrder from './Cart/CheckOrder'
-// import Login from './Login'
-// import SignUp from './SignUp'
+import Login from './Login'
+import SignUp from './SignUp'
+import User from './User'
+import global from '../../Common/global'
+
 
 const HomeStack = createStackNavigator({
     Home :{screen: Home,navigationOptions:{ header:null} },
@@ -38,10 +41,11 @@ const CartStack = createStackNavigator({
 },{
     navigationOptions: {header: null}
 })
-// const AuthStack = createStackNavigator({
-//     Login: {screen: Login},
-//     SignUp: {screen:SignUp}
-// },{headerMode: 'none'})
+export const AuthStack = createStackNavigator({
+    Login: {screen: Login},
+    User: {screen: global.auth?SignUp:User},
+    SignUp: {screen: SignUp}
+},{headerMode: 'none'})
 
 export default createBottomTabNavigator({
     Home: { screen: HomeStack, 
@@ -52,6 +56,8 @@ export default createBottomTabNavigator({
                                     size={24} />)
             }      
     },
+
+    //AuthStack: {screen: AuthStack},
     Category: { screen: CategoryStack, 
         navigationOptions:{
             tabBarIcon:({tintColor})=>(<Ionicons  
