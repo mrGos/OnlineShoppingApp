@@ -253,7 +253,7 @@ onClickCategoryItem(item){
     //this.listeningCategoryParam();
     
     return ( 
-        <SafeAreaView style = {{flex: 1, backgroundColor: 'transparent'}}>
+        <SafeAreaView style = {{flex: 1, backgroundColor: 'rgb(57,62,66)'}}>
           <View style={styles.header}>
             <SearchBar
                 //lightTheme
@@ -318,7 +318,8 @@ onClickCategoryItem(item){
 
 const styles = StyleSheet.create({
   header:{
-    flex:2
+    flex:2,
+    backgroundColor: 'rgb(233,233,238)'
   },
   SearchBar:{
     backgroundColor: 'transparent',
@@ -366,6 +367,7 @@ const styles = StyleSheet.create({
     borderBottomColor:"black",
     borderBottomWidth:1,
     display: 'none',
+    
     //marginBottom:20
   },
 categoryList:{
