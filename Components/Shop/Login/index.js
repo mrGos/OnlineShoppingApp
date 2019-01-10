@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Dimensions } from 'react-native';
 import { Input, Button } from 'react-native-elements'
@@ -30,6 +29,7 @@ class Login extends Component {
   }
 
   
+  
   componentWillUpdate(nextProps, nextState) {
     console.log(nextState)
   }
@@ -52,19 +52,23 @@ class Login extends Component {
 
   login = () => {
     console.log(global.auth)
-    const data = {
-      'email': this.state.email,
-      'password': this.state.password
-    }
-    // API.Login(data)
-    // .then((response)=>{
 
-    // })
-
-    global.auth= true
-    console.log(global.auth)
-    
+    API.Login(this.state.email, this.state.password)
+    .then((response)=>{
+      if (response=='LoginFailed'){
+          Alert.alert('Annoucement', 'Wrong password');
+                return 
+      }
+      else{
+        console.log(response)
+        global.username = response.UserName
+        console.log(global)
+        global.auth= true
       this.props.navigation.navigate('User')
+      }
+    })
+
+    
        
   }
 
@@ -90,7 +94,7 @@ class Login extends Component {
                   />
                 }
                 containerStyle={{marginVertical: 10}}
-                onChangeText={email => this.setState({email, email_valid: this.validateEmail(email)})}
+                onChangeText={email => this.setState({email})} //email_valid: this.validateEmail(email)})}
                 value={email}
                 inputStyle={{marginLeft: 10, color: COLOR_TEXT, width: 250}}
                 keyboardAppearance='light'
@@ -137,7 +141,7 @@ class Login extends Component {
               onPress={this.submitLoginCredentials.bind(this)}
               loading={showLoading}
               loadingProps={{size: 'small', color: COLOR_TEXT}}
-              disabled={ !email_valid || password.length < 8}
+              disabled={ !email_valid || password.length < 1}
               buttonStyle={{height: 50, width: 250, backgroundColor: 'transparent', borderWidth: 2, borderColor: COLOR_TEXT, borderRadius: 30}}
               containerStyle={{marginVertical: 10}}
               titleStyle={{fontWeight: 'bold', color: COLOR_TEXT}}
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   loginView: {
-    marginTop: 150,
+    marginTop: 50,
     backgroundColor: 'transparent',
     width: 250,
     height: 400,

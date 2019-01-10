@@ -55,6 +55,8 @@ export default class App extends Component {
             style={{
               borderBottomColor: 'white',
               borderBottomWidth: 5,
+              borderWidth:1,
+              marginBottom:10
             }}
           />
 
@@ -76,7 +78,9 @@ export default class App extends Component {
           <Button
  
           icon={{name: 'home', size: 32}}
+
           buttonStyle={{backgroundColor: '#ff4f00', borderRadius: 0,width: width, flexWrap: 'wrap'}}
+
           textStyle={{textAlign: 'right'}}
           onPress={() =>Linking.openURL('https://www.google.com/maps/place/Tr%C6%B0%E1%BB%9Dng+%C4%90%E1%BA%A1i+h%E1%BB%8Dc+C%C3%B4ng+ngh%E1%BB%87+Th%C3%B4ng+tin+%C4%90HQG-HCM/@10.8686102,106.7979616,17z/data=!4m13!1m7!3m6!1s0x31752766e791a68d:0xe4f6a1ac07ae6952!2zNTEgxJDGsOG7nW5nIHPhu5EgMTgsIFBoxrDhu51uZyBMaW5oIFRydW5nLCBUaOG7pyDEkOG7qWMsIEjhu5MgQ2jDrSBNaW5oLCBWaeG7h3QgTmFt!3b1!8m2!3d10.8644167!4d106.7906767!3m4!1s0x317527587e9ad5bf:0xafa66f9c8be3c91!8m2!3d10.8702111!4d106.8028928')}
           title={`Quarter 6, Linh Trung ward, Thu Duc district`}
@@ -92,7 +96,9 @@ export default class App extends Component {
           <Button
 
           icon={{name: 'phone', size: 32}}
+
           buttonStyle={{backgroundColor: '#ff4f00', borderRadius: 0,width: width, flexWrap: 'wrap'}}
+
           textStyle={{textAlign: 'right'}}
           onPress={() => {
                         call(args).catch(console.error);
@@ -110,7 +116,9 @@ export default class App extends Component {
           <Button
     
           icon={{name: 'mail', size: 32}}
+
           buttonStyle={{backgroundColor: '#ff4f00', borderRadius: 0,width: width, flexWrap: 'wrap'}}
+
           textStyle={{textAlign: 'right'}}
           onPress={() => Linking.openURL('mailto:16520570@gm.uit.edu.vn')}
           title={`16520570@gm.uit.edu.vn`}
@@ -155,6 +163,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0
   },
+  buttonStyle:{
+    backgroundColor: "#ff4f00",
+    width:window.width-10,
+    height:60,
+    justifyContent:"center",
+    marginLeft:5,
+    borderColor: "transparent",
+    borderWidth: 0,
+    borderRadius: 5
+  }
 });
 
 
