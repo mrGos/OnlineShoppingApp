@@ -85,13 +85,14 @@ export default class Cart extends Component {
         this.setState({
             price:sumPrice,
             quantity: Quantity,
-        },()=> {console.log(this.state, sumPrice)})
+        },()=> {})   
+        // },()=> {console.log(this.state, sumPrice)})
     }
 
     _onClickIncreaseQuantity(productId) {
         console.log('_onClickIncreaseQuantity');
-            console.log(this.props);
-            console.log(this.state);
+            //console.log(this.props);
+            //console.log(this.state);
         const newCart = this.state.cartData.map(e => {
             if (e.ID !== productId) return e;
             e.Quantity+=1;
@@ -108,8 +109,8 @@ export default class Cart extends Component {
 
     _onClickDecreaseQuantity(product) {
         console.log('_onClickDecreaseQuantity');
-            console.log(this.props);
-            console.log(this.state);
+            //console.log(this.props);
+            //console.log(this.state);
         if(product.Quantity>0){
             const newCart = this.state.cartData.map(e => {
                 if (e.ID !== product.ID) return e;
@@ -199,7 +200,7 @@ export default class Cart extends Component {
     }
 
     _onClick = () =>{
-        console.log(this.state)
+        //console.log(this.state)
         this.props.navigation.navigate('CheckOrder',{data: this.state.cartData, price: this.state.price, quantity: this.state.quantity})
     }
 

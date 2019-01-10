@@ -36,12 +36,12 @@ class CheckOrder extends Component{
     }
     componentDidMount(){
         //console.log('cart check')
-        console.log(this.state.data)
+        //console.log(this.state.data)
     }
 
     componentDidUpdate(prevPros, preState){
         //console.log('did update');
-        console.log(this.props, this.state);
+        //console.log(this.props, this.state);
     }
 
     validatePhoneNumber(phoneNumber){
@@ -80,10 +80,11 @@ class CheckOrder extends Component{
             Status: false,            
             //'card': this.state.data
         };  
-        let listcart=  this.state.data;
+        let listcart=  [];
+        listcart.concat(this.state.data);
          createOrder(orderViewModel,listcart)
         .then(resJSON => {
-            console.log(resJSON.data.status);
+            //console.log(resJSON.data.status);
             if(resJSON.data.status==true){
                 this.setState({
                     data:[]
@@ -104,6 +105,18 @@ class CheckOrder extends Component{
                     //this.props.navigation.pop()
                 })
                 
+            }else{
+                Alert.alert(
+                    'Annoucement',
+                    'Your Order is unsuccessful',
+                    // [                         
+                    //   {text: 'OK', onPress: () => {
+                    //     saveCart(this.state.data);
+                    //     this.props.navigation.pop();
+                    //   }},
+                    // ],
+                    { cancelable: true }
+                  )
             }
         })
         .catch((error) => {
