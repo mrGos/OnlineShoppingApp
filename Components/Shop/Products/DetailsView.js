@@ -117,6 +117,7 @@ CrawlCartData(){
     this.addProductToWishList(product);
   }
 
+  
     render(){
 
       //console.log(item.Name);

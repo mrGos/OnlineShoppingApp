@@ -206,6 +206,9 @@ class Category extends React.Component {
                 <View style={stylesProductList.productContainer}>
                     <Text style = {stylesProductList.productName}> {item.Name}</Text>
                 </View>
+                <Image
+                    source={{uri:item.Image}} style={styles.imgItem}
+                />
             </TouchableOpacity>
         );
     }
@@ -227,44 +230,46 @@ class Category extends React.Component {
         this.loadData();
     }
 
-    renderItem({ item, index }) {
-        console.log(item);
-        if (item.empty){
-            return (
-                <View style={[styles.listItem, styles.listItemEmpty]} />
-            )
-        }
-        console.log('here');
-        return (
-            <TouchableOpacity 
-                style ={styles.listItem}
-                onPress= {()=> {
-                    this.props.navigation.navigate('CategoryDetail', {
-                        item: item
-                        });
-                }}
-            >
-                <ImageBackground
-                    source = {require('../Home/TempImage/sp1.jpeg')}
-                    imageStyle = {{
-                        resizeMode: 'cover',
-                    }}
-                    style = {{
-                        flex: 1,
-                        alignSelf: 'stretch',
-                        borderRadius: 10,
-                        height : 100,
-                        alignItems: 'center',
-                        justifyContent : 'center',
-                        backgroundColor: 'blue'
+    // renderItem({ item, index }) {
+    //     console.log(item);
+    //     if (item.empty){
+    //         return (
+    //             <View style={[styles.listItem, styles.listItemEmpty]} />
+    //         )
+    //     }
+    //     console.log('here');
+    //     return (
+    //         <TouchableOpacity 
+    //             style ={styles.listItem}
+    //             onPress= {()=> {
+    //                 this.props.navigation.navigate('CategoryDetail', {
+    //                     item: item
+    //                     });
+    //             }}
+    //         >
+    //             <Image
+    //                source={{uri:item.Image}}
+    //                 imageStyle = {{
+    //                     resizeMode: 'cover',
+    //                 }}
+    //                 style = {{
+    //                     // flex: 1,
+    //                     // alignSelf: 'stretch',
+    //                     // borderRadius: 10,
+    //                     // height : 100,
+    //                     // alignItems: 'center',
+    //                     // justifyContent : 'center',
+    //                     // backgroundColor: 'blue'
+    //                     width:200,
+    //                     height:200
                         
-                    }}
-                >
-                    <Text size = 'large' bold = {true} > {item.Name}</Text>
-                </ImageBackground>
-            </TouchableOpacity>
-        )
-    }
+    //                 }}
+    //             >
+    //                 {/* <Text size = 'large' bold = {true} > {item.Name}</Text> */}
+    //             </Image>
+    //         </TouchableOpacity>
+    //     )
+    // }
 
     createRow = (data, column) => {
         const rows = Math.floor(data.length/ column);
@@ -357,4 +362,8 @@ const stylesProductList = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
     },
+    imgItem:{
+        width:100,
+        height:200
+    }
 })
