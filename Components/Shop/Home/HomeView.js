@@ -57,7 +57,6 @@ export default class Home extends Component {
         
 
         return( 
-
             <Drawer
                 tapToClose={true}
                 openDrawerOffset={0.3} // 30% gap on the right side of drawer
@@ -67,7 +66,7 @@ export default class Home extends Component {
                 }
             >
 
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
                 <ScrollView
                     refreshControl = {
                         <RefreshControl 
@@ -75,6 +74,7 @@ export default class Home extends Component {
                             onRefresh = {this.handleRefresh}
                         />
                     }
+                    style={{backgroundColor: 'rgb(233,233,238)'}}
                 >   
                     <Header         
                         placement="left"               
