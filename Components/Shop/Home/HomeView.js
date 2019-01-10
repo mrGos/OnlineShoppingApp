@@ -7,7 +7,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons'
 import Collection from './Collection'
 import TopProduct from './TopProduct'
 import LastedProduct from './LastedProduct'
-
+import {AuthStack} from '../ShopNavigation'
 
 export default class Home extends Component {
     constructor(props){
@@ -63,7 +63,7 @@ export default class Home extends Component {
                 openDrawerOffset={0.3} // 30% gap on the right side of drawer
                 ref={(ref) => this._drawer = ref}
                 content={
-                <View style={{ flex:1, backgroundColor:"#2E3238"}}></View>
+                    <AuthStack />
                 }
             >
 

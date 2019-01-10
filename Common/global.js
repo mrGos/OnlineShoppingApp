@@ -3,4 +3,5 @@ module.exports = {
     incrQuantity: null,
     decrQuantity: null,
     removeProduct: null,
-};
+    auth: false
+}
