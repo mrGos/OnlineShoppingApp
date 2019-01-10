@@ -15,8 +15,10 @@ import Search from './Products/SearchResult'
 import CheckOrder from './Cart/CheckOrder'
 import Login from './Login'
 import SignUp from './SignUp'
+
 import User from './User'
 import global from '../../Common/global'
+
 
 
 const HomeStack = createStackNavigator({
@@ -41,10 +43,12 @@ const CartStack = createStackNavigator({
 },{
     navigationOptions: {header: null}
 })
+
 export const AuthStack = createStackNavigator({
     Login: {screen: Login},
     User: {screen: global.auth?SignUp:User},
     SignUp: {screen: SignUp}
+
 },{headerMode: 'none'})
 
 export default createBottomTabNavigator({

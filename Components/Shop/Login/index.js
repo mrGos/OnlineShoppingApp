@@ -56,8 +56,10 @@ class Login extends Component {
       'email': this.state.email,
       'password': this.state.password
     }
+
     // API.Login(data)
     // .then((response)=>{
+
 
     // })
 

@@ -171,7 +171,7 @@ export default class Cart extends Component {
         if (this.state.cartData.length==0){
             return(
                 <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize:25}}>GIỎ HÀNG RỖNG</Text>
+                    <Text style={{fontSize:25}}>YOUR CART IS EMPTY</Text>
                     
                 </View>
             );
