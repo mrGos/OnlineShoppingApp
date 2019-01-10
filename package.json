@@ -12,7 +12,7 @@
     "react-native": "0.57.1",
     "react-native-autogrow-textinput": "^5.2.0",
     "react-native-drawer": "^2.5.1",
-    "react-native-elements": "^0.19.1",
+    "react-native-elements": "^1.0.0-beta7",
     "react-native-maps": "^0.22.1",
     "react-native-phone-call": "^1.0.9",
     "react-native-swiper": "^1.5.14",
