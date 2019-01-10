@@ -7,7 +7,7 @@ import MIcon from 'react-native-vector-icons/MaterialIcons'
 import Collection from './Collection'
 import TopProduct from './TopProduct'
 import LastedProduct from './LastedProduct'
-
+import {AuthStack} from '../ShopNavigation'
 
 export default class Home extends Component {
     constructor(props){
@@ -57,17 +57,16 @@ export default class Home extends Component {
         
 
         return( 
-
             <Drawer
                 tapToClose={true}
                 openDrawerOffset={0.3} // 30% gap on the right side of drawer
                 ref={(ref) => this._drawer = ref}
                 content={
-                <View style={{ flex:1, backgroundColor:"#2E3238"}}></View>
+                    <AuthStack />
                 }
             >
 
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, backgroundColor: 'black'}}>
                 <ScrollView
                     refreshControl = {
                         <RefreshControl 
@@ -75,6 +74,7 @@ export default class Home extends Component {
                             onRefresh = {this.handleRefresh}
                         />
                     }
+                    style={{backgroundColor: 'rgb(233,233,238)'}}
                 >   
                     <Header         
                         placement="left"               

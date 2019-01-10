@@ -2,11 +2,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ImageBackground, Dimensions } from 'react-native';
 import { Input, Button } from 'react-native-elements'
-
+import global from '../../../Common/global'
 // import { Font } from 'expo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as API from '../../../Api/AuthApi'
 
+import {auth} from '../../../Common/global'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -44,24 +45,29 @@ class Login extends Component {
   }
 
   submitLoginCredentials() {
+    console.log('here');
     const { showLoading } = this.state;
-    this.setState({
-      showLoading: !showLoading
-    });
     this.login();
   }
 
   login = () => {
+    console.log(global.auth)
     const data = {
       'email': this.state.email,
       'password': this.state.password
     }
-    API.Login(data)
-    .then((response)=>{
 
-    })
+    // API.Login(data)
+    // .then((response)=>{
 
+
+    // })
+
+    global.auth= true
+    console.log(global.auth)
     
+      this.props.navigation.navigate('User')
+       
   }
 
   render() {

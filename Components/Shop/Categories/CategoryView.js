@@ -180,17 +180,6 @@ class Category extends React.Component {
             }); 
         }                      
     }
-
-    listeningCategoryParam(){
-    let { navigation } = this.props;
-    navigation.addListener('didFocus', () => {              
-      getCategories()
-        .then(resJSON => {
-            this.setState({categories:resJSON},/*()=>{this.Flag = true;}*/()=>console.log('categoriesParam: '+this.state.categories))                        
-        });
-    });
-    }
-
     renderItem = ({item}) =>{
         //console.log(item.Name);
         return(

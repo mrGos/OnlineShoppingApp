@@ -16,6 +16,11 @@ import CheckOrder from './Cart/CheckOrder'
 import Login from './Login'
 import SignUp from './SignUp'
 
+import User from './User'
+import global from '../../Common/global'
+
+
+
 const HomeStack = createStackNavigator({
     Home :{screen: Home,navigationOptions:{ header:null} },
     Details: { screen: Details }, 
@@ -38,9 +43,12 @@ const CartStack = createStackNavigator({
 },{
     navigationOptions: {header: null}
 })
-const AuthStack = createStackNavigator({
+
+export const AuthStack = createStackNavigator({
     Login: {screen: Login},
-    SignUp: {screen:SignUp}
+    User: {screen: global.auth?SignUp:User},
+    SignUp: {screen: SignUp}
+
 },{headerMode: 'none'})
 
 export default createBottomTabNavigator({
@@ -52,6 +60,8 @@ export default createBottomTabNavigator({
                                     size={24} />)
             }      
     },
+
+    //AuthStack: {screen: AuthStack},
     Category: { screen: CategoryStack, 
         navigationOptions:{
             tabBarIcon:({tintColor})=>(<Ionicons  
