@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text,StyleSheet,Image,FlatList,SafeAreaView ,TouchableOpacity} from 'react-native';
-import { Button } from 'react-native-elements'
+import { View, Text,StyleSheet,Image,FlatList,SafeAreaView ,TouchableOpacity,BackHandler} from 'react-native';
+import { Button,Header } from 'react-native-elements'
 import FAIcon from 'react-native-vector-icons/FontAwesome'
 
-import getLikedCart from './../../../Api/CartApi/getLikedCart'
-import saveLikedCart from './../../../Api/CartApi/saveLikedCart'
+import getLikedCart from '../../../Api/CartApi/getLikedCart'
+import saveLikedCart from '../../../Api/CartApi/saveLikedCart'
 
 const numColumns = 1;
 const screen = require('Dimensions');
@@ -19,15 +19,10 @@ export default class WishList extends Component {
             quantity: 0,   
         }
 
-        this.Crawlwishlist = this.Crawlwishlist.bind(this)
-        this._onClickIncreaseQuantity = this._onClickIncreaseQuantity.bind(this)
+        this.Crawlwishlist = this.Crawlwishlist.bind(this)        
         this._onClickRemove = this._onClickRemove.bind(this)
         
-        const { navigation } = this.props;         
         
-         navigation.addListener('didFocus', () => {
-             this.Crawlwishlist();       
-           });
     }
 
 
@@ -36,8 +31,7 @@ export default class WishList extends Component {
             const newwishlist = this.state.wishlist.filter(e => e.ID !== productId);
             this.setState({ wishlist: newwishlist ,},
                 ()=> {
-                    this.updatePriceAndQuantity()
-                    saveCart(this.state.wishlist)  
+                     saveLikedCart(this.state.wishlist)  
                 }            
             );
            
@@ -51,10 +45,9 @@ export default class WishList extends Component {
 
 
     Crawlwishlist(){
-        getCart()
+        getLikedCart()
         .then(resJSON => {
             this.setState({wishlist:resJSON},()=>{
-                this.updatePriceAndQuantity();
             }/*()=>{this.Flag = true;}*/)                        
         });
         
@@ -66,11 +59,16 @@ export default class WishList extends Component {
         //console.log(this.state);
     }
 
+    componentDidMount(){
+        
+    }
+    
+
     _onClick = (item) =>{
         //console.log(this.state)
-        this.props.navigation.navigate('Details', {
-            item: item
-          });
+        // this.props.navigation.navigate('Details', {
+        //     item: item
+        //   });
     }
 
 
@@ -100,17 +98,23 @@ export default class WishList extends Component {
       }
 
     render(){        
-        
+        let { navigation } = this.props;         
+            console.log('didfocus')
+            navigation.addListener('didFocus', () => {
+             this.Crawlwishlist();       
+           });
+
         if (this.state.wishlist.length==0){
             return(
                 <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize:25}}>YOUR WISHLIST IS EMPTY</Text>
+                    <Text style={{fontSize:25,textAlign:'center'}}>YOUR WISHLIST IS EMPTY</Text>
                     
                 </View>
             );
         }
         return(
-            <View style={{ flex: 1, }}>
+            <View style={{ flex: 1,backgroundColor:'white' }}>
+                <Text style={styles.travelText}>Your WishList</Text>
                <FlatList                
                     //read each data row by render Row with rowItem
                     contentContainerStyle={styles.flatContainer}
@@ -132,9 +136,8 @@ const styles = StyleSheet.create({
   
     itemContainer:{
       flex: 1,
-      marginBottom: 5,   
-      marginLeft: 5,
-      marginRight: 5,   
+      marginBottom: 3,
+      marginRight: 3,   
       height:120,//window.height/4,
       backgroundColor: '#FFF',
       flexDirection:'row',
@@ -145,11 +148,15 @@ const styles = StyleSheet.create({
     },
     
     flatContainer:{    
+      marginTop:20,
+      borderRadius:10,
       flexDirection:'column',
-      backgroundColor:'#CCC'
+      backgroundColor:'#ABBDDB',
+      margin:5
     },
     imgItem:{
-      marginTop:5,      
+      marginTop:5,  
+      width:100,    
       height:100,//window.height/4-20,
       flex:1, 
       resizeMode: "stretch",
@@ -185,31 +192,12 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         borderRadius: 2,
       },
-      buttonAddStyle:{
-        backgroundColor: "green",
-        height:25,
-        width:60,
-        borderColor: "transparent",
-        borderWidth: 0,
-        borderRadius: 2,
-        marginRight:30,
+      travelText: {
+        color: '#ABBDDB',
+        fontSize: 30,
+        marginBottom:50,
+        padding:5,
+        fontWeight:'bold',
       },
-      buttonSubtractStyle:{
-        backgroundColor: "red",
-        height:25,
-        width:60,
-        borderColor: "transparent",
-        borderWidth: 0,
-        borderRadius: 2,
-        marginLeft:30,
-      },
-      btnPayment:{
-        //backgroundColor: "#2baf2b",
-        backgroundColor: "navy",
-        height:60,
-        borderColor: "transparent",
-        borderWidth: 0,
-        borderRadius: 5
-      }
   
   });

@@ -9,6 +9,8 @@ import getCart from '../../../Api/CartApi/getCart'
 import saveLikedCart from '../../../Api/CartApi/saveLikedCart'
 import getLikedCart from '../../../Api/CartApi/getLikedCart'
 
+import global from './../../../Common/global'
+
 const screen = require('Dimensions');
 const window = screen.get('window');
 
@@ -43,29 +45,34 @@ export default class Products extends Component {
   }
   
   addProductToWishList(product){
-    try{
-      const isExist = this.state.wishlist.some(e => e.ID === product.ID);
-      
-      if (!isExist){
-        product.Quantity=1;
-        //console.log('flag add sucess= '+this.state.Flag)
-        this.setState(
-            {
-              wishlist: this.state.wishlist.push(product),Flag:false 
-            },
-        );
-        
-        saveLikedCart(this.state.wishlist)
-        Alert.alert('Success','Product is added to your Wish List')
-        this.props.navigation.navigate('Cart');
-      }else{
-        //console.log('sp da ton tai va '+ this.state.Flag)
-        console.log('move to htis')
-        Alert.alert('Annoucement','Product is exist in your Wish List')
-      } 
-    }catch(e){
+    
+      if(global.auth===true){
+        try{
+          let isExist = this.state.wishlist.some(e => e.ID === product.ID);      
+          if (!isExist){        
+            product.Quantity=1;
+            //console.log('flag add sucess= '+this.state.Flag)
+            this.setState(
+                {
+                  wishlist: this.state.wishlist.push(product),Flag:false 
+                },
+            );            
+            saveLikedCart(this.state.wishlist)
+            Alert.alert('Success','Product is added to your Wish List')
+            this.props.navigation.navigate('Products');
+            this.props.navigation.navigate('Home');
+          }else{
+            //console.log('sp da ton tai va '+ this.state.Flag)
+            console.log('move to htis')
+            Alert.alert('Annoucement','Product is exist in your Wish List')
+          } 
+        }catch(e){
 
-    }
+        }
+      }else{
+        Alert.alert('Unsucess','You need to Login')
+      }
+      
   }
 
   addProductToCart(product) {
@@ -85,6 +92,7 @@ export default class Products extends Component {
         
         saveCart(this.state.cartData)
         Alert.alert('Success','Product is added to your Cart')
+        this.props.navigation.navigate('Products');
         this.props.navigation.navigate('Cart');
       }else{
         Alert.alert('Annoucement','Product is exist in your Cart')

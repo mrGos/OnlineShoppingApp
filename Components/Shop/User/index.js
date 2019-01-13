@@ -6,6 +6,7 @@ import {
 import { Button } from 'react-native-elements'
 
 import global from '../../../Common/global'
+import Home from './../Home/HomeView'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -24,8 +25,8 @@ class User extends Component {
 
     this.state = {
       fontLoaded: false,
-
-      ModalSwipeToClose: true
+      ModalSwipeToClose: true,
+      username: global.displayName
     };
   }
 
@@ -40,7 +41,12 @@ class User extends Component {
 
   logout = () => {
     global.auth= false
+    global.displayName = ''
     this.props.navigation.navigate('Login')
+  }
+
+  gotoWishList= ()=>{
+    this.props.navigation.navigate('WishList')
   }
 
   render() {
@@ -61,9 +67,18 @@ class User extends Component {
                 </View>
                 <View style={{flex: 1, marginTop: 20, justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{flex: 1, fontSize: 26, color: COLOR_TEXT}}>
-                    abc
+                    {this.state.username}
                   </Text>
                 </View>
+                <Button
+                  containerStyle={{ marginVertical: 20 }}
+                  style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+                  buttonStyle={{height: 50, width: 250, backgroundColor: 'transparent', borderWidth: 2, borderColor: COLOR_TEXT, borderRadius: 30}}
+                  title="Your WishList"
+                  titleStyle={{ fontSize: 20, color: COLOR_TEXT, textAlign: 'center' }}
+                  onPress={() => this.gotoWishList()}
+                  activeOpacity={0.5}
+                />
                 <Button
                   containerStyle={{ marginVertical: 20 }}
                   style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
