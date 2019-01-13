@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ImageBackground, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions,Alert } from 'react-native';
 import { Input, Button } from 'react-native-elements'
 import global from '../../../Common/global'
 // import { Font } from 'expo';
@@ -57,15 +57,14 @@ class Login extends Component {
     API.Login(this.state.email, this.state.password)
     .then((response)=>{
       if (response=='LoginFailed'){
-          Alert.alert('Annoucement', 'Wrong password');
-                return 
+          Alert.alert('Unsucess', 'Your account is incorrect');
       }
       else{
         console.log(response)
         global.displayName = response.UserName
         console.log(global)
         global.auth= true
-      this.props.navigation.navigate('User')
+        this.props.navigation.navigate('User')
       }
     })
 

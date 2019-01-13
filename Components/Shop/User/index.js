@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import {
-  StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, StatusBar, SafeAreaView, FlatList
+  StyleSheet, Text, View, Image, ScrollView, Dimensions, TouchableOpacity, StatusBar, SafeAreaView, Alert
 } from 'react-native';
 import { Button } from 'react-native-elements'
 
