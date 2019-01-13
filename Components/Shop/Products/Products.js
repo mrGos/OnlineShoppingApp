@@ -91,22 +91,22 @@ export default class Products extends Component {
   // }
 
    //category passing pram
-  listeningCategoryParam(){       
-    let { navigation } = this.props;
-    navigation.addListener('didFocus', () => {                    
-      getCategories()
-        .then(resJSON => {
-            this.setState({
-              categories:resJSON, 
-              txtAll:(resJSON.length==0)?"All":"",
-              page:0,
-              totalPages:1,
-            },
-            this.CrawlProductData("",0,pageSizeDefault())
-            )                        
-        });
-    });
-  }
+  // listeningCategoryParam(){       
+  //   let { navigation } = this.props;
+  //   navigation.addListener('didFocus', () => {                    
+  //     getCategories()
+  //       .then(resJSON => {
+  //           this.setState({
+  //             categories:resJSON, 
+  //             txtAll:(resJSON.length==0)?"All":"",
+  //             page:0,
+  //             totalPages:1,
+  //           },
+  //           this.CrawlProductData("",0,pageSizeDefault())
+  //           )                        
+  //       });
+  //   });
+  // }
 
   loadMore = () =>{
     if (this.state.page < this.state.totalPages-1){

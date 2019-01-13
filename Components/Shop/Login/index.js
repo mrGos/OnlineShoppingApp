@@ -46,13 +46,14 @@ class Login extends Component {
 
   submitLoginCredentials() {
     console.log('here');
+
     const { showLoading } = this.state;
     this.login();
   }
 
   login = () => {
     console.log(global.auth)
-
+    
     API.Login(this.state.email, this.state.password)
     .then((response)=>{
       if (response=='LoginFailed'){
@@ -61,7 +62,7 @@ class Login extends Component {
       }
       else{
         console.log(response)
-        global.username = response.UserName
+        global.displayName = response.UserName
         console.log(global)
         global.auth= true
       this.props.navigation.navigate('User')

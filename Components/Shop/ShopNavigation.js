@@ -17,14 +17,15 @@ import Login from './Login'
 import SignUp from './SignUp'
 
 import User from './User'
+import WishList from './Home/WishList'
 import global from '../../Common/global'
-
-
 
 const HomeStack = createStackNavigator({
     Home :{screen: Home,navigationOptions:{ header:null} },
+   
     Details: { screen: Details }, 
 })
+
 
 const CategoryStack = createStackNavigator({
     Category :{screen: Category,navigationOptions:{ header:null} },
@@ -47,9 +48,14 @@ const CartStack = createStackNavigator({
 export const AuthStack = createStackNavigator({
     Login: {screen: Login},
     User: {screen: global.auth?Login:User},
+    WishList:{screen:WishList},
     SignUp: {screen: SignUp}
 
 },{headerMode:'none'})
+
+// const WishList = createStackNavigator({
+//     WishList :{screen: WishList,navigationOptions:{ header:null} }
+// })
 
 export default createBottomTabNavigator({
     Home: { screen: HomeStack, 
